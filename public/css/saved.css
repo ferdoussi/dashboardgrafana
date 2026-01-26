@@ -1,0 +1,147 @@
+
+.parent-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); /* 6 dial columns */
+    grid-template-rows: 250px 350px 250px; /* 3 dial stora */
+    gap: 15px;
+    
+    /* Kharita m9ada kif bghiti: area7 3la l-isser (twil) w area8 3la l-imnen */
+    grid-template-areas:
+        "area1 area2 area3 area3 area4 area4"
+        "area5 area5 area5 area6 area6 area6"
+        "area7 area7 area7 area7 area8 area8";
+}
+
+/* Isnad l-divs l-areas dialhoum */
+.div1 { grid-area: area1; }
+.div2 { grid-area: area2; }
+.div3 { grid-area: area3; }
+.div4 { grid-area: area4; }
+.div5 { grid-area: area5; }
+.div6 { grid-area: area6; }
+
+/* Daba div7 khda blasa dial div8 (jiha l-isriya l-tehtiya) */
+.div7 { grid-area: area7; } 
+.div8 { grid-area: area8; }
+
+/* Styling dial l-cards */
+.parent-grid > div {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+}
+
+/* Responsive l-mobile */
+@media (max-width: 1000px) {
+    .parent-grid {
+        display: flex;
+        flex-direction: column;
+    }
+    .parent-grid > div {
+        height: 300px;.parent-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); /* 6 columns */
+    grid-template-rows: 250px 350px 250px; /* 3 rows */
+    gap: 16px;
+    padding: 16px;
+    max-width: 1600px;
+    margin: 0 auto;
+
+    grid-template-areas:
+        "area1 area2 area3 area3 area4 area4"
+        "area5 area5 area5 area6 area6 area6"
+        "area7 area7 area7 area7 area8 area8";
+}
+
+/* Areas mapping */
+.div1 { grid-area: area1; }
+.div2 { grid-area: area2; }
+.div3 { grid-area: area3; }
+.div4 { grid-area: area4; }
+.div5 { grid-area: area5; }
+.div6 { grid-area: area6; }
+.div7 { grid-area: area7; }
+.div8 { grid-area: area8; }
+
+/* Card style */
+.parent-grid > div {
+    position: relative;
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+    transition: all 0.25s ease;
+}
+
+/* Hover effect */
+.parent-grid > div:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 45px rgba(0,0,0,0.1);
+}
+
+/* iframe fix */
+.parent-grid iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+    background: #fff;
+}
+
+/* ================= DARK MODE ================= */
+
+body.dark .parent-grid > div {
+    background: #020617;
+    border-color: #1e293b;
+    box-shadow: 0 20px 45px rgba(0,0,0,0.9);
+}
+
+body.dark .parent-grid iframe {
+    background: #020617;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 1100px) {
+    .parent-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto;
+        grid-template-areas:
+            "area1 area2"
+            "area3 area3"
+            "area4 area4"
+            "area5 area5"
+            "area6 area6"
+            "area7 area7"
+            "area8 area8";
+    }
+
+    .parent-grid > div {
+        height: 300px;
+    }
+}
+
+@media (max-width: 600px) {
+    .parent-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .parent-grid > div {
+        height: 280px;
+    }
+}
+
+    }
+}

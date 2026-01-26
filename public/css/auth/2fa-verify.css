@@ -1,0 +1,125 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.loginPage {
+    width: 100%;
+    max-width: 900px; /* عرض الصفحة كاملة */
+    margin: 20px;
+}
+
+.ContentForm {
+    background: #fff;
+    display: flex; /* لتقسيم الفورم والجهة الترحيبية */
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+}
+
+/* جهة الفورم (اليسار) */
+.formLogin {
+    flex: 1;
+    padding: 60px 40px;
+    text-align: center;
+}
+
+.formLogin h1 {
+    font-size: 26px;
+    color: #1a1a1a;
+    margin-bottom: 10px;
+}
+
+.formLogin p {
+    color: #777;
+    font-size: 14px;
+    margin-bottom: 30px;
+}
+
+/* حقل الإدخال */
+.inputbox {
+    margin-bottom: 25px;
+}
+
+.inputbox input {
+    width: 100%;
+    padding: 15px;
+    background: #f8f9fa;
+    border: 2px solid #eee;
+    border-radius: 10px;
+    outline: none;
+    font-size: 18px;
+    text-align: center;
+    letter-spacing: 5px; /* تباعد الأرقام */
+    transition: 0.3s;
+}
+
+.inputbox input:focus {
+    border-color: #4a90e2;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(74, 144, 226, 0.1);
+}
+
+/* الزر */
+.btn-Login {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    background: #4a90e2;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-Login:hover {
+    background: #357abd;
+    transform: translateY(-2px);
+}
+
+/* الجهة الترحيبية (اليمين) */
+.imgForm {
+    flex: 1;
+    background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    text-align: center;
+}
+
+.welcome-subtitle {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.welcome-description {
+    font-size: 15px;
+    line-height: 1.6;
+    opacity: 0.9;
+}
+
+/* جعل التصميم متجاوب (للأجهزة الصغيرة) */
+@media (max-width: 768px) {
+    .ContentForm {
+        flex-direction: column;
+    }
+    .imgForm {
+        display: none; /* إخفاء جهة الترحيب في الهواتف */
+    }
+}

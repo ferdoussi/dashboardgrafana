@@ -1,0 +1,120 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif; /* tqder t-importiha mn Google Fonts */
+}
+
+body {
+    background: #f4f7f6; /* Lawn khfif fl-khlfiya */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.loginPage {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.ContentForm {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+}
+
+
+
+.formLogin p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+/* QR Code Styling */
+.inputbox img {
+    margin: 20px 0;
+    border: 2px solid #eee !important; /* overwriting inline style */
+    transition: transform 0.3s ease;
+}
+
+.inputbox img:hover {
+    transform: scale(1.05);
+}
+
+.secret-key {
+    background: #f0f0f0;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-family: monospace;
+    color: #d63384;
+}
+
+/* Input Field */
+.inputbox {
+    position: relative;
+    margin-top: 25px;
+    width: 100%;
+}
+
+.inputbox input {
+    width: 100%;
+    padding: 12px 40px 12px 15px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+    font-size: 16px;
+    transition: 0.3s;
+    text-align: center;
+    letter-spacing: 4px; /* bach tban bhal code dyal 2FA */
+}
+
+.inputbox input:focus {
+    border-color: #4a90e2;
+}
+
+.inputbox ion-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: #888;
+}
+
+/* Button */
+.btn-Login {
+    width: 100%;
+    padding: 12px;
+    margin-top: 30px;
+    border: none;
+    border-radius: 8px;
+    background: #4a90e2;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.btn-Login:hover {
+    background: #357abd;
+}
+
+/* Error Message */
+.error-message {
+    background: #ffe3e3;
+    color: #d12e2e !important;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 13px;
+    border: 1px solid #facaca;
+}

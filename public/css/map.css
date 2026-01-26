@@ -1,0 +1,92 @@
+/* ===============================
+   DARK MODE – GRAFANA GRID
+================================ */
+
+body.dark .grafana-grid {
+    background: #020617;
+    border-radius: 20px;
+}
+
+/* ================= PANELS ================= */
+
+body.dark .panel {
+    background: #020617;
+    border: 1px solid #1e293b;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.85);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Hover effect (subtle) */
+body.dark .panel:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 25px 45px rgba(0,0,0,0.95);
+}
+
+/* ================= IFRAME ================= */
+
+body.dark .panel iframe {
+    background: #020617;
+}
+
+
+.grafana-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: auto;
+    gap: 14px;
+    padding: 16px;
+   
+}
+
+/* Panel base */
+.panel {
+    
+    border-radius: 8px;
+    overflow: hidden;
+    
+    position: relative;
+}
+
+/* iframe */
+.panel iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  
+}
+
+/* Small panels (top) */
+.panel.small {
+    height: 220px;
+}
+
+/* Large panel (bottom full width) */
+.panel.large {
+    grid-column: 1 / -1;
+    height: 420px;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .grafana-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .panel.large {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 600px) {
+    .grafana-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .panel.small {
+        height: 200px;
+    }
+
+    .panel.large {
+        height: 300px;
+    }
+}
