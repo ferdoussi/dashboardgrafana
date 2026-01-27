@@ -1,1 +1,1 @@
-<img src=''/># dashboardgrafana
+<img src='public/logo.png'/># dashboardgrafana

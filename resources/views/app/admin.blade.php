@@ -5,4 +5,4 @@
     <p>Welcome to the admin panel. Here you can manage the application settings and users.</p>
     <!-- Add your admin functionalities here -->
 </div>
-@endsection
+@endsection 

@@ -18,7 +18,7 @@ Route::post('/2fa-check', [AuthController::class, 'check2fa'])->name('2fa.check'
 
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-});
+}); 
 
 
 // Route::get('/grafana', function () {
