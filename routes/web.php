@@ -1,5 +1,5 @@
 <?php
-
+use App\Services\{QradarService, QradarNormalizer, MitreMatrixBuilder,MitreMapper};
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GrafanaProxyController;
@@ -52,5 +52,24 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/support', [App\Http\Controllers\SupportController::class, 'index'])->name('support.support'); // هذا الاسم هو اللي غادي تستخدمه
     
+});
+
+Route::get('/test-mitre', function () {
+    $raw = App\Services\QradarService::getOffenses();
+    $offenses = App\Services\QradarNormalizer::normalize($raw);
+    
+    // هادي هي اللي كتصاوب المصفوفة بالـ 14 تكتيك
+    $matrix = App\Services\MitreMatrixBuilder::build($offenses);
+
+    // الترتيب العالمي للتكتيكات باش يبانو مصفوفين
+    $tacticsOrder = [
+        'Reconnaissance', 'Resource Development', 'Initial Access', 
+        'Execution', 'Persistence', 'Privilege Escalation', 
+        'Defense Evasion', 'Credential Access', 'Discovery', 
+        'Lateral Movement', 'Collection', 'Command and Control', 
+        'Exfiltration', 'Impact'
+    ];
+
+    return view('mitre.matrix', compact('matrix', 'tacticsOrder'));
 });
 
