@@ -105,7 +105,7 @@
         <a href="{{ route('mitre.matrix') }}" class="widget-card-link">
             <div class="widget-card">
                 <div class="widget-icon bg-blue">
-                    <i class='bx bx-pulse'></i>
+                    <i class='bx bx-shield'></i> 
                 </div>
                 <h4>Mitre Atack</h4>
                 <p>Flux des événements de sécurité</p>
