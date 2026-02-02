@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+<title>{{ $dashboard->name }}</title>
 @section('content')
 <div class="dashboard-viewer-container">
     

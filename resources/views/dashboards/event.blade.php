@@ -83,7 +83,7 @@
 
 
 @extends('layouts.app') {{-- هادا هو الملف اللي فيه الـ Sidebar والـ Layout --}}
-
+<title>Events Dashboard</title>
 @section('content') {{-- هاد البلاصة هي اللي كتمثل الـ Content الوسطاني --}}
 <div class="parent">
     @php

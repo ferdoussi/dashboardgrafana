@@ -71,5 +71,5 @@ Route::get('/test-mitre', function () {
     ];
 
     return view('mitre.matrix', compact('matrix', 'tacticsOrder'));
-});
+})->name('mitre.matrix')->middleware('auth');
 

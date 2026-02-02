@@ -102,6 +102,15 @@
                 <p>Flux des événements de sécurité</p>
             </div>
         </a>
+        <a href="{{ route('mitre.matrix') }}" class="widget-card-link">
+            <div class="widget-card">
+                <div class="widget-icon bg-blue">
+                    <i class='bx bx-pulse'></i>
+                </div>
+                <h4>Mitre Atack</h4>
+                <p>Flux des événements de sécurité</p>
+            </div>
+        </a>
 
         {{-- Offenses --}}
         <a href="{{ route('dashboard.show', 'offenses') }}" class="widget-card-link">

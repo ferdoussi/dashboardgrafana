@@ -20,13 +20,27 @@ class PanelSeeder extends Seeder
                     'Résumé Exécutif'      => 'http://192.168.1.14:3000/d-solo/anh2ldw/dashboard-sets?orgId=1&panelId=panel-1&theme=light',
                 ],
                 'Informatique' => [
-                    'Performance Système'  => 'http://192.168.1.14:3000/d-solo/anh2ldw/dashboard-sets?orgId=1&panelId=panel-6&theme=light',
+                    'Status Global'        => 'http://192.168.1.14:3000/d-solo/anh2ldw/dashboard-sets?orgId=1&panelId=panel-6&theme=light',
+                    'Analyse de Risque'    => 'http://192.168.1.14:3000/d-solo/anh2ldw/dashboard-sets?orgId=1&panelId=panel-2&theme=light',
+                    'Alertes Critiques'    => 'http://192.168.1.14:3000/d-solo/anh2ldw/dashboard-sets?orgId=1&panelId=panel-5&theme=light',
+                    'Contrôle d\'Accès'    => 'http://192.168.1.14:3000/d-solo/anh2ldw/dashboard-sets?orgId=1&panelId=panel-3&theme=light',
+                    'Flux de Données'      => 'http://192.168.1.14:3000/d-solo/anh2ldw/dashboard-sets?orgId=1&panelId=panel-4&theme=light',
+                    'Résumé Exécutif'      => 'http://192.168.1.14:3000/d-solo/anh2ldw/dashboard-sets?orgId=1&panelId=panel-1&theme=light',
                 ],
             ],
 
             'event' => [
                 'Sécurité' => [
                     'sources totales' => 'http://192.168.1.14:3000/d-solo/anl5cv5/dashboard-des-events?orgId=1&panelId=panel-2',
+                    'Événements Récents'     => 'http://192.168.1.14:3000/d-solo/anl5cv5/dashboard-des-events?orgId=1&panelId=panel-5',
+                    'Trafic Suspect'         => 'http://192.168.1.14:3000/d-solo/anl5cv5/dashboard-des-events?orgId=1&panelId=panel-6',
+                    'Tentatives Connexion'   => 'http://192.168.1.14:3000/d-solo/anl5cv5/dashboard-des-events?orgId=1&panelId=panel-3',
+                    'Logs de Sécurité'       => 'http://192.168.1.14:3000/d-solo/anl5cv5/dashboard-des-events?orgId=1&panelId=panel-1',
+                    'Alertes Système'        => 'http://192.168.1.14:3000/d-solo/anl5cv5/dashboard-des-events?orgId=1&panelId=panel-7',
+                    'Audit des Logs'         => 'http://192.168.1.14:3000/d-solo/anl5cv5/dashboard-des-events?orgId=1&panelId=panel-4',
+                ],
+                'Informatique' => [
+                     'sources totales' => 'http://192.168.1.14:3000/d-solo/anl5cv5/dashboard-des-events?orgId=1&panelId=panel-2',
                     'Événements Récents'     => 'http://192.168.1.14:3000/d-solo/anl5cv5/dashboard-des-events?orgId=1&panelId=panel-5',
                     'Trafic Suspect'         => 'http://192.168.1.14:3000/d-solo/anl5cv5/dashboard-des-events?orgId=1&panelId=panel-6',
                     'Tentatives Connexion'   => 'http://192.168.1.14:3000/d-solo/anl5cv5/dashboard-des-events?orgId=1&panelId=panel-3',

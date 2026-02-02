@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+<title>Custom Dashboard</title>
 @section('content')
 <div style="height:90vh;position:relative; background-color: #f4f7f9;border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
 

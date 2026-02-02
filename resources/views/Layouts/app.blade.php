@@ -767,11 +767,15 @@ body {
     <div class="sidebar-section">
         <h3><i class='bx bx-cog'></i> <span class="nav-text">Paramètres</span></h3>
     </div>
+    @auth
+    @if(auth()->user()->role === 'user')
     <div class="sidebar-section">
         <a href="{{ route('support.support') }}" class="sidebar-link" >
         <h3><i class='bx bx-help-circle'></i> <span class="nav-text">Aide & Support</span></h3>
     </a>
     </div>
+    @endif
+    @endauth
 </div>
             
             <!-- Vous pouvez ajouter d'autres sections ici -->
