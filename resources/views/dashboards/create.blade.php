@@ -64,7 +64,7 @@
 
         {{-- زر لإضافة جميع المحددين --}}
         <div style="margin-top: 10px; text-align: right;">
-            <button class="btn btn-primary" onclick="addSelectedPanels()" style="border-radius: 8px ;font-size: 20px;background-color: #037aeb;border: none;width: 100%;height: 40px;">Ajouter </button>
+            <button class="btn btn-primary" onclick="addSelectedPanels()" id="btn" style="border-radius: 8px ;font-size: 20px;background-color: #037aeb;border: none;width: 100%;height: 40px;">Ajouter </button>
         </div>
     </div>
 </div>
@@ -82,8 +82,8 @@
             <textarea id="dashboardDescription" class="form-control1" placeholder="Détails..."></textarea>
         </div>
         <div class="modal-actions">
-            <button class="btn btn-primary" style="border-radius: 8px; background-color: #3182ce;font-size: 20px;" onclick="confirmSave(event)">Confirmer</button>
-            <button class="btn btn-light" style="border-radius: 8px; background-color: #ff562c;font-size: 20px;" onclick="closeSave()">Annuler</button>
+            <button class="btn btn-primary"id="btn" style="border-radius: 8px; background-color: #3182ce;font-size: 25px;" onclick="confirmSave(event)">Confirmer</button>
+            <button class="btn btn-light"id="btn" style="border-radius: 8px; background-color: #ff562c;font-size: 25px; " onclick="closeSave()">Annuler</button>
         </div>
     </div>
 </div>
@@ -136,7 +136,10 @@
     .custom-scrollbar::-webkit-scrollbar { width: 6px; }
     .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; }
     .custom-scrollbar::-webkit-scrollbar-thumb { background: #3182ce; border-radius: 10px; }
-
+    #btn{
+        cursor: pointer;
+        border: none
+    }
     /* DARK MODE */
     body.dark { background: #020617; }
     body.dark [style*="background-color: #f4f7f9"] { background-color: #020617 !important; }
