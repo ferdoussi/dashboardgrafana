@@ -157,7 +157,7 @@
         </div>
     @endforeach
 </div>
-
+{{-- java script for code of dashboard  --}}
 <script>
     document.querySelectorAll('.tech-box').forEach(box => {
         box.addEventListener('click', () => {
