@@ -11,10 +11,9 @@
                 <h3>{{ $dashboard->name }}</h3>
                 
             </div>
-        </div>
-        
+        </div>       
         <div class="header-right">
-            <span class="last-update"><i class="far fa-clock"></i> Dernière mise à jour: {{ $dashboard->updated_at->addHour()->format('H:i') }}</span>
+            <span class="last-update"><i class="far fa-clock"></i> Last updated: {{ $dashboard->updated_at->addHour()->format('H:i') }}</span>
         </div>
     </div>
 

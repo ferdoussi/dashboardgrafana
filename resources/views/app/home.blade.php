@@ -98,8 +98,8 @@
                 <div class="widget-icon bg-blue">
                     <i class='bx bx-pulse'></i>
                 </div>
-                <h4>Événements</h4>
-                <p>Flux des événements de sécurité</p>
+                <h4>Events</h4>
+                <p>Security event stream</p>
             </div>
         </a>
         <a href="{{ route('mitre.matrix') }}" class="widget-card-link">
@@ -107,8 +107,8 @@
                 <div class="widget-icon bg-blue">
                     <i class='bx bx-shield'></i> 
                 </div>
-                <h4>Mitre Atack</h4>
-                <p>Flux des événements de sécurité</p>
+                <h4>MITRE ATT&CK </h4>
+                <p>Security event stream</p>
             </div>
         </a>
 
@@ -119,7 +119,7 @@
                     <i class='bx bx-error'></i>
                 </div>
                 <h4>Offenses</h4>
-                <p>Menaces détectées et corrélées</p>
+                <p>Detected and correlated threats</p>
             </div>
         </a>
 
@@ -130,7 +130,7 @@
                     <i class='bx bx-shield'></i>
                 </div>
                 <h4>Rules</h4>
-                <p>Règles de détection actives</p>
+                <p>Active detection rules</p>
             </div>
         </a>
 
@@ -152,7 +152,7 @@
                     <i class='bx bx-save'></i>
                 </div> 
                 <h4>Saved Search</h4>
-                <p>Recherches enregistrées</p>
+                <p>Saved searches</p>
             </div>
         </a>
 

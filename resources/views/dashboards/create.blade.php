@@ -13,12 +13,12 @@
         <div class="header-actions">
             <button class="btn-action btn-add" onclick="togglePanels()">
                 <i class="fas fa-plus-circle"></i> 
-                <span>Ajouter un Panel</span>
+                <span>Add Visualization</span>
             </button>
 
             <button class="btn-action btn-save" onclick="saveLayout()">
                 <i class="fas fa-save"></i> 
-                <span>Enregistrer</span>
+                <span>Save</span>
             </button>
         </div>
     </div>
@@ -33,16 +33,16 @@
 <div id="panelsSidebar" class="save-modal">
     <div class="modal-box">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <h4 style="margin:0; font-size: 1.1rem; border:none; text-align:left;">Panels Disponibles</h4>
+            <h4 style="margin:0; font-size: 1.1rem; border:none; text-align:left;">Available Panels</h4>
             <button class="btnclose" onclick="togglePanels()"><i class="fas fa-times"></i></button>
         </div>
 
         {{-- ===== SEARCH & CATEGORY FILTER ===== --}}
         <div style="display:flex; gap:10px; margin-bottom: 15px;">
-            <input type="text" id="panelSearch" class="form-control" placeholder="Rechercher par nom..." onkeyup="filterPanels()">
+            <input type="text" id="panelSearch" class="form-control" placeholder="Search by name..." onkeyup="filterPanels()">
 
             <select id="categoryFilter" class="form-control" onchange="filterPanels()">
-                <option value="">Toutes les catégories</option>
+                <option value="">All categories</option>
                 @foreach($panels as $module => $categories)
                     <option value="{{ $module }}">{{ $module }}</option>
                 @endforeach
@@ -64,7 +64,7 @@
 
         {{-- زر لإضافة جميع المحددين --}}
         <div style="margin-top: 10px; text-align: right;">
-            <button class="btn btn-primary" onclick="addSelectedPanels()" id="btn" style="border-radius: 8px ;font-size: 20px;background-color: #037aeb;border: none;width: 100%;height: 40px;">Ajouter </button>
+            <button class="btn btn-primary" onclick="addSelectedPanels()" id="btn" style="border-radius: 8px ;font-size: 20px;background-color: #037aeb;border: none;width: 100%;height: 40px;">Add Visualization</button>
         </div>
     </div>
 </div>
@@ -82,9 +82,40 @@
             <textarea id="dashboardDescription" class="form-control1" placeholder="Détails..."></textarea>
         </div>
         <div class="modal-actions">
-            <button class="btn btn-primary"id="btn" style="border-radius: 8px; background-color: #3182ce;font-size: 25px;" onclick="confirmSave(event)">Confirmer</button>
-            <button class="btn btn-light"id="btn" style="border-radius: 8px; background-color: #ff562c;font-size: 25px; " onclick="closeSave()">Annuler</button>
-        </div>
+ <button
+    class="btn btn-primary"
+    style="
+        border-radius: 999px;
+        background-color: #2563eb;
+        color: #ffffff;
+        font-size: 16px;
+        padding: 10px 22px;
+        font-weight: 600;
+        cursor: pointer;
+        border: none ;
+    "
+    onclick="confirmSave(event)">
+    Confirmer
+</button>
+
+
+ <button
+    class="btn btn-light"
+    style="
+        border-radius: 999px;
+        background-color: #f1f5f9;
+        color: #475569;
+        font-size: 16px;
+        padding: 10px 22px;
+        font-weight: 600;
+        border: 1px solid #e2e8f0;
+        cursor: pointer;
+    "
+    onclick="closeSave()">
+    Annuler
+</button>
+
+
     </div>
 </div>
 
@@ -121,16 +152,65 @@
 
     .save-modal, .save-modal1 { position: fixed; inset: 0; display: none; z-index: 9999; align-items: center; justify-content: center; transition: all 0.3s ease; }
     .save-modal { background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(8px); }
-    .save-modal1 { background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(4px); }
-
+    .save-modal1 {
+    background: rgba(15, 23, 42, 0.55);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
     .modal-box, .modal-box1 { background: #ffffff; padding: 30px; border-radius: 20px; width: 100%; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); animation: modalSlideUp 0.4s ease-out; }
     .modal-box { max-width: 500px; }
-    .modal-box1 { max-width: 450px; }
+   .modal-box1 {
+    background: linear-gradient(145deg, #ffffff, #f1f5f9);
+    width: 420px;
+    padding: 28px;
+    border-radius: 18px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+    animation: modalSlideUp 0.4s ease-out, scaleIn 0.35s ease;
+}
+#saveModal.active {
+    display: flex;
+}
 
-    .modal-box h4, .modal-box1 h4 { margin-bottom: 25px; color: #1a202c; font-size: 1.5rem; text-align: center; border-bottom: 1px solid #f1f5f9; padding-bottom: 15px; }
-    .form-control, .form-control1 { width: 100%; border: 2px solid #edf2f7; border-radius: 12px; padding: 12px 15px; background: #f8fafc; }
-    .form-group { margin-bottom: 15px; }
-    .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #1a202c; }
+
+ .modal-box h4, .modal-box1 h4 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 20px;
+    text-align: center;
+}
+   .form-control,
+.form-control1 {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid #cbd5e1;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.25s ease;
+    background: #ffffff;
+}
+
+.form-control1 {
+    min-height: 90px;
+    resize: none;
+}
+
+/* Focus */
+.form-control:focus,
+.form-control1:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+    .form-group { margin-bottom: 16px; }
+    .form-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 6px;
+    display: block;
+}
     .modal-actions { margin-top: 25px; display: flex; gap: 12px; justify-content: center; }
 
     .custom-scrollbar::-webkit-scrollbar { width: 6px; }
@@ -209,7 +289,7 @@ function addPanel(url, closeModal = true) {
 
 function addSelectedPanels() {
     const checkboxes = document.querySelectorAll('.panel-checkbox:checked');
-    if (!checkboxes.length) return alert('Sélectionnez au moins un panel');
+    if (!checkboxes.length) return alert('Select at least one panel');
 
     checkboxes.forEach(cb => {
         addPanel(cb.dataset.url, false);
@@ -220,7 +300,7 @@ function addSelectedPanels() {
 }
 
 function saveLayout() { 
-    if (!grid.engine.nodes.length) return alert('Ajoutez au moins un panel');
+    if (!grid.engine.nodes.length) return alert('Add at least one panel');
     document.getElementById('saveModal').style.display = 'flex'; 
 }
 
@@ -228,10 +308,10 @@ function closeSave() { document.getElementById('saveModal').style.display = 'non
 
 function confirmSave(event) {
     const nameInput = document.getElementById('dashboardName');
-    if (!nameInput.value.trim()) return alert('Nom obligatoire');
+    if (!nameInput.value.trim()) return alert('Name required');
     
     const btn = event.target;
-    btn.innerText = 'Enregistrement...'; btn.disabled = true;
+    btn.innerText = 'Registration...'; btn.disabled = true;
 
     const layoutData = grid.save(false).map(item => ({ x: item.x, y: item.y, w: item.w, h: item.h, id: item.id }));
 

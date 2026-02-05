@@ -193,7 +193,8 @@
 
                 <div class="inputbox">
                     <input type="password" id="password" name="password" placeholder="Mot de passe" required>
-                    <ion-icon name="eye-outline" id="togglePassword" onclick="togglePasswordVisibility()"></ion-icon>
+                    <ion-icon name="lock-closed-outline"></ion-icon>
+
                 </div>
 
                 <button type="submit" class="btn-Login"> 

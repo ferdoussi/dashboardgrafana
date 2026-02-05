@@ -614,7 +614,7 @@ body {
                 @csrf
                 <button type="submit" class="logout-btn">
                     <i class='bx bx-log-out'></i>
-                    <span>Déconnexion</span>
+                    <span>Logout</span>
                 </button>
             </form>
         </div>
@@ -671,7 +671,7 @@ body {
                 <i class='bx bx-chevron-down arrow'></i>
             </h3>
             <ul class="sidebar-nav dropdown-menu-dashboard">
-                <li><a href="{{ route('dashboard.show', 'event') }}"><i class='bx bx-lock-alt'></i> Événements</a></li>
+                <li><a href="{{ route('dashboard.show', 'event') }}"><i class='bx bx-lock-alt'></i> Events</a></li>
                 <li><a href="{{ route('dashboard.show', 'offenses') }}"><i class='bx bx-shield-alt'></i> Offenses</a></li>
                 <li><a href="{{ route('dashboard.show', 'rules') }}"><i class='bx bx-calendar-event'></i> Rules</a></li>
                 <li><a href="{{ route('dashboard.show', 'sets') }}"><i class='bx bx-layer'></i> Sets</a></li>
@@ -691,7 +691,7 @@ body {
         </a>
         
         {{-- أيقونة المسح --}}
-        <form action="{{ route('dashboard.delete', $dash->id) }}" method="POST" onsubmit="return confirm('Voulez-vous vraiment supprimer ce dashboard ?')">
+        <form action="{{ route('dashboard.delete', $dash->id) }}" method="POST" onsubmit="return confirm('Do you really want to delete this dashboard ?')">
             @csrf
             @method('DELETE')
             <button type="submit" style="background: none; border: none; color: #ff4d4d; cursor: pointer; padding: 5px;">
@@ -726,13 +726,13 @@ body {
                     <li class="has-submenu">
                         <div class="submenu-toggle">
                             <i class='bx bx-user'></i>
-                            <span>{{ $u->name }}</span>
+                            <span style="color: rgb(249, 236, 236)">{{ $u->name }}</span>
                             <i class='bx bx-chevron-right arrow-small'></i>
                         </div>
 
                         <ul class="submenu-list">
                             {{-- القائمة الثابتة --}}
-                            <li><a href="{{ route('dashboard.show', ['type' => 'event', 'user_id' => $u->id]) }}"><i class='bx bx-lock-alt'></i>Événements</a></li>
+                            <li><a href="{{ route('dashboard.show', ['type' => 'event', 'user_id' => $u->id]) }}"><i class='bx bx-lock-alt'></i>Events</a></li>
                             <li><a href="{{ route('dashboard.show', ['type' => 'offenses', 'user_id' => $u->id]) }}"><i class='bx bx-shield-alt'></i>Offenses</a></li>
                             <li><a href="{{ route('dashboard.show', ['type' => 'rules', 'user_id' => $u->id]) }}"><i class='bx bx-calendar-event'></i>Rules</a></li>
                             <li><a href="{{ route('dashboard.show', ['type' => 'sets', 'user_id' => $u->id]) }}"><i class='bx bx-layer'></i> Sets</a></li>
@@ -763,10 +763,8 @@ body {
     @endif
 @endauth
 
-    {{-- الأقسام المشتركة --}}
-    <div class="sidebar-section">
-        <h3><i class='bx bx-cog'></i> <span class="nav-text">Paramètres</span></h3>
-    </div>
+    
+   
     @auth
     @if(auth()->user()->role === 'user')
     <div class="sidebar-section">

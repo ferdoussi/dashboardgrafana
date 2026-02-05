@@ -111,16 +111,12 @@ public function create()
    
 public function show(Request $request, $type)
 {
-    // كنستعملو هاد الطريقة باش الـ VS Code يفهم بلي هادا راه User
     /** @var \App\Models\User $user */
     $user = Auth::user();
-
     $userId = $request->query('user_id');
 
-    // دابا هاد السطر ما غيبقاش فيه خط أحمر
     if ($user && $user->role === 'admin' && $userId) {
         $targetEmployee = Employee::find($userId);
-        
         if (!$targetEmployee) {
             abort(404, "Utilisateur non trouvé");
         }
@@ -129,11 +125,21 @@ public function show(Request $request, $type)
     }
 
     $config = $this->panelsConfig();
-    $panels = $config[$type][$targetEmployee->departement] ?? [];
+    
+    // هاد السطر هو لي تبدل:
+    // غادي نجمعو كاع الروابط لي كاينين فـ 'sets' أو 'event' ... إلخ
+    $panels = [];
+    if (isset($config[$type])) {
+        foreach ($config[$type] as $deptPanels) {
+            // array_merge باش نجمعو الروابط كاملين فـ لستة وحدة
+            $panels = array_merge($panels, $deptPanels);
+        }
+    }
+
+    // (الاختياري) إذا بغيتي تحيد الروابط المعاودة باش ميتكرروش ليك في الصفحة
+    $panels = array_unique($panels);
 
     return view("dashboards.$type", compact('panels', 'type'));
-
-    
 }
 
 // 1. دالة الحفظ (كتستقبل البيانات من JS)
