@@ -118,7 +118,7 @@
 </style>
 
 <div class="d-flex justify-content-between align-items-center mb-4 px-3">
-    <h3 class="fw-bold" style="color: var(--text-main)">MITRE ATT&CK Matrix</h3>
+    <h3 class="fw-bold" style="color: var(--text-main)">{{ translate('MITRE ATT&CK Matrix') }}</h3>
     {{-- <span class="badge bg-dark">QRadar Real-time Feed</span> --}}
 </div>
 
@@ -152,7 +152,7 @@
                     </div>
                 @endforeach
             @else
-                <div class="text-center p-2 text-muted" style="font-size: 10px;">No Techniques</div>
+                <div class="text-center p-2 text-muted" style="font-size: 10px;">{{ translate('No Techniques') }}</div>
             @endif
         </div>
     @endforeach

@@ -10,8 +10,8 @@
     {{-- ================= ADMIN VIEW ================= --}}
     <div class="top-bar">
         <div class="title-section">
-            <h2>System Administration</h2>
-            <p>Global statistics and platform overview</p>
+            <h2>{{ translate('System Administration') }}</h2>
+            <p>{{ translate('Global statistics and platform overview') }}</p>
         </div>
       
     </div>
@@ -32,9 +32,9 @@
                 <i class='bx bx-user'></i>
             </div>
             <div class="stats-info">
-                <h4>Total Users</h4>
+                <h4>{{ translate('Total Users') }}</h4>
                 <h2 class="stats-number">{{ $totalUsers }}</h2>
-                <p>Registered users</p>
+                <p>{{ translate('Registered users') }}</p>
             </div>
         </div>
 
@@ -44,9 +44,9 @@
                 <i class='bx bx-shield-quarter'></i>
             </div>
             <div class="stats-info">
-                <h4>Total Admins</h4>
+                <h4>{{ translate('Total Admins') }}</h4>
                 <h2 class="stats-number">{{ $totalAdmins }}</h2>
-                <p>System administrators</p>
+                <p>{{ translate('System administrators') }}</p>
             </div>
         </div>
 
@@ -56,9 +56,9 @@
                 <i class='bx bx-layout'></i>
             </div>
             <div class="stats-info">
-                <h4>Total Dashboards</h4>
+                <h4>{{ translate('Total Dashboards') }}</h4>
                 <h2 class="stats-number">{{ $totalDashboards }}</h2>
-                <p>Custom created layouts</p>
+                <p>{{ translate('Custom created layouts') }}</p>
             </div>
         </div>
 
@@ -68,9 +68,9 @@
                 <i class='bx bx-grid-alt'></i>
             </div>
             <div class="stats-info">
-                <h4>Total Panels</h4>
+                <h4>{{ translate('Total Panels') }}</h4>
                 <h2 class="stats-number">{{ $totalPanels }}</h2>
-                <p>Active monitoring panels</p>
+                <p>{{ translate('Active monitoring panels') }}</p>
             </div>
         </div>
     </div>
@@ -80,13 +80,13 @@
     {{-- ================= USER VIEW ================= --}}
     <div class="top-bar">
         <div class="title-section">
-            <h2>Security Dashboards</h2>
-            <p>Monitor your infrastructure in real-time</p>
+            <h2>{{ translate('Security Dashboards') }}  </h2>
+            <p>{{ translate('Monitor your infrastructure in real-time') }}</p>
         </div>
         
         {{-- زر الإنشاء يظهر فقط للمستخدم العادي --}}
         <a href="{{ route('dashboard.create') }}" class="btn-create-dashboard">
-            <i class='bx bx-plus'></i> <span>Create Dashboard</span>
+            <i class='bx bx-plus'></i> <span>{{ translate('Create Dashboard') }}</span>
         </a>
     </div>
 
@@ -98,8 +98,8 @@
                 <div class="widget-icon bg-blue">
                     <i class='bx bx-pulse'></i>
                 </div>
-                <h4>Events</h4>
-                <p>Security event stream</p>
+                <h4>{{ translate('Events') }}</h4>
+                <p>{{ translate('Security event stream') }}</p>
             </div>
         </a>
         <a href="{{ route('mitre.matrix') }}" class="widget-card-link">
@@ -107,8 +107,8 @@
                 <div class="widget-icon bg-blue">
                     <i class='bx bx-shield'></i> 
                 </div>
-                <h4>MITRE ATT&CK </h4>
-                <p>Security event stream</p>
+                <h4>{{ translate('MITRE ATT&CK') }}</h4>
+                <p>{{ translate('Security event stream') }}</p>
             </div>
         </a>
 
@@ -118,8 +118,8 @@
                 <div class="widget-icon bg-red">
                     <i class='bx bx-error'></i>
                 </div>
-                <h4>Offenses</h4>
-                <p>Detected and correlated threats</p>
+                <h4>{{ translate('Offenses') }}</h4>
+                <p>{{ translate('Detected and correlated threats') }}</p>
             </div>
         </a>
 
@@ -129,8 +129,8 @@
                 <div class="widget-icon bg-purple">
                     <i class='bx bx-shield'></i>
                 </div>
-                <h4>Rules</h4>
-                <p>Active detection rules</p>
+                <h4>{{ translate('Rules') }}</h4>
+                <p>{{ translate('Active detection rules') }}</p>
             </div>
         </a>
 
@@ -140,8 +140,8 @@
                 <div class="widget-icon bg-green">
                     <i class='bx bx-layer'></i>
                 </div>
-                <h4>Sets</h4>
-                <p>Groupes & classifications</p>
+                <h4>{{ translate('Sets') }}</h4>
+                <p>{{ translate('Groupes & classifications') }}</p>
             </div>
         </a>
 
@@ -151,8 +151,8 @@
                 <div class="widget-icon bg-orange">
                     <i class='bx bx-save'></i>
                 </div> 
-                <h4>Saved Search</h4>
-                <p>Saved searches</p>
+                <h4>{{ translate('Saved Search') }}</h4>
+                <p>{{ translate('Saved searches') }}</p>
             </div>
         </a>
 
@@ -178,14 +178,14 @@
         <a href="{{ route('dashboard.show', 'offenses-map') }}" class="widget-card-link widget-map-wrapper">
             <div class="widget-card widget-map">
                 <div class="widget-map-header">
-                    <h4><i class='bx bx-map'></i> Offenses Map</h4>
-                    <span class="status-live"><span class="pulse-dot"></span> LIVE</span>
+                    <h4><i class='bx bx-map'></i> {{ translate('Offenses Map') }}</h4>
+                    <span class="status-live"><span class="pulse-dot"></span> {{ translate('LIVE') }}</span>
                 </div>
                 <div class="map-placeholder">
                     <div class="map-dot dot-red" style="top:30%; left:40%"></div>
                     <div class="map-dot dot-orange" style="top:55%; left:60%"></div>
                     <div class="map-dot dot-red" style="top:45%; left:25%"></div>
-                    <span class="map-text">Attacks detected worldwide</span>
+                    <span class="map-text">{{ translate('Attacks detected worldwide') }}</span>
                 </div>
             </div>
         </a>

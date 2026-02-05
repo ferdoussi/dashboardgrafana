@@ -1,5 +1,5 @@
 @extends('layouts.app')
-<title>Custom Dashboard</title>
+<title>{{ translate('Custom Dashboard') }}</title>
 @section('content')
 <div style="height:90vh;position:relative; background-color: #f4f7f9;border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
 
@@ -7,18 +7,18 @@
     <div class="dashboard-header">
         <div class="header-title">
             <i class="fas fa-chart-line title-icon"></i>
-            <h3>Custom Monitoring Dashboard</h3>
+            <h3>{{ translate('Custom Monitoring Dashboard') }}</h3>
         </div>
 
         <div class="header-actions">
             <button class="btn-action btn-add" onclick="togglePanels()">
                 <i class="fas fa-plus-circle"></i> 
-                <span>Add Visualization</span>
+                <span>{{ translate('Add Visualization') }}</span>
             </button>
 
             <button class="btn-action btn-save" onclick="saveLayout()">
                 <i class="fas fa-save"></i> 
-                <span>Save</span>
+                <span>{{ translate('Save') }}</span>
             </button>
         </div>
     </div>
@@ -33,16 +33,16 @@
 <div id="panelsSidebar" class="save-modal">
     <div class="modal-box">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <h4 style="margin:0; font-size: 1.1rem; border:none; text-align:left;">Available Panels</h4>
+            <h4 style="margin:0; font-size: 1.1rem; border:none; text-align:left;">{{ translate('Available Panels') }}</h4>
             <button class="btnclose" onclick="togglePanels()"><i class="fas fa-times"></i></button>
         </div>
 
         {{-- ===== SEARCH & CATEGORY FILTER ===== --}}
         <div style="display:flex; gap:10px; margin-bottom: 15px;">
-            <input type="text" id="panelSearch" class="form-control" placeholder="Search by name..." onkeyup="filterPanels()">
+            <input type="text" id="panelSearch" class="form-control" placeholder="{{ translate('Search by name...') }}" onkeyup="filterPanels()">
 
             <select id="categoryFilter" class="form-control" onchange="filterPanels()">
-                <option value="">All categories</option>
+                <option value="">{{ translate('All categories') }}</option>
                 @foreach($panels as $module => $categories)
                     <option value="{{ $module }}">{{ $module }}</option>
                 @endforeach
@@ -64,7 +64,7 @@
 
         {{-- زر لإضافة جميع المحددين --}}
         <div style="margin-top: 10px; text-align: right;">
-            <button class="btn btn-primary" onclick="addSelectedPanels()" id="btn" style="border-radius: 8px ;font-size: 20px;background-color: #037aeb;border: none;width: 100%;height: 40px;">Add Visualization</button>
+            <button class="btn btn-primary" onclick="addSelectedPanels()" id="btn" style="border-radius: 8px ;font-size: 20px;background-color: #037aeb;border: none;width: 100%;height: 40px;">{{ translate('Add Selected Panels') }}</button>
         </div>
     </div>
 </div>
@@ -72,14 +72,14 @@
 {{-- ===== SAVE MODAL ===== --}}
 <div id="saveModal" class="save-modal1">
     <div class="modal-box1">
-        <h4>Enregistrer le Dashboard</h4>
+        <h4>{{ translate('Save Dashboard') }}</h4>
         <div class="form-group">
-            <label>Nom du Dashboard</label>
-            <input id="dashboardName" class="form-control" placeholder="Ex: Monitoring Reseau">
+            <label>{{ translate('Dashboard Name') }}</label>
+            <input id="dashboardName" class="form-control" placeholder="{{ translate('Enter dashboard name') }}">
         </div>
         <div class="form-group">
-            <label>Description</label>
-            <textarea id="dashboardDescription" class="form-control1" placeholder="Détails..."></textarea>
+            <label>{{ translate('Description') }}</label>
+            <textarea id="dashboardDescription" class="form-control1" placeholder="{{ translate('Enter dashboard description') }}"></textarea>
         </div>
         <div class="modal-actions">
  <button
@@ -95,7 +95,7 @@
         border: none ;
     "
     onclick="confirmSave(event)">
-    Confirmer
+    {{ translate('Confirm') }}
 </button>
 
 
@@ -112,7 +112,7 @@
         cursor: pointer;
     "
     onclick="closeSave()">
-    Annuler
+    {{ translate('Cancel') }}
 </button>
 
 
@@ -289,7 +289,7 @@ function addPanel(url, closeModal = true) {
 
 function addSelectedPanels() {
     const checkboxes = document.querySelectorAll('.panel-checkbox:checked');
-    if (!checkboxes.length) return alert('Select at least one panel');
+    if (!checkboxes.length) return alert('{{ translate('Select at least one panel') }}');
 
     checkboxes.forEach(cb => {
         addPanel(cb.dataset.url, false);
@@ -300,7 +300,7 @@ function addSelectedPanels() {
 }
 
 function saveLayout() { 
-    if (!grid.engine.nodes.length) return alert('Add at least one panel');
+    if (!grid.engine.nodes.length) return alert('{{ translate('Add at least one panel') }}');
     document.getElementById('saveModal').style.display = 'flex'; 
 }
 
@@ -308,7 +308,7 @@ function closeSave() { document.getElementById('saveModal').style.display = 'non
 
 function confirmSave(event) {
     const nameInput = document.getElementById('dashboardName');
-    if (!nameInput.value.trim()) return alert('Name required');
+    if (!nameInput.value.trim()) return alert('{{ translate('Dashboard name is required') }}');
     
     const btn = event.target;
     btn.innerText = 'Registration...'; btn.disabled = true;

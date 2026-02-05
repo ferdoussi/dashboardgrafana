@@ -1,9 +1,15 @@
 <?php
 use App\Services\{QradarService, QradarNormalizer, MitreMatrixBuilder,MitreMapper};
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GrafanaProxyController;
+
+
 // DashboardController referenced by string in routes to avoid missing-type static error.
+
+
+
 
 
 
@@ -73,3 +79,11 @@ Route::get('/test-mitre', function () {
     return view('mitre.matrix', compact('matrix', 'tacticsOrder'));
 })->name('mitre.matrix')->middleware('auth');
 
+
+Route::get('lang/{locale}', function ($locale) {
+    if (in_array($locale, ['en', 'fr'])) {
+        Session::put('locale', $locale);
+        Session::save(); // هادي ضرورية باش تحفظ الداتا قبل ما يخرج من الـ Route
+    }
+    return redirect()->back();
+})->name('lang.switch');

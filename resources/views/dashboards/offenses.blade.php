@@ -180,7 +180,7 @@
 
 <!-- DASHBOARD GRID -->
 @extends('layouts.app')
-<title>Offenses Dashboard</title>
+<title>{{ translate('Offenses Dashboard') }}</title>
 @section('content')
     <div class="dashboard-grid">
     @php

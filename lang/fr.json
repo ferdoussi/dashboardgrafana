@@ -1,0 +1,22 @@
+{
+    "Home Page": "Page d'accueil",
+    "Dashboards": "Tableaux de bord",
+    "Aide & Support": "Aide & Support",
+    "Security Dashboards": "Tableaux de bord de sécurité",
+    "Monitor your infrastructure in real-time": "Surveillez votre infrastructure en temps réel",
+    "Create Dashboard": "Créer un Dashboard",
+    "Events": "Événements",
+    "Security event stream": "Flux d'événements de sécurité",
+    "MITRE ATT&CK": "MITRE ATT&CK",
+    "Offenses": "Offenses",
+    "Detected and correlated threats": "Menaces détectées et corrélées",
+    "Rules": "Règles",
+    "Active detection rules": "Règles de détection actives",
+    "Sets": "Sets",
+    "Groupes & classifications": "Groupes & classifications",
+    "Saved Search": "Recherches sauvegardées",
+    "Saved searches": "Recherches enregistrées",
+    "Offenses Map": "Carte des offenses",
+    "LIVE": "EN DIRECT",
+    "List of Clients": "Liste des Clients"
+}

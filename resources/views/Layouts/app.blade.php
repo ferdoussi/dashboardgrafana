@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>@yield('title', 'Yokamos SOC')</title>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="icon" type="image/png" href="{{ asset('YOKAMOS.png') }}">
+
     {{-- <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}"> --}}
     @stack('styles')
     <style>
@@ -463,6 +465,67 @@ body {
     align-items: center;
     gap: 16px;
 }
+/* --- الستايل العادي (Light Mode) --- */
+.form-select-lang {
+    background-color: #f8f9fa;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 6px 30px 6px 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #334155;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+    transition: all 0.3s ease;
+    height: 38px;
+    outline: none;
+}
+
+/* --- الستايل الأساسي للـ Select --- */
+.form-select-lang {
+    background-color: var(--bg-main);
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 6px 32px 6px 12px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-main);
+    cursor: pointer;
+    appearance: none;
+    /* سهم SVG كيتغير لونه على حساب النص */
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 10px;
+    transition: var(--transition);
+    height: 36px;
+    outline: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* --- فاش كيكون الـ Dark Mode مفعّل (body.dark) --- */
+body.dark .form-select-lang {
+    background-color: #334155; /* لون غامق كيتماشى مع الهيدر اللي عندك */
+    border-color: #475569;
+    color: #ffffff;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+}
+
+/* ستايل الـ options لداخل */
+.form-select-lang option {
+    background-color: var(--bg-header);
+    color: var(--text-main);
+    font-weight: 500;
+}
+
+body.dark .form-select-lang:hover {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-soft);
+}
 
 /* Dark mode button */
 .dark-mode {
@@ -582,7 +645,16 @@ body {
         </div>
       
 <div class="header-right">
+<div class="lang-container me-3">
 
+    <div class="lang-container">
+        <select class="form-select-lang" onchange="window.location.href=this.value;">
+    <option value="{{ route('lang.switch', 'fr') }}" {{ session('locale') == 'fr' ? 'selected' : '' }}> FR</option>
+    <option value="{{ route('lang.switch', 'en') }}" {{ session('locale') == 'en' ? 'selected' : '' }}> EN</option>
+    
+</select>
+    </div>
+</div>
     <button id="darkModeToggle" class="dark-mode">
         <i class='bx bx-moon'></i>
     </button>
@@ -614,7 +686,7 @@ body {
                 @csrf
                 <button type="submit" class="logout-btn">
                     <i class='bx bx-log-out'></i>
-                    <span>Logout</span>
+                    <span>{{ translate('Logout') }}</span>
                 </button>
             </form>
         </div>
@@ -657,7 +729,7 @@ body {
      <hr class="line"/>
      <a href="{{ route('app.home') }}" class="sidebar-link" >
       <div class="sidebar-section">
-        <h3><i class='bx bx-cog'></i> <span class="nav-text">Home Page</span></h3>
+        <h3><i class='bx bx-cog'></i> <span class="nav-text">{{ translate('Home Page') }}</span></h3>
     </div>
     </a> 
     {{-- 1. User Section--}}
@@ -667,16 +739,16 @@ body {
         <div class="sidebar-section">
             <h3 class="dropdown-toggle">
                 <i class='bx bx-lock-alt'></i>
-                <span class="text">Dashboards</span>
+                <span class="text">{{ translate('Dashboards') }}</span>
                 <i class='bx bx-chevron-down arrow'></i>
             </h3>
             <ul class="sidebar-nav dropdown-menu-dashboard">
-                <li><a href="{{ route('dashboard.show', 'event') }}"><i class='bx bx-lock-alt'></i> Events</a></li>
-                <li><a href="{{ route('dashboard.show', 'offenses') }}"><i class='bx bx-shield-alt'></i> Offenses</a></li>
-                <li><a href="{{ route('dashboard.show', 'rules') }}"><i class='bx bx-calendar-event'></i> Rules</a></li>
-                <li><a href="{{ route('dashboard.show', 'sets') }}"><i class='bx bx-layer'></i> Sets</a></li>
-                <li><a href="{{ route('dashboard.show', 'saved-search') }}"><i class='bx bx-search-alt-2'></i> Saved Search</a></li>
-                <li><a href="{{ route('dashboard.show', 'offenses-map') }}"><i class='bx bx-map'></i> Offenses Map</a></li>
+                <li><a href="{{ route('dashboard.show', 'event') }}"><i class='bx bx-lock-alt'></i> {{ translate('Events') }}</a></li>
+                <li><a href="{{ route('dashboard.show', 'offenses') }}"><i class='bx bx-shield-alt'></i> {{ translate('Offenses') }}</a></li>
+                <li><a href="{{ route('dashboard.show', 'rules') }}"><i class='bx bx-calendar-event'></i> {{ translate('Rules') }}</a></li>
+                <li><a href="{{ route('dashboard.show', 'sets') }}"><i class='bx bx-layer'></i> {{ translate('Sets') }}</a></li>
+                <li><a href="{{ route('dashboard.show', 'saved-search') }}"><i class='bx bx-search-alt-2'></i> {{ translate('Saved Search') }}</a></li>
+                <li><a href="{{ route('dashboard.show', 'offenses-map') }}"><i class='bx bx-map'></i> {{ translate('Offenses Map') }}</a></li>
                 @php
             // كنجيبو غير الـ Dashboards ديال المستخدم اللي داخل دابا
             $userDashboards = \App\Models\UserDashboard::where('user_id', auth()->id())
@@ -691,7 +763,7 @@ body {
         </a>
         
         {{-- أيقونة المسح --}}
-        <form action="{{ route('dashboard.delete', $dash->id) }}" method="POST" onsubmit="return confirm('Do you really want to delete this dashboard ?')">
+        <form action="{{ route('dashboard.delete', $dash->id) }}" method="POST" onsubmit="return confirm('{{ translate('Are you sure you want to delete this dashboard?') }}');" style="margin-left: 10px;">
             @csrf
             @method('DELETE')
             <button type="submit" style="background: none; border: none; color: #ff4d4d; cursor: pointer; padding: 5px;">
@@ -713,7 +785,7 @@ body {
         <div class="sidebar-section">
             <h3 class="dropdown-toggle">
                 <i class='bx bx-group'></i>
-                <span class="text">Liste des Clients</span>
+                <span class="text">{{ translate('List of Clients') }}</span>
                 <i class='bx bx-chevron-down arrow'></i>
             </h3>
 
@@ -732,12 +804,12 @@ body {
 
                         <ul class="submenu-list">
                             {{-- القائمة الثابتة --}}
-                            <li><a href="{{ route('dashboard.show', ['type' => 'event', 'user_id' => $u->id]) }}"><i class='bx bx-lock-alt'></i>Events</a></li>
-                            <li><a href="{{ route('dashboard.show', ['type' => 'offenses', 'user_id' => $u->id]) }}"><i class='bx bx-shield-alt'></i>Offenses</a></li>
-                            <li><a href="{{ route('dashboard.show', ['type' => 'rules', 'user_id' => $u->id]) }}"><i class='bx bx-calendar-event'></i>Rules</a></li>
-                            <li><a href="{{ route('dashboard.show', ['type' => 'sets', 'user_id' => $u->id]) }}"><i class='bx bx-layer'></i> Sets</a></li>
-                            <li><a href="{{ route('dashboard.show', ['type' => 'saved-search', 'user_id' => $u->id]) }}"><i class='bx bx-search-alt-2'></i>Saved Search</a></li>
-                            <li><a href="{{ route('dashboard.show', ['type' => 'offenses-map', 'user_id' => $u->id]) }}"><i class='bx bx-map'></i>Offenses Map</a></li>
+                            <li><a href="{{ route('dashboard.show', ['type' => 'event', 'user_id' => $u->id]) }}"><i class='bx bx-lock-alt'></i>{{ translate('Events') }}</a></li>
+                            <li><a href="{{ route('dashboard.show', ['type' => 'offenses', 'user_id' => $u->id]) }}"><i class='bx bx-shield-alt'></i>{{ translate('Offenses') }}</a></li>
+                            <li><a href="{{ route('dashboard.show', ['type' => 'rules', 'user_id' => $u->id]) }}"><i class='bx bx-calendar-event'></i>{{ translate('Rules') }}</a></li>
+                            <li><a href="{{ route('dashboard.show', ['type' => 'sets', 'user_id' => $u->id]) }}"><i class='bx bx-layer'></i> {{ translate('Sets') }}</a></li>
+                            <li><a href="{{ route('dashboard.show', ['type' => 'saved-search', 'user_id' => $u->id]) }}"><i class='bx bx-search-alt-2'></i>{{ translate('Saved Search') }}</a></li>
+                            <li><a href="{{ route('dashboard.show', ['type' => 'offenses-map', 'user_id' => $u->id]) }}"><i class='bx bx-map'></i>{{ translate('Offenses Map') }}</a></li>
                             
                            
                             
@@ -756,7 +828,7 @@ body {
                         </ul>
                     </li>
                 @empty
-                    <li style="padding: 10px; color: gray;">Aucun utilisateur trouvé</li>
+                    <li style="padding: 10px; color: gray;">{{ translate('No clients available') }}</li>
                 @endforelse
             </ul>
         </div>
@@ -769,7 +841,7 @@ body {
     @if(auth()->user()->role === 'user')
     <div class="sidebar-section">
         <a href="{{ route('support.support') }}" class="sidebar-link" >
-        <h3><i class='bx bx-help-circle'></i> <span class="nav-text">Aide & Support</span></h3>
+        <h3><i class='bx bx-help-circle'></i> <span class="nav-text">{{ translate('Aide & Support') }}</span></h3>
     </a>
     </div>
     @endif

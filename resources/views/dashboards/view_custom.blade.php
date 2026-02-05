@@ -1,5 +1,6 @@
 @extends('layouts.app')
 <title>{{ $dashboard->name }}</title>
+
 @section('content')
 <div class="dashboard-viewer-container">
     
@@ -13,7 +14,7 @@
             </div>
         </div>       
         <div class="header-right">
-            <span class="last-update"><i class="far fa-clock"></i> Last updated: {{ $dashboard->updated_at->addHour()->format('H:i') }}</span>
+            <span class="last-update"><i class="far fa-clock"></i> {{ translate('Last updated') }} {{ $dashboard->updated_at->addHour()->format('H:i') }}</span>
         </div>
     </div>
 

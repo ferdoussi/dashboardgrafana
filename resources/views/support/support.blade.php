@@ -120,19 +120,19 @@
         <div class="icon-header">
             🎧
         </div>
-        <h2>Service Support</h2>
-        <p class="subtitle">Besoin d'aide ? Notre équipe est prête à vous répondre.</p>
+        <h2>{{ translate('Service Support') }}</h2>
+        <p class="subtitle">{{ translate('Need help? Our team is ready to assist you.') }}</p>
 
         <a href="mailto:support@example.com" class="contact-option">
             <div class="info">
-                <label>Soutien Public</label>
+                <label>{{ translate('Support Email') }}</label>
                 <span>support@example.com</span>
             </div>
         </a>
 
         <a href="mailto:manager@example.com" class="contact-option">
             <div class="info">
-                <label>Le Responsable</label>
+                <label>{{ translate('Manager Email') }}</label>
                 <span>manager@example.com</span>
             </div>
         </a>
