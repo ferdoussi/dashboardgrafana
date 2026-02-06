@@ -33,6 +33,56 @@
     margin: 0 auto;
 }
 
+/* ================= IFRAME LOADER ================= */
+
+.iframe-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+
+/* Overlay */
+.iframe-loader {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    pointer-events: none;
+
+    /* 🔥 غير blur بلا لون */
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+
+    background: rgb(255, 255, 255);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    color: #e5e7eb;
+    font-size: 13px;
+    letter-spacing: .3px;
+}
+
+
+
+/* Logo */
+.iframe-loader img {
+    width: 70px;
+    opacity: 0.9;
+    animation: pulse 1.4s ease-in-out infinite;
+}
+
+/* Animation */
+@keyframes pulse {
+    0%   { transform: scale(1); opacity: .6; }
+    50%  { transform: scale(1.08); opacity: 1; }
+    100% { transform: scale(1); opacity: .6; }
+}
+
+
 /* ================= CARD ================= */
 
 .widget-card {
@@ -54,12 +104,10 @@
 /* ================= IFRAME ================= */
 
 .widget-card iframe {
-    position: absolute;
-    inset: -2px;
-    width: calc(100% + 4px);
-    height: calc(100% + 4px);
+    width: 100%;
+    height: 100%;
     border: none;
-    background: #fff;
+    
 }
 
 /* ================= SIZES ================= */

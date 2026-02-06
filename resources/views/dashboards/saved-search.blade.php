@@ -3,31 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{ translate('Saved Search') }}</title>
-    <link rel="stylesheet" href="{{ asset('css/saved.css') }}">
-     <link rel="icon" type="image/png" href="{{ asset('YOKAMOS.png') }}">
+    <title>{{ translate('Rules Dashboard') }}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('css/rules.css') }}">
+    <link rel="icon" type="image/png" href="{{ asset('YOKAMOS.png') }}">
 </head>
 <body>
 
-  @extends('layouts.app') 
+@extends('layouts.app')
 
 @section('content')
-<div class="parent-grid">
+<div class="parent">
+    @php
+        $titles = [
+            'Total Offenses', 'Offenses Ouvertes', 'Carte des Événements',
+            'Sévérité Maximale', 'Journal des Événements', 'Analyse Temporelle', 'Total'
+        ];
+        $icons = ['bx-bar-chart-alt-2', 'bx-trending-up', 'bx-map', 'bx-bell', 'bx-book-content', 'bx-time-five', 'bx-lock-alt'];
+        $client = session('client', 'default'); // جلب اسم client من session
+    @endphp
+
     @foreach($panels as $index => $panel)
-        @php
-            /* كنصاوبو class سميتها div1, div2... على حساب الترتيب */
-            $divClass = 'div' . ($index + 1);
-        @endphp
-        
-        <div class="{{ $divClass }} widget-card">
-            <div class="widget-loader"></div> {{-- اختياري: لودر كيبان قبل ما يشرجي iframe --}}
-            <iframe src="{{ $panel }}" frameborder="0" allowfullscreen></iframe>
+        <div class="div{{ $index + 1 }} widget-card">
+            {{-- <div class="widget-header">
+                <i class="bx {{ $icons[$index] ?? 'bx-stats' }}"></i>
+                <span>{{ $titles[$index] ?? 'Panel ' . ($index + 1) }}</span>
+            </div> --}}
+
+            <div class="iframe-wrapper">
+                {{-- Loader ديال client logo --}}
+                <div class="iframe-loader">
+                    <img src="{{ asset('assets/logos/' . $client . '.png') }}"
+                         alt="{{ $client }} logo"
+                         class="logo-client">
+                </div>
+
+                <iframe src="{{ $panel }}&kiosk=tv" frameborder="0" allowfullscreen></iframe>
+            </div>
         </div>
     @endforeach
 </div>
 @endsection
 
+{{-- JS باش يتحيد loader --}}
+<script>
+window.addEventListener('load', () => {
+    document.querySelectorAll('.iframe-loader').forEach(loader => {
+        loader.style.opacity = '0';
+        loader.style.transition = 'opacity .4s ease';
+        setTimeout(() => loader.remove(), 400);
+    });
+});
+</script>
 
 </body>
 </html>

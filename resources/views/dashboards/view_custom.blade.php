@@ -17,6 +17,9 @@
             <span class="last-update"><i class="far fa-clock"></i> {{ translate('Last updated') }} {{ $dashboard->updated_at->addHour()->format('H:i') }}</span>
         </div>
     </div>
+@php
+    $client = session('client', 'default'); // ولا أي قيمة default عندك
+@endphp
 
     {{-- الشبكة --}}
     <div class="grid-container">
@@ -144,11 +147,30 @@ body.dark .iframe-wrapper {
     }
 
     /* تحسين شكل الـ Iframe */
+   
     .iframe-wrapper {
-        width: 100%;
-        height: 100%;
-        background: #fff;
-    }
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+}
+
+.iframe-loader {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  background: rgb(255, 255, 255);
+    transition: opacity 0.4s ease;
+}
+
+.iframe-loader .loader-logo {
+    width: 60px;
+    height: auto;
+}
+
 </style>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gridstack@10.0.0/dist/gridstack.min.css">
@@ -168,23 +190,39 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     rawLayout.forEach(item => {
-        // التأكد من الـ Theme والـ Kiosk
-        let finalUrl = item.id;
-        finalUrl += (finalUrl.includes('?') ? '&' : '?') + 'kiosk=1&theme=light';
+    let finalUrl = item.id;
+    finalUrl += (finalUrl.includes('?') ? '&' : '?') + 'kiosk=1&theme=light';
 
-        grid.addWidget({
-            x: item.x, 
-            y: item.y, 
-            w: item.w, 
-            h: item.h,
-            content: `
+    const widget = grid.addWidget({
+        x: item.x,
+        y: item.y,
+        w: item.w,
+        h: item.h,
+        content: `
                 <div class="iframe-wrapper">
+                    <!-- Loader -->
+                    <div class="iframe-loader">
+                        <img src="{{ asset('assets/logos/' . $client . '.png') }}" 
+                            alt="Loading..." 
+                            class="loader-logo">
+                    </div>
+
                     <iframe src="${finalUrl}" style="width:100%; height:100%; border:none;" allowfullscreen></iframe>
                 </div>
             `
-        });
+
+     });
+
+    // Hide loader when iframe is loaded
+    const iframe = widget.querySelector('iframe');
+    const loader = widget.querySelector('.iframe-loader');
+    iframe.addEventListener('load', () => {
+        loader.style.opacity = '0';
+        setTimeout(() => loader.remove(), 400);
     });
 });
+});
+
 </script>
 @endsection
 

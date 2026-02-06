@@ -176,45 +176,105 @@
             0% { left: -100%; }
             100% { left: 100%; }
         }
+        .iframe-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.iframe-wrapper iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    
+}
+
+.iframe-loader {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    pointer-events: none;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    background: rgb(255, 255, 255);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-client {
+    width: 64px;
+    opacity: 0.9;
+    animation: pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: .7; }
+    50% { transform: scale(1.06); opacity: 1; }
+    100% { transform: scale(1); opacity: .7; }
+}
+
 </style>
 
 <!-- DASHBOARD GRID -->
 @extends('layouts.app')
-<title>{{ translate('Offenses Dashboard') }}</title>
+
 @section('content')
-    <div class="dashboard-grid">
-    @php
-        $titles = [
-            'Total Offenses',
-            'Offenses Ouvertes',
-            'Carte des Événements',
-            'Sévérité Maximale Actuelle',
-            'Journal des Événements',
-            'Analyse Temporelle',
-            'Total des Événements'
-        ];
+@php
+    $client = session('client', 'default');
+    $titles = [
+        'Total Offenses',
+        'Offenses Ouvertes',
+        'Carte des Événements',
+        'Sévérité Maximale Actuelle',
+        'Journal des Événements',
+        'Analyse Temporelle',
+        'Total des Événements'
+    ];
 
-        $icons = [
-            'bx-bar-chart-alt-2',
-            'bx-trending-up',
-            'bx-map',
-            'bx-bell',
-            'bx-book-content',
-            'bx-time-five',
-            'bx-lock-alt'
-        ];
-    @endphp
+    $icons = [
+        'bx-bar-chart-alt-2',
+        'bx-trending-up',
+        'bx-map',
+        'bx-bell',
+        'bx-book-content',
+        'bx-time-five',
+        'bx-lock-alt'
+    ];
+@endphp
 
+<div class="dashboard-grid">
     @foreach($panels as $index => $panel)
         <div class="widget-container div{{ $index + 1 }}">
             <div class="widget-title">
                 <i class="bx {{ $icons[$index] ?? 'bx-bar-chart-alt-2' }}"></i>
                 {{ $titles[$index] ?? 'Widget ' . ($index + 1) }}
             </div>
-            <iframe src="{{ $panel }}" frameborder="0"></iframe>
+
+            <div class="iframe-wrapper">
+                {{-- Loader ديال client --}}
+                <div class="iframe-loader">
+                    <img src="{{ asset('assets/logos/' . $client . '.png') }}" alt="{{ $client }} logo" class="logo-client">
+                </div>
+
+                <iframe src="{{ $panel }}" frameborder="0"></iframe>
+            </div>
         </div>
     @endforeach
-    @endsection
 </div>
+
+{{-- JS باش يتحيد loader --}}
+<script>
+window.addEventListener('load', () => {
+    document.querySelectorAll('.iframe-loader').forEach(loader => {
+        loader.style.opacity = '0';
+        loader.style.transition = 'opacity .4s ease';
+        setTimeout(() => loader.remove(), 400);
+    });
+});
+</script>
+@endsection
+
 
     

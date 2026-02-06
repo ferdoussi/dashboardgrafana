@@ -10,18 +10,58 @@
 </head>
 <body>
 
-@extends('layouts.app') {{-- تأكد بلي هادا هو الملف اللي فيه الـ Sidebar --}}
+@extends('layouts.app')
 
 @section('content')
 <div class="parent-grid">
+    @php
+        $client = session('client', 'default');
+    @endphp
+
     @foreach($panels as $index => $panel)
-        <div class="div{{ $index + 1 }} widget-container">
-          
-            <iframe src="{{ $panel }}" frameborder="0"></iframe>
+    {{-- Ensure index matches your div1, div2, etc. classes --}}
+    <div class="div{{ $index + 1 }} widget-container">
+        <div class="iframe-wrapper">
+            <div class="iframe-loader">
+                <img src="{{ asset('assets/logos/' . $client . '.png') }}" 
+                     alt="{{ $client }} logo" 
+                     class="logo-client"
+                     onerror="this.src='{{ asset('assets/logos/default.png') }}'">
+            </div>
+
+            <iframe src="{{ $panel }}" loading="lazy"></iframe>
         </div>
+    </div>
     @endforeach
 </div>
+<script>
+document.querySelectorAll('.iframe-wrapper').forEach(wrapper => {
+    const iframe = wrapper.querySelector('iframe');
+    const loader = wrapper.querySelector('.iframe-loader');
+
+    iframe.addEventListener('load', () => {
+        if(loader){
+            // كنزيدو واحد التأخير بسيط ديال 300ms باش نضمنوا الـ CSS والداتا ترسمات
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                setTimeout(() => loader.remove(), 400);
+            }, 300);
+        }
+    });
+
+    // Fallback في حالة تعطلت الداتا بزاف (10 ثواني)
+    setTimeout(() => {
+        if(loader) {
+            loader.style.opacity = '0';
+            setTimeout(() => loader.remove(), 400);
+        }
+    }, 10000);
+});
+</script>
 @endsection
+
+
+
 
 </body>
 </html>

@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>@yield('title', 'Yokamos SOC')</title>
+    <title>{{ translate('Home Page') }}</title>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="icon" type="image/png" href="{{ asset('YOKAMOS.png') }}">
 
@@ -466,24 +466,7 @@ body {
     gap: 16px;
 }
 /* --- الستايل العادي (Light Mode) --- */
-.form-select-lang {
-    background-color: #f8f9fa;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 6px 30px 6px 12px;
-    font-size: 14px;
-    font-weight: 600;
-    color: #334155;
-    cursor: pointer;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 12px;
-    transition: all 0.3s ease;
-    height: 38px;
-    outline: none;
-}
+
 
 /* --- الستايل الأساسي للـ Select --- */
 .form-select-lang {
@@ -649,10 +632,9 @@ body.dark .form-select-lang:hover {
 
     <div class="lang-container">
         <select class="form-select-lang" onchange="window.location.href=this.value;">
-    <option value="{{ route('lang.switch', 'fr') }}" {{ session('locale') == 'fr' ? 'selected' : '' }}> FR</option>
-    <option value="{{ route('lang.switch', 'en') }}" {{ session('locale') == 'en' ? 'selected' : '' }}> EN</option>
-    
-</select>
+            <option value="{{ route('lang.switch', 'en') }}" {{ session('locale') == 'en' ? 'selected' : '' }}> EN</option>
+            <option value="{{ route('lang.switch', 'fr') }}" {{ session('locale') == 'fr' ? 'selected' : '' }}> FR</option>
+        </select>
     </div>
 </div>
     <button id="darkModeToggle" class="dark-mode">

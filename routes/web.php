@@ -20,7 +20,7 @@ Route::post('/', [AuthController::class, 'login']);
 Route::get('/2fa-setup', [AuthController::class, 'show2faSetup'])->name('2fa.setup');
 Route::post('/2fa-enable', [AuthController::class, 'enable2fa'])->name('2fa.enable');
 Route::get('/2fa-verify', [AuthController::class, 'show2faForm'])->name('2fa.verify');
-Route::post('/2fa-check', [AuthController::class, 'check2fa'])->name('2fa.check');
+Route::post('/2fa-check', [AuthController::class, 'check2fa'])->name('2fa.check'); 
 
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -86,4 +86,4 @@ Route::get('lang/{locale}', function ($locale) {
         Session::save(); // هادي ضرورية باش تحفظ الداتا قبل ما يخرج من الـ Route
     }
     return redirect()->back();
-})->name('lang.switch');
+})->name('lang.switch')->middleware('auth');

@@ -25,16 +25,35 @@
     @foreach($panels as $index => $panel)
         <div class="div{{ $index + 1 }} widget-card">
             <div class="widget-header">
-                <i class="bx {{ $icons[$index] ?? 'bx-stats' }}"></i>
-                <span>{{ $titles[$index] ?? 'Panel ' . ($index + 1) }}</span>
             </div>
-            <iframe src="{{ $panel }}" frameborder="0"></iframe>
+             @php
+                    $client = session('client', 'default');
+                @endphp
+            <div class="iframe-wrapper">
+                    <div class="iframe-loader">
+                            <img src="{{ asset('assets/logos/' . $client . '.png') }}"
+                                alt="{{ $client }} logo"
+                                class="logo-client">
+                    </div>
+                     <iframe src="{{ $panel }}&kiosk=tv"></iframe>
+            </div>
         </div> 
     @endforeach
 </div>
 @endsection
 
-    
+<script>
+window.addEventListener('load', () => {
+    document.querySelectorAll('.iframe-loader').forEach(loader => {
+        loader.style.opacity = '0';
+        loader.style.transition = 'opacity .4s ease';
+        setTimeout(() => loader.remove(), 400);
+    });
+});
+</script>
+>
+
+
 </div>
 </body>
 </html>
