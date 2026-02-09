@@ -14,7 +14,7 @@
             </div>
         </div>       
         <div class="header-right">
-            <span class="last-update"><i class="far fa-clock"></i> {{ translate('Last updated') }} {{ $dashboard->updated_at->addHour()->format('H:i') }}</span>
+            <span class="last-update"><i class="far fa-clock"></i> {{ translate('Last updated') }} {{ $dashboard->updated_at->addHour()->format('d/m/Y H:i') }}</span>
         </div>
     </div>
 @php
