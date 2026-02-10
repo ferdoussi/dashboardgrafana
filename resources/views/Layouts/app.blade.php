@@ -616,8 +616,8 @@ body.dark .form-select-lang:hover {
             <button class="menu-toggle">
                 <i class='bx bx-menu'></i>
             </button>
-            
-            <img src="{{ asset('logo.png') }}" alt="Yokamos SOC" class="logo">
+            <a href="{{ route('app.home') }}"> <img src="{{ asset('logo.png') }}" alt="Yokamos SOC" class="logo"></a>
+           
         <div class="switch-container">
         <input type="checkbox" id="sidebarToggle" class="sidebar-checkbox">
         <label for="sidebarToggle" class="menu-icon">
