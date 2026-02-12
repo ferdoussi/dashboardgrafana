@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" href="{{ asset('css/auth/2fa-verify.css') }}">
+    <link rel="icon" type="image/png" href="{{ asset('YOKAMOS.png') }}">
 </head>
 <body>
     
