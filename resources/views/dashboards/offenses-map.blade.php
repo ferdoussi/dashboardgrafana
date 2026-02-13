@@ -28,7 +28,7 @@
                              alt="{{ $client }} logo"
                              class="logo-client">
                     </div>
-                    <iframe src="{{ $panel }}" loading="lazy" frameborder="0" allowfullscreen></iframe>
+                    <iframe src="{{ $panel }}" loading="lazy" frameborder="0" allowfullscreen class="color"></iframe>
                 </div>
             </div>
         @endif
