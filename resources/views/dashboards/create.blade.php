@@ -55,7 +55,7 @@
                     @foreach($panelsList as $panel)
                         <div class="panel-row" data-category="{{ $module }}">
                             <input type="checkbox" class="panel-checkbox" data-url="{{ $panel->grafana_url }}" id="panel_{{ $panel->id }}">
-                            <label for="panel_{{ $panel->id }}" class="panel-name" style="font-size: 0.9rem; font-weight: 500;">{{ $panel->name }}</label>
+                            <label for="panel_{{ $panel->id }}" class="panel-name" >{{ translate($panel->name) }}</label>
                         </div>
                     @endforeach
                 @endforeach
@@ -64,7 +64,7 @@
 
         {{-- زر لإضافة جميع المحددين --}}
         <div style="margin-top: 10px; text-align: right;">
-            <button class="btn btn-primary" onclick="addSelectedPanels()" id="btn" style="border-radius: 8px ;font-size: 20px;background-color: #037aeb;border: none;width: 100%;height: 40px;">{{ translate('Add Selected Panels') }}</button>
+            <button class="btn btn-primary" onclick="addSelectedPanels()" id="btn" style="border-radius: 8px ;font-size: 20px;background-color: #037aeb;border: none;width: 100%;height: 40px; color: white;top:10px">{{ translate('Add Selected Panels') }}</button>
         </div>
     </div>
 </div>
@@ -129,7 +129,7 @@
         from { transform: translateY(20px); opacity: 0; } 
         to { transform: translateY(0); opacity: 1; } 
     }
-
+  
     .dashboard-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 25px; background: #ffffff; border-radius: 12px; margin: 15px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
     .header-title { display: flex; align-items: center; gap: 12px; }
     .title-icon { color: #3182ce; font-size: 1.4rem; }
@@ -149,9 +149,10 @@
 
     .panel-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f1f5f9; }
     .btnclose { border-radius: 6px; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; color: white; background-color: #f05454; border: none; cursor: pointer; }
-
+    .panel-row:hover { background: #f1f5f9; }
     .save-modal, .save-modal1 { position: fixed; inset: 0; display: none; z-index: 9999; align-items: center; justify-content: center; transition: all 0.3s ease; }
     .save-modal { background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(8px); }
+    .panel-name { font-size: 0.95rem; color: #1e293b;font-family: 'Segoe UI';color: #3182ce ;margin-right: 20px;cursor: pointer; }
     .save-modal1 {
     background: rgba(15, 23, 42, 0.55);
     backdrop-filter: blur(10px);

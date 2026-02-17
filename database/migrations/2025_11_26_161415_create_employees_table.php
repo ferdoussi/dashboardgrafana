@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique(); // Email (unique)
             $table->string('company');
             $table->string('password');
-            $table->string('departement');     // Département
+            // $table->string('departement');     // Département
             $table->string('role')->default('user');
             $table->timestamps(); // Champs 'created_at' et 'updated_at' automatiques
         });

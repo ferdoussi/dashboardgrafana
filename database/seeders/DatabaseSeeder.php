@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
          // Appelle votre seeder d'employés
          EmployeeSeeder::class,
+         PanelSeeder::class,    // أضف هذا السطر الآن
         ]);
     }
 }
