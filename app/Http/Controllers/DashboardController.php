@@ -91,17 +91,22 @@ class DashboardController extends Controller
     }
 public function create()
 {
-    // 1. منع الـ Admin من دخول هاد الصفحة وتوجيهه لصفحة Home
-    if (Auth::user()->role === 'admin') {
+    $employee = Auth::user();
+
+    // منع Admin global من دخول هاد الصفحة
+    if ($employee->role === 'admin') {
         return redirect()->route('app.home')->with('error', 'Accès interdit aux administrateurs.');
     }
 
-    // 2. جلب الـ Panels عادي للمستخدمين (Users)
-    $panels = Panel::where('active', true)
-        ->orderBy('module')
-        ->orderBy('category')
-        ->get() 
-        ->groupBy(['module', 'category']);
+    // Users عاديين و Admin Client
+    $query = Panel::where('active', true)->orderBy('module')->orderBy('category');
+
+    // إلا كان admin_client => show فقط panels ديال client ديالو
+    if ($employee->role === 'admin_client') {
+        $query->where('client_id', $employee->client_id);
+    }
+
+    $panels = $query->get()->groupBy(['module', 'category']);
 
     return view('dashboards.create', compact('panels'));
 }
@@ -111,36 +116,35 @@ public function create()
    
 public function show(Request $request, $type)
 {
-    /** @var \App\Models\User $user */
     $user = Auth::user();
     $userId = $request->query('user_id');
 
-    if ($user && $user->role === 'admin' && $userId) {
-        $targetEmployee = Employee::find($userId);
-        if (!$targetEmployee) {
-            abort(404, "Utilisateur non trouvé");
-        }
+    // Admin global يقدر يشوف dashboards ديال أي Employee
+    if ($user->role === 'admin' && $userId) {
+        $targetEmployee = Employee::findOrFail($userId);
     } else {
         $targetEmployee = $user;
     }
 
+    // منع عرض dashboards ديال clients آخرين ل non-admin
+    if ($user->role !== 'admin' && $targetEmployee->client_id !== $user->client_id) {
+        abort(403, "Accès interdit à ce dashboard");
+    }
+
     $config = $this->panelsConfig();
     
-    // هاد السطر هو لي تبدل:
-    // غادي نجمعو كاع الروابط لي كاينين فـ 'sets' أو 'event' ... إلخ
     $panels = [];
     if (isset($config[$type])) {
         foreach ($config[$type] as $deptPanels) {
-            // array_merge باش نجمعو الروابط كاملين فـ لستة وحدة
             $panels = array_merge($panels, $deptPanels);
         }
     }
 
-    // (الاختياري) إذا بغيتي تحيد الروابط المعاودة باش ميتكرروش ليك في الصفحة
     $panels = array_unique($panels);
 
     return view("dashboards.$type", compact('panels', 'type'));
 }
+
 
 // 1. دالة الحفظ (كتستقبل البيانات من JS)
 public function saveCustomLayout(Request $request)
@@ -154,11 +158,13 @@ public function saveCustomLayout(Request $request)
         }
 
         \App\Models\UserDashboard::create([
-            'user_id' => $userId,
-            'layout'  => $request->layout,
-            'name'    => $request->name,
-            'description' => $request->description // حفظ الوصف في الداتابيز
-        ]);
+        'user_id'     => $userId,
+        'client_id'   => Auth::user()->client_id, // مهم
+        'layout'      => $request->layout,
+        'name'        => $request->name,
+        'description' => $request->description
+]);
+
 
         return response()->json(['message' => 'Dashboard enregistré !']);
     } catch (\Exception $e) {
@@ -170,8 +176,10 @@ public function deleteDashboard($id)
     try {
         // كنقلبو على الداشبورد اللي تابع للمستخدم الحالي
         $dashboard = \App\Models\UserDashboard::where('id', $id)
-                        ->where('user_id', Auth::id())
-                        ->firstOrFail();
+            ->where('user_id', Auth::id())
+            ->where('client_id', Auth::user()->client_id) // optional extra check
+            ->firstOrFail();
+
 
         $dashboard->delete();
 

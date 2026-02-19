@@ -115,17 +115,18 @@ class PanelSeeder extends Seeder
         ];
 
         foreach ($data as $module => $panels) {
-            foreach ($panels as $name => $url) {
-                Panel::updateOrCreate(
-                    ['grafana_url' => $url], // لا يكرر البيانات إذا كان الرابط موجوداً مسبقاً
-                    [
-                        'module' => $module,
-                        'category' => 'General',
-                        'name' => $name,
-                        'active' => true,
-                    ]
-                );
+                foreach ($panels as $name => $url) {
+                    Panel::updateOrCreate(
+                        ['grafana_url' => $url],
+                        [
+                            'module'   => $module,
+                            'category' => 'General',
+                            'name'     => $name,
+                            'active'   => true,
+                            'client_id'=> 1, // 👈 زد هذا السطر ليرتبطوا بكليان Fortress
+                        ]
+                    );
+                }
             }
-        }
     }
 }

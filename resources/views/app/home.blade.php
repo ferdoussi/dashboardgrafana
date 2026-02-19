@@ -5,7 +5,7 @@
 @section('content')
 <link rel="stylesheet" href="{{ asset('css/home.css') }}">
 {{-- Check User Role --}}
-@if(auth()->check() && auth()->user()->role === 'admin')
+@if(auth()->check() && auth()->user()->role === 'admin' || auth()->user()->role === 'superadmin')
     
     {{-- ================= ADMIN VIEW ================= --}}
     <div class="top-bar">
@@ -78,6 +78,11 @@
 @else
 
     {{-- ================= USER VIEW ================= --}}
+    @auth
+        @if(auth()->user()->role === 'admin_client')
+            
+      
+    
     <div class="top-bar">
         <div class="title-section">
             <h2>{{ translate('Security Dashboards') }}  </h2>
@@ -89,7 +94,8 @@
             <i class='bx bx-plus'></i> <span>{{ translate('Create Dashboard') }}</span>
         </a>
     </div>
-
+      @endif
+@endauth
     <div class="widgets-grid">
 
         {{-- Événements --}}
@@ -157,10 +163,15 @@
         </a>
 
         {{-- Custom Dashboards (Dynamic) --}}
-        @php
-            $userId = auth()->id();
-            $customDashboards = \App\Models\UserDashboard::where('user_id', $userId)->get();
-        @endphp
+      @php
+    $clientId = auth()->user()->client_id;
+
+    $customDashboards = \App\Models\UserDashboard::where(
+        'client_id',
+        $clientId
+    )->latest()->get();
+@endphp
+
 
         @foreach($customDashboards as $custom)
             <a href="{{ route('dashboard.viewCustom', $custom->id) }}" class="widget-card-link">

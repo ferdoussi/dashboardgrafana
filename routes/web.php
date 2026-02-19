@@ -57,7 +57,7 @@ Route::middleware('auth')->group(function () {
 });
 Route::middleware(['auth'])->group(function () {
     Route::get('/support', [App\Http\Controllers\SupportController::class, 'index'])->name('support.support'); // هذا الاسم هو اللي غادي تستخدمه
-    
+    Route::get('/all-users', [App\Http\Controllers\SupportController::class, 'allUser'])->name('clientFile.allUser'); // هذا الاسم هو اللي غادي تستخدمه
 });
 
 Route::get('/test-mitre', function () {

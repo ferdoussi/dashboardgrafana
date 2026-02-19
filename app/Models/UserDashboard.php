@@ -22,8 +22,15 @@ class UserDashboard extends Model
         'layout' => 'json',
     ];
 
-    public function user()
-    {
-        return $this->belongsTo(Employee::class, 'user_id');
-    }
+public function user()
+{
+    return $this->belongsTo(Employee::class, 'user_id');
+}
+
+// كل dashboard مربوط ب client واحد
+public function client()
+{
+    return $this->belongsTo(Client::class);
+}
+
 }

@@ -30,6 +30,7 @@
 </div>
 
 {{-- ===== MODAL (Panels Selection) ===== --}}
+
 <div id="panelsSidebar" class="save-modal">
     <div class="modal-box">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
