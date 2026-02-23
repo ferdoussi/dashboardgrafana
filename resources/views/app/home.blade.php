@@ -20,6 +20,8 @@
         // جلب الإحصائيات (Calculations)
         $totalUsers = \App\Models\Employee::where('role', 'user')->count();
         $totalAdmins = \App\Models\Employee::where('role', 'admin')->count();
+        $totalClientAdmins = \App\Models\Employee::where('role', 'admin_client')->count();
+        $totalsuperAdmins = \App\Models\Employee::where('role', 'superadmin')->count();
         $totalDashboards = \App\Models\UserDashboard::count();
         // تأكد من اسم الموديل الخاص بالـ Panels عندك
         $totalPanels = \App\Models\Panel::count(); 
@@ -47,6 +49,28 @@
                 <h4>{{ translate('Total Admins') }}</h4>
                 <h2 class="stats-number">{{ $totalAdmins }}</h2>
                 <p>{{ translate('System administrators') }}</p>
+            </div>
+        </div>
+        {{-- total client admin card --}}
+        <div class="widget-card stats-card">
+            <div class="widget-icon bg-purple">
+                <i class='bx bx-shield-quarter'></i>
+            </div>
+            <div class="stats-info">
+                <h4>{{ translate('Total Client Admins') }}</h4>
+                <h2 class="stats-number">{{ $totalClientAdmins }}</h2>
+                <p>{{ translate('Client administrators') }}</p>
+            </div>
+        </div>
+        {{-- total super admin card --}}
+        <div class="widget-card stats-card">
+            <div class="widget-icon bg-purple">
+                <i class='bx bx-shield-quarter'></i>
+            </div>
+            <div class="stats-info">
+                <h4>{{ translate('Total Super Admins') }}</h4>
+                <h2 class="stats-number">{{ $totalsuperAdmins }}</h2>
+                <p>{{ translate('Super administrators') }}</p>
             </div>
         </div>
 

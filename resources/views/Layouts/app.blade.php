@@ -62,6 +62,7 @@
                     <div class="user-name">{{ Auth::user()->company }}</div>
                     <div class="user-name">{{ Auth::user()->name }}</div>
                     <div class="user-email">{{ Auth::user()->email }}</div>
+                    <div class="user-role">{{ Auth::user()->id }}</div>
                     <div class="user-email">{{ Auth::user()->role }}</div>
                 @else
                     <div class="user-name">Verification 2FA</div>
@@ -138,12 +139,15 @@
                 <li><a href="{{ route('dashboard.show', 'sets') }}"><i class='bx bx-layer'></i> {{ translate('Sets') }}</a></li>
                 <li><a href="{{ route('dashboard.show', 'saved-search') }}"><i class='bx bx-search-alt-2'></i> {{ translate('Saved Search') }}</a></li>
                 <li><a href="{{ route('dashboard.show', 'offenses-map') }}"><i class='bx bx-map'></i> {{ translate('Offenses Map') }}</a></li>
-                @php
-            $userDashboards = \App\Models\UserDashboard::where('client_id', auth()->user()->client_id)
+                
+              @php
+              
+$userDashboards = \App\Models\UserDashboard::where('client_id', auth()->user()->client_id)
     ->orderBy('created_at', 'desc')
     ->get();
-
-        @endphp
+    
+    
+@endphp
 
         
    
@@ -187,7 +191,7 @@
 
             <ul class="sidebar-nav dropdown-menu-dashboard">
                 @php
-                    $all_users = \App\Models\Employee::where('role', 'user')->get();
+                    $all_users = \App\Models\Employee::where('role', 'admin_client')->get();
                 @endphp
 
                 @forelse($all_users as $u)
@@ -226,8 +230,24 @@
                 @empty
                     <li style="padding: 10px; color: gray;">{{ translate('No clients available') }}</li>
                 @endforelse
+               
             </ul>
+             
         </div>
+          
+             
+    @endif
+@endauth
+@auth
+    @if (auth()->user()->role ==='superadmin')
+    <h3 class="link-title">
+                <a href="{{ route('superAdmin.superAdmin') }}" class="sidebar-link" >
+                    <i class='bx bx-group'></i>
+                    <span style="text">{{ translate('All Users') }}</span>
+                </a>
+            </h3>
+
+        
     @endif
 @endauth
 

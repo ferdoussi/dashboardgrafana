@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GrafanaProxyController;
-
+use App\Http\Controllers\EmployeeController;
 
 // DashboardController referenced by string in routes to avoid missing-type static error.
 
@@ -56,9 +56,24 @@ Route::middleware('auth')->group(function () {
 
 });
 Route::middleware(['auth'])->group(function () {
-    Route::get('/support', [App\Http\Controllers\SupportController::class, 'index'])->name('support.support'); // هذا الاسم هو اللي غادي تستخدمه
-    Route::get('/all-users', [App\Http\Controllers\SupportController::class, 'allUser'])->name('clientFile.allUser'); // هذا الاسم هو اللي غادي تستخدمه
+    Route::get('/support', [App\Http\Controllers\SupportController::class, 'index'])->name('support.support'); 
+    Route::get('/all-users', [App\Http\Controllers\SupportController::class, 'allUser'])->name('clientFile.allUser'); 
+    Route::get('/super-admin', [EmployeeController::class, 'index'])->name('superAdmin.superAdmin');
+    Route::get('/employees/{id}', [EmployeeController::class, 'show'])->name('employees.show');
+
+    Route::get('/employees/{employee}/edit', [EmployeeController::class, 'edit'])
+    ->name('employees.edit');
+    Route::put('/employees/{employee}', [EmployeeController::class, 'update'])
+    ->name('employees.update');
+    Route::delete('/employees/{employee}', [EmployeeController::class, 'destroy'])
+    ->name('employees.destroy');
+    Route::post('/employees', [EmployeeController::class, 'store'])
+    ->name('employees.store');
+
+
 });
+
+
 
 Route::get('/test-mitre', function () {
     $raw = App\Services\QradarService::getOffenses();

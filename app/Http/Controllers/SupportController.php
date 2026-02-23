@@ -13,5 +13,6 @@ class SupportController extends Controller
     public function allUser(){
         return View('clientFile.allUser');
     }
+ 
 
 }

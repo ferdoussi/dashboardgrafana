@@ -20,6 +20,7 @@ class Employee extends Authenticatable
         'departement',
         'role',
         'company',
+        'client_id' // <--- ضروري تزيد هادي هنا
     ];
     protected $hidden = [
         'password',
@@ -28,7 +29,7 @@ class Employee extends Authenticatable
     // كل employee مرتبط ب client واحد
 public function client()
 {
-    return $this->belongsTo(Client::class);
+   return $this->belongsTo(Client::class, 'client_id');
 }
 
 

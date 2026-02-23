@@ -264,6 +264,8 @@ body {
 .sidebar-section {
     margin-bottom: 25px;
     top: 10px;
+    /* create a scroll here  */
+    
 }
 
 .sidebar-section h3 {
@@ -322,8 +324,30 @@ body {
     padding-left: 10px;
 }
 
+/* DROPDOWN CLIENTS SCROLL FIX */
+.dropdown-menu-dashboard {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+    margin-left: 12px;
+    border-left: 2px solid #e5e7eb;
+    padding-left: 10px;
+}
+
+/* ملي يتحل */
 .dropdown-menu-dashboard.open {
-    max-height: 500px;
+    max-height: 60vh;   /* ياخد 60% من الشاشة */
+    overflow-y: auto;   /* يبان scroll */
+}
+
+/* Scroll styling */
+.dropdown-menu-dashboard::-webkit-scrollbar {
+    width: 5px;
+}
+
+.dropdown-menu-dashboard::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.3);
+    border-radius: 10px;
 }
 
 /* SUBMENU */
@@ -352,9 +376,9 @@ body {
 }
 
 .submenu-list.open {
-    max-height: 300px;
+    max-height: none;   /* بلا limit */
+    overflow: visible;  /* بلا scroll */
 }
-
 /* ===============================
    CONTENT AREA
 ================================ */
@@ -521,6 +545,25 @@ body.dark .form-select-lang:hover {
     cursor: pointer;
     color: white;
 }
+.link-title {
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.sidebar-link {
+    text-decoration: none;
+    display: block;
+    color: rgba(255,255,255,0.85);
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: var(--radius);
+    transition: var(--transition);
+}
 
 
 @media (max-width: 768px) {
@@ -589,6 +632,16 @@ body.dark .form-select-lang:hover {
         left: 10px;
     }
 }
+@media (max-width: 480px) {
+    .header {
+        padding: 10px 15px;
+        height: 55px;
+    }
 
+    .user-dropdown-content {
+        width: 95%;
+    }
+
+}
 
 

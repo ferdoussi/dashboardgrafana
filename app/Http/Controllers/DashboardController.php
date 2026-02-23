@@ -150,45 +150,46 @@ public function show(Request $request, $type)
 public function saveCustomLayout(Request $request)
 {
     try {
-        // Laravel كيجيب الـ ID ديال المستخدم اللي فاتح الحساب دابا أوتوماتيكياً
-        $userId = Auth::user()->id;
+        $user = Auth::user();
 
-        if (!$userId) {
+        // 1. التأكد من أن المستخدم مسجل الدخول
+        if (!$user) {
             return response()->json(['error' => 'Veuillez vous connecter'], 401);
         }
 
-        \App\Models\UserDashboard::create([
-        'user_id'     => $userId,
-        'client_id'   => Auth::user()->client_id, // مهم
-        'layout'      => $request->layout,
-        'name'        => $request->name,
-        'description' => $request->description
-]);
+        // 2. تسجيل الداشبورد مع ربطه بالشركة (Client)
+        // ملاحظة: تأكد أن client_id موجود في $fillable داخل موديل UserDashboard
+        $newDashboard = \App\Models\UserDashboard::create([
+            'user_id'     => $user->id,
+            'client_id'   => $user->client_id, // كياخد الـ ID ديال شركتو أوتوماتيكياً
+            'layout'      => $request->layout,
+            'name'        => $request->name,
+            'description' => $request->description
+        ]);
 
+        return response()->json([
+            'message' => 'Dashboard enregistré !',
+            'dashboard_id' => $newDashboard->id
+        ]);
 
-        return response()->json(['message' => 'Dashboard enregistré !']);
     } catch (\Exception $e) {
-        return response()->json(['error' => $e->getMessage()], 500);
+        // في حالة وقع خطأ (مثلاً عمود ناقص في القاعدة)
+        return response()->json(['error' => 'Erreur: ' . $e->getMessage()], 500);
     }
 }
 public function deleteDashboard($id)
 {
-    try {
-        // كنقلبو على الداشبورد اللي تابع للمستخدم الحالي
-        $dashboard = \App\Models\UserDashboard::where('id', $id)
-            ->where('user_id', Auth::id())
-            ->where('client_id', Auth::user()->client_id) // optional extra check
-            ->firstOrFail();
-
-
-        $dashboard->delete();
-
-        // التوجيه لصفحة الـ Home بعد المسح بنجاح
-        return redirect()->route('app.home')->with('success', 'Dashboard supprimé !');
-        
-    } catch (\Exception $e) {
-        return redirect()->route('app.home')->with('error', 'Impossible de supprimer ce dashboard');
+    if (Auth::user()->role !== 'admin_client') {
+        abort(403);
     }
+
+    $dashboard = \App\Models\UserDashboard::where('id', $id)
+        ->where('client_id', Auth::user()->client_id)
+        ->firstOrFail();
+
+    $dashboard->delete();
+
+    return back()->with('success', 'Dashboard supprimé !');
 }
 
 // 2. دالة عرض الداشبورد الخاص بالمستخدم

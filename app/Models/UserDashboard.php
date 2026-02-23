@@ -16,6 +16,7 @@ class UserDashboard extends Model
         'layout',
         'name',
         'description', // 👈 ضروري تزيد هادي هنا
+        'client_id', // 👈 ضروري تزيد هادي هنا
     ];
 
     protected $casts = [
