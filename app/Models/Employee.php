@@ -20,9 +20,39 @@ class Employee extends Authenticatable
         'departement',
         'role',
         'company',
+        'client_id' // <--- ضروري تزيد هادي هنا
     ];
     protected $hidden = [
         'password',
         'remember_token',
     ];
+    // كل employee مرتبط ب client واحد
+public function client()
+{
+   return $this->belongsTo(Client::class, 'client_id');
+}
+
+
+// dashboards ديال هاد employee
+public function dashboards()
+{
+    return $this->hasMany(UserDashboard::class, 'user_id');
+}
+
+// helpers باش تسهل RBAC
+public function isAdmin()
+{
+    return $this->role === 'admin';
+}
+
+public function isAdminClient()
+{
+    return $this->role === 'admin_client';
+}
+
+public function isUser()
+{
+    return $this->role === 'user';
+}
+
 }

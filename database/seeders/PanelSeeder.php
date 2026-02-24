@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Panel;
+use App\Models\Employee;
 
 class PanelSeeder extends Seeder
 {
@@ -114,18 +115,29 @@ class PanelSeeder extends Seeder
             ],
         ];
 
-        foreach ($data as $module => $panels) {
-            foreach ($panels as $name => $url) {
-                Panel::updateOrCreate(
-                    ['grafana_url' => $url], // لا يكرر البيانات إذا كان الرابط موجوداً مسبقاً
-                    [
-                        'module' => $module,
-                        'category' => 'General',
-                        'name' => $name,
-                        'active' => true,
-                    ]
-                );
+   // 🔹 نجيب جميع المستخدمين
+        $users = Employee::all();
+
+        foreach ($users as $user) {
+            $clientId = $user->client_id;
+
+            foreach ($data as $module => $panels) {
+                foreach ($panels as $name => $url) {
+                    Panel::updateOrCreate(
+                        [
+                            'grafana_url' => $url,
+                            'client_id'   => $clientId,
+                        ],
+                        [
+                            'module'   => $module,
+                            'category' => 'General',
+                            'name'     => $name,
+                            'active'   => true,
+                        ]
+                    );
+                    }
+                }
             }
         }
-    }
+
 }

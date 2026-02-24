@@ -128,20 +128,40 @@ public function show2faSetup()
     }
 
     // دالة لإنهاء تسجيل الدخول وضبط الـ Client Session
-    private function completeLogin($employee)
-    {
-        Auth::login($employee);
+private function completeLogin($employee)
+{
+    Auth::login($employee);
 
-        $email = $employee->email;
-        $client = 'default';
-        if (str_ends_with($email, '@fortress360')) $client = 'fortress';
-        elseif (str_ends_with($email, '@qokpit3d.io')) $client = 'qokpit3d';
+    $email = $employee->email;
+    $client = 'default';
+    $adminDomain = 'default';
 
-        session(['client' => $client]);
-        session()->forget(['2fa:user:id', '2fa_secret']);
-
-        return redirect()->route('app.home');
+    // 1. تحديد الـ slug بناءً على الدومين
+    if (str_ends_with($email, '@fortress360')) {
+        $client = 'fortress';
+        $adminDomain = 'fortress360';
+    } elseif (str_ends_with($email, '@qokpit3d.io')) {
+        $client = 'qokpit3d';
+        $adminDomain = 'qokpit3d.io';
+    } 
+    // 2. إذا كان الموظف مرتبطاً بـ Client في قاعدة البيانات، نأخذ اسمه
+    else if ($employee->client) {
+        $client = $employee->client->name;
+        $adminDomain = $employee->client->name;
     }
+
+    // 3. تنظيف الاسم: تحويله لحروف صغيرة وحذف المسافات (مثلاً "Fortress 360" تصبح "fortress360")
+    $finalClientSlug = str_replace(' ', '', strtolower($client));
+
+    
+    // 4. تحديث الـ Session بالقيمة الجديدة
+    session(['client' => $finalClientSlug, 'admin_domain' => $adminDomain]);
+
+    session()->forget(['2fa:user:id', '2fa_secret']);
+
+    return redirect()->route('app.home');
+}
+
 
     public function logout(Request $request)
     {

@@ -1,0 +1,118 @@
+.page-container {
+    width: 100%;
+    margin: auto;
+    padding: 25px;
+}
+
+/* Card */
+.info-card {
+    background: #ffffff;
+    border-radius: 14px;
+    border: 1px solid #e5eaf2;
+    overflow: hidden;
+}
+
+/* Header */
+.info-card-header {
+    padding: 18px 22px;
+    border-bottom: 1px solid #e5eaf2;
+}
+
+.info-card-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* Form grid */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+    padding: 22px;
+}
+
+/* Fields */
+.form-group label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+.required {
+    color: #ef4444;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid #dbe4f0;
+    font-size: 14px;
+    background: #fff;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #2563eb;
+}
+
+/* Actions */
+.form-actions {
+    padding: 20px 22px;
+    border-top: 1px solid #e5eaf2;
+    display: flex;
+    gap: 12px;
+}
+
+.btn-primary {
+    background: #2563eb;
+    color: #fff;
+    padding: 12px 22px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-secondary {
+    padding: 12px 22px;
+    border-radius: 10px;
+    border: 1px solid #dbe4f0;
+    color: #374151;
+    text-decoration: none;
+}
+
+/* ===== DARK MODE (overlay only) ===== */
+body.dark .info-card {
+    background: #1f2029;
+    border-color: #2f313a;
+}
+
+body.dark .info-card-header,
+body.dark .form-actions {
+    border-color: #2f313a;
+}
+
+body.dark h3,
+body.dark label {
+    color: #e5e7eb;
+}
+
+body.dark input,
+body.dark select {
+    background: #26282f;
+    color: #e5e7eb;
+    border-color: #3a3d46;
+}
+
+body.dark input::placeholder {
+    color: #94a3b8;
+}
+
+body.dark .btn-secondary {
+    color: #e5e7eb;
+    border-color: #3a3d46;
+}

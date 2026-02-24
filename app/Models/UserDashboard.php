@@ -16,14 +16,22 @@ class UserDashboard extends Model
         'layout',
         'name',
         'description', // 👈 ضروري تزيد هادي هنا
+        'client_id', // 👈 ضروري تزيد هادي هنا
     ];
 
     protected $casts = [
         'layout' => 'json',
     ];
 
-    public function user()
-    {
-        return $this->belongsTo(Employee::class, 'user_id');
-    }
+public function user()
+{
+    return $this->belongsTo(Employee::class, 'user_id');
+}
+
+// كل dashboard مربوط ب client واحد
+public function client()
+{
+    return $this->belongsTo(Client::class);
+}
+
 }
