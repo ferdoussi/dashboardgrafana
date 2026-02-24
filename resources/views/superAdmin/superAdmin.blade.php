@@ -30,7 +30,7 @@
             </select>
 
             <button type="submit" style="padding:10px 18px; border:none; border-radius:8px; background:#2563eb; color:white; font-weight:600; cursor:pointer;">
-                Filter
+                {{ translate('Filter') }}
             </button>
         </form>
 
@@ -204,7 +204,7 @@
                     {{ translate('Cancel') }}
                 </button>
 
-                <button type="submit" class="btn-success">
+                <button type="submit" class="btn-primary">
                     {{ translate('Add User') }}
                 </button>
             </div>

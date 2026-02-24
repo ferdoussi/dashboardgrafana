@@ -45,7 +45,7 @@
                 <div class="form-group">
                     <label>{{ translate('Role') }}</label>
                     <select name="role">
-                        <option value="">Select Role</option>
+                        <option value="">{{ translate('Select Role') }}</option>
                         <option value="admin" {{ $employee->role == 'admin' ? 'selected' : '' }}>Admin</option>
                         <option value="superadmin" {{ $employee->role == 'superadmin' ? 'selected' : '' }}>Superadmin</option>
                         <option value="user" {{ $employee->role == 'user' ? 'selected' : '' }}>User</option>

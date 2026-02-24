@@ -117,32 +117,32 @@ body.dark .info-value { color: #f3f4f6; }
                     </div>
                 </div>
             </div>
-            <a href="{{ route('superAdmin.superAdmin') }}" class="manage-link mt-3 mt-md-0">Back to Dashboard</a>
+            <a href="{{ route('superAdmin.superAdmin') }}" class="manage-link mt-3 mt-md-0">{{ translate('Back to Dashboard') }}</a>
         </div>
 
         <div class="profile-body">
             <div class="info-row">
-                <span class="info-label">Joined</span>
+                <span class="info-label">{{ translate('Joined') }}</span>
                 <span class="info-value">{{ $employee->created_at->format('M d, Y') }}</span>
             </div>
             <div class="info-row">
-                <span class="info-label">Full Name</span>
+                <span class="info-label">{{ translate('Full Name') }}</span>
                 <span class="info-value">{{ $employee->name }}</span>
             </div>
             <div class="info-row">
-                <span class="info-label">Email</span>
+                <span class="info-label">{{ translate('Email') }}</span>
                 <span class="info-value">{{ $employee->email }}</span>
             </div>
             <div class="info-row">
-                <span class="info-label">Role</span>
+                <span class="info-label">{{ translate('Role') }}</span>
                 <span class="info-value">{{ ucfirst($employee->role) }}</span>
             </div>
             <div class="info-row">
-                <span class="info-label">User ID</span>
+                <span class="info-label">{{ translate('User ID') }}</span>
                 <span class="info-value">{{ $employee->id ??'N/A' }}</span>
             </div>
             <div class="info-row">
-                <span class="info-label">User ID</span>
+                <span class="info-label">{{ translate('Company') }}</span>
                 <span class="info-value">{{ $employee->company ??'N/A' }}</span>
             </div>
         </div>

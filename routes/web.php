@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GrafanaProxyController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\SettingsController;
 
 // DashboardController referenced by string in routes to avoid missing-type static error.
 
@@ -72,7 +73,15 @@ Route::middleware(['auth'])->group(function () {
 
 
 });
+// routes/web.php
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
+    Route::post('/settings/profile', [SettingsController::class, 'updateProfile'])->name('settings.profile');
+    Route::post('/settings/preferences', [SettingsController::class, 'updatePreferences'])->name('settings.preferences');
+    Route::post('/settings/password', [SettingsController::class, 'updatePassword'])->name('settings.password');
+    Route::delete('/settings/delete-account', [SettingsController::class, 'deleteAccount'])->name('settings.delete');
+});
 
 
 Route::get('/test-mitre', function () {

@@ -1,0 +1,280 @@
+.settings-wrapper {
+    max-width: 100%;
+    margin: 20px auto;
+    direction: ltr; /* English alignment */
+    text-align: left;
+    padding: 0 20px;
+}
+
+.settings-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #111827;
+}
+
+.settings-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 30px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.form-group-modern {
+    margin-bottom: 20px;
+}
+
+.form-group-modern label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #374151;
+}
+
+.input-modern {
+    width: 100%;
+    height: 48px;
+    padding: 0 15px;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+    transition: all 0.2s;
+    box-sizing: border-box;
+}
+
+.input-modern:focus {
+    border-color: #14b8a6;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
+}
+
+.input-disabled {
+    background: #f3f4f6 !important;
+    color: #6b7280;
+    cursor: not-allowed;
+}
+
+.error-msg {
+    color: #dc2626;
+    font-size: 12px;
+    margin-top: 5px;
+    display: block;
+}
+
+.btn-primary-modern {
+    width: 100%;
+    height: 50px;
+    border-radius: 10px;
+    background: #14b8a6;
+    color: white;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-primary-modern:hover {
+    background: #0d9488;
+}
+
+.danger-card {
+    border: 1px solid #fee2e2;
+    background: #fffafa;
+    border-radius: 16px;
+    margin-top: 30px;
+    padding: 25px;
+}
+
+.danger-header {
+    color: #dc2626;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.danger-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.btn-danger-outline {
+    color: #dc2626;
+    border: 1px solid #dc2626;
+    padding: 8px 20px;
+    border-radius: 8px;
+    background: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-danger-outline:hover {
+    background: #fee2e2;
+}
+
+.divider {
+    margin: 30px 0;
+    border: 0;
+    border-top: 1px solid #e5e7eb;
+}
+.alert-success-modern {
+    background-color: #ecfdf5;
+    border: 1px solid #10b981;
+    color: #065f46;
+    padding: 16px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 500;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.error-msg {
+    color: #dc2626;
+    font-size: 13px;
+    margin-top: 5px;
+    display: block;
+}
+.settings-wrapper {
+    max-width: 100%;
+    margin: 20px auto;
+    direction: ltr;
+    text-align: left;
+    padding: 0 20px;
+    color: var(--text-main); /* استعملت نصك الأساسي */
+}
+
+.settings-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: var(--text-main);
+}
+
+.settings-card {
+    background: var(--bg-header); /* استعملت خلفية الهيدر حيت غالبا كتكون هي البيضاء/السوداء */
+    border-radius: var(--radius);
+    padding: 30px;
+    border: 1px solid rgba(0,0,0,0.1);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+/* تعديل الـ Card فـ Dark Mode باش تبان أحسن */
+body.dark .settings-card {
+    border-color: #1e293b;
+    background: var(--bg-sidebar); /* خلفية السايدبار كتجي زوينة فالكاردات */
+}
+
+.form-group-modern {
+    margin-bottom: 20px;
+}
+
+.form-group-modern label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-main);
+}
+
+.input-modern {
+    width: 100%;
+    height: 48px;
+    padding: 0 15px;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    background: var(--bg-header);
+    color: var(--text-main);
+    font-size: 14px;
+    transition: var(--transition);
+    box-sizing: border-box;
+}
+
+body.dark .input-modern {
+    border-color: #334155;
+}
+
+.input-modern:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 0 3px var(--primary-soft);
+}
+
+.input-disabled {
+    background: #f3f4f6 !important;
+    color: var(--text-muted);
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+body.dark .input-disabled {
+    background: #1e293b !important;
+}
+
+.btn-primary-modern {
+    width: 100%;
+    height: 50px;
+    border-radius: 10px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-primary-modern:hover {
+    filter: brightness(1.1);
+}
+
+/* Danger Zone - تعديلات لتناسب الـ Dark Mode */
+.danger-card {
+    border: 1px solid var(--danger);
+    background: rgba(239, 68, 68, 0.05);
+    border-radius: var(--radius);
+    margin-top: 30px;
+    padding: 25px;
+}
+
+.danger-header {
+    color: var(--danger);
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.btn-danger-outline {
+    color: var(--danger);
+    border: 1px solid var(--danger);
+    padding: 8px 20px;
+    border-radius: 8px;
+    background: transparent;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-danger-outline:hover {
+    background: var(--danger);
+    color: white;
+}
+
+.divider {
+    margin: 30px 0;
+    border: 0;
+    border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+body.dark .divider {
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+

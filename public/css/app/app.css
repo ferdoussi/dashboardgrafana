@@ -190,15 +190,105 @@ body {
 }
 
 .logout-btn {
-    width: 100%;
-    background: linear-gradient(135deg, #ef4444, #dc2626);
-    color: white;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%; /* باش ياخد العرض كامل يلا كان فـ sidebar */
+    padding: 12px 15px;
     border: none;
-    padding: 12px;
-    border-radius: 10px;
+    background: none;
+    color: #4b5563; /* لون رمادي */
+    font-size: 15px;
+    font-weight: 500;
     cursor: pointer;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    font-family: inherit; /* باش ياخد نفس خط الموقع */
+}
+
+.logout-btn i {
+    font-size: 20px;
+    color: #6b7280;
+    transition: all 0.3s ease;
+}
+
+/* التأثير عند تمرير الماوس */
+.logout-btn:hover {
+    background-color: #fef2f2; /* خلفية حمراء خفيفة جداً */
+    color: #dc2626; /* لون أحمر دافئ */
+}
+
+.logout-btn:hover i {
+    color: #dc2626;
+    transform: translateX(-3px); /* حركة بسيطة للأيقونة لليسار */
+}
+
+/* إزالة أي إطار مزعج عند الضغط */
+.logout-btn:focus {
+    outline: none;
+}
+/* ستايل مشترك للرابط والبوطون */
+.settings, .logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 15px;
+    text-decoration: none;
+    background: transparent;
+    border: none;
+    border-radius: var(--radius); /* مستعمل الراديوس ديالك */
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-main); /* كيتبدل حسب المود */
+    cursor: pointer;
+    transition: var(--transition); /* مستعمل الـ transition ديالك */
+    font-family: inherit;
+}
+
+.settings i, .logout-btn i {
+    font-size: 20px;
+    color: var(--text-muted); /* لون خفيف فالبداية */
+    transition: var(--transition);
+}
+
+/* --- Settings Hover --- */
+.settings:hover {
+    background: var(--primary-soft); /* اللون اللي معرفو نتا */
+    color: var(--primary);
+}
+
+.settings:hover i {
+    color: var(--primary);
+    transform: rotate(30deg);
+}
+
+/* إيلا كان الرابط نشط (Active) */
+.settings.active {
+    background: var(--primary-soft);
+    color: var(--primary);
     font-weight: 600;
-    margin: 10px 0;
+}
+
+.settings.active i {
+    color: var(--primary);
+}
+
+/* --- Logout Hover --- */
+.logout-btn:hover {
+    /* فاش كيكون الماوس فوق الخروج كيعطي اللون ديال Danger */
+    background: rgba(239, 68, 68, 0.1); 
+    color: var(--danger);
+}
+
+.logout-btn:hover i {
+    color: var(--danger);
+    transform: translateX(-3px);
+}
+
+/* إزالة الـ outline فاش كيكليكي اليوزر */
+.logout-btn:focus {
+    outline: none;
 }
 
 /* ===============================
@@ -263,9 +353,44 @@ body {
 
 .sidebar-section {
     margin-bottom: 25px;
-    top: 10px;
+    top: 15px;
+    margin-top: 20px;
     /* create a scroll here  */
     
+}
+.settings {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    text-decoration: none;
+    color: #4b5563; /* لون رمادي احترافي */
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    gap: 12px; /* مسافة بين الأيقونة والكتابة */
+    font-weight: 500;
+}
+
+.settings i {
+    font-size: 20px; /* كبر الأيقونة شوية */
+    color: #6b7280;
+    transition: transform 0.3s ease;
+}
+
+/* فاش كيدوز اليوزر الفار (Hover) */
+.settings:hover {
+    background-color: #f3f4f6; /* خلفية رمادية فاتحة */
+    color: #1479b8; /* اللون الأخضر اللي خدمنا بيه قبيلة */
+}
+
+.settings:hover i {
+    color: #1479b8;
+    transform: rotate(45deg); /* الأيقونة كتدور شوية فاش كيدوز الفار */
+}
+
+/* إيلا كانت هادي هي الصفحة اللي خدام فيها حاليا (Active) */
+.settings.active {
+    background-color: #ecfdf5;
+    color: #1479b8;
 }
 
 .sidebar-section h3 {

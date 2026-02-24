@@ -60,17 +60,18 @@
 
                 @if(Auth::check())
                     <div class="user-name">{{ Auth::user()->company }}</div>
-                    <div class="user-name">{{ Auth::user()->name }}</div>
                     <div class="user-email">{{ Auth::user()->email }}</div>
-                    <div class="user-role">{{ Auth::user()->id }}</div>
-                    <div class="user-email">{{ Auth::user()->role }}</div>
+                    
                 @else
-                    <div class="user-name">Verification 2FA</div>
+                    <div class="user-name">{{ translate('Verification 2FA') }}</div>
                 @endif
             </div>
 
             <div class="dropdown-divider"></div>
-
+            <a href="{{ route('settings.index') }}" class="settings">
+                <i class='bx bx-cog'></i>
+                <span>{{ translate('Settings') }}</span>
+            </a>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button type="submit" class="logout-btn">
@@ -277,7 +278,11 @@ $userDashboards = \App\Models\UserDashboard::where('client_id', auth()->user()->
     </div>
     @endif
     @endauth
-    
+        <div class="sidebar-section">
+        <a href="{{ route('settings.index') }}" class="sidebar-link" >
+        <h3><i class='bx bx-help-circle'></i> <span class="nav-text">{{ translate('Settings') }}</span></h3>
+    </a>
+    </div>
 </div>
 
             
