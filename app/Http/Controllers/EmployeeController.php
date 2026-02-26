@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Client;
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use App\Notifications\SystemNotification;
 
 class EmployeeController extends Controller
 {
@@ -57,6 +58,17 @@ class EmployeeController extends Controller
         $employee->update($request->only('name', 'email', 'company', 'role') + [
             'password' => bcrypt($request->password)
         ]);
+        $admins = Employee::where('client_id', $employee->client_id)
+                  ->whereIn('role', ['superadmin'])
+                  ->get();
+
+$message = "Employee {$employee->name} has been updated";
+$icon = "bx-edit";
+
+foreach($admins as $admin) {
+    $admin->notify(new SystemNotification($message, $icon, $admin->client_id));
+}
+
 
         return redirect()->route('superAdmin.superAdmin')->with('success', translate('Employee updated successfully'));
     }   
@@ -64,6 +76,20 @@ class EmployeeController extends Controller
     public function destroy(Employee $employee)
     {
         $employee->delete();
+        $admins = Employee::where('client_id', $employee->client_id)
+                  ->whereIn('role', ['superadmin'])
+                  ->get();
+
+$message = "Employee {$employee->name} has been deleted";
+$icon = "bx-trash";
+
+foreach($admins as $admin) {
+    $admin->notify(new SystemNotification($message, $icon, $admin->client_id));
+}
+
+// بعد ذلك نحذف الموظف
+$employee->delete();
+
         return redirect()->route('superAdmin.superAdmin')->with('success', translate('Employee deleted successfully'));
     }
 
@@ -110,6 +136,18 @@ class EmployeeController extends Controller
         $employee->client_id = $clientId; 
         
         $employee->save();
+        // بعد ما دوز save
+$admins = Employee::where('client_id', $employee->client_id)
+                  ->whereIn('role', ['superadmin'])
+                  ->get();
+
+$message = "Employee {$employee->name} has been added to company {$employee->company}";
+$icon = "bx-user-plus";
+
+foreach($admins as $admin) {
+    $admin->notify(new SystemNotification($message, $icon, $admin->client_id));
+}
+
 
         return redirect()->back()->with('success', "User Created and Linked to Client ID: $clientId");
     }

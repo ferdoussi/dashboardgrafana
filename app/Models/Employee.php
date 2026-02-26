@@ -5,12 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable; 
+use Illuminate\Notifications\Notifiable;
 
 // 🚨 MODIFIEZ CECI : Le modèle DOIT étendre Authenticatable
 class Employee extends Authenticatable
 {
     //
     use HasFactory;
+    use HasFactory, Notifiable; // ✅ هنا الحل
 
     // Indique les champs qui peuvent être insérés (sécurité)
     protected $fillable = [

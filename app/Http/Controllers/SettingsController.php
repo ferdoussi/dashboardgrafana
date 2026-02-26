@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Employee;
+use App\Notifications\SystemNotification;
+
+
 class SettingsController extends Controller
 {
     public function index()
@@ -44,11 +47,33 @@ public function updateProfile(Request $request)
         $user->password = Hash::make($request->password);
     }
 
-    $user->save();
+$user->save();
+$user->notify(
+    new SystemNotification(
+        'Profile updated successfully!',
+        'bx-user',
+        $user->client_id
+    )
+);
+// notification للadmins و superadmin ديال نفس client
+$admins = Employee::where('client_id', $user->client_id)
+                  ->whereIn('role', ['superadmin'])
+                  ->get();
+
+foreach($admins as $admin) {
+    $admin->notify(
+        new SystemNotification(
+            "{$user->name} He updated his profile",
+            'bx-edit',
+            $admin->client_id
+        )
+    );
+}
 
     return redirect()->back()->with('success', 'Account updated successfully!');
 }
-    // public function updatePassword(Request $request)
+   
+// public function updatePassword(Request $request)
     // {
     //     $request->validate([
     //         'current_password' => 'required',
@@ -65,7 +90,7 @@ public function updateProfile(Request $request)
     //     ]);
 
     //     return back()->with('success','Password updated');
-    // }
+// }
 
     public function deleteAccount()
     {
