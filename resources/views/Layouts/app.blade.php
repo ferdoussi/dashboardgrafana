@@ -44,6 +44,60 @@
     <button id="darkModeToggle" class="dark-mode">
         <i class='bx bx-moon'></i>
     </button>
+    <!-- Notifications -->
+@php
+// badge كتحسب غير unread
+$unreadCount = auth()->check() 
+    ? auth()->user()->unreadNotifications->where('data.client_id', auth()->user()->client_id)->count()
+    : 0;
+
+// جلب جميع notifications (read + unread) للـ dropdown
+$notifications = auth()->check()
+    ? auth()->user()->notifications->where('data.client_id', auth()->user()->client_id)
+    : collect();
+@endphp
+<div class="notification-wrapper">
+    <button class="notification-btn">
+        <i class='bx bx-bell'></i>
+        @if($unreadCount)
+            <span class="notification-badge">{{ $unreadCount }}</span>
+        @endif
+    </button>
+
+    <div class="notification-dropdown">
+        <div class="notification-header">
+            <div>
+                <h3>{{ translate('Notifications') }}</h3>
+                <small>{{ $unreadCount }} {{ translate('unread') }}</small>
+            </div>
+           
+        </div>
+
+        <div class="notification-list">
+            @forelse($notifications as $notif)
+                <div class="notification-item {{ $notif->read_at ? 'read' : 'unread' }}" data-id="{{ $notif->id }}">
+                    <div class="notif-icon-box">
+                        <i class='bx bx-rocket'></i>
+                    </div>
+                    <div class="notif-content">
+                        <div class="notif-title">{{ $notif->data['title'] ?? 'Notification' }}</div>
+                        <p class="notif-msg">{{ $notif->data['message'] }}</p>
+                        <span class="notif-time">{{ $notif->created_at->diffForHumans() }}</span>
+                    </div>
+                    @if(!$notif->read_at)
+                        <span class="unread-dot"></span>
+                    @endif
+                </div>
+            @empty
+                <div class="empty-notif">{{ translate('No notifications ye') }}t</div>
+            @endforelse
+        </div>
+
+        <div  class="notif-footer">{{ translate('Notifications') }}</div>
+    </div>
+</div>
+
+
 
     <div class="user-dropdown">
         <button class="user-dropdown-btn">
@@ -257,13 +311,13 @@ $userDashboards = \App\Models\UserDashboard::where('client_id', auth()->user()->
     
     @auth
         @if (auth()->user()->role === 'admin_client')
-        <a href="">
+        
     <div class="sidebar-section">
         <a href="{{ route('clientFile.allUser') }}" class="sidebar-link" >
         <h3><i class='bx bx-user'></i> <span class="nav-text">{{ translate('All Users') }}</span></h3>
-    </a>
-    </div>
         </a>
+    </div>
+        
             
         @endif
     @endauth
@@ -419,6 +473,83 @@ darkToggle.addEventListener('click', () => {
         darkToggle.innerHTML = "<i class='bx bx-moon'></i>";
     }
 });
+
+const notifBtn = document.querySelector('.notification-btn');
+const notifDropdown = document.querySelector('.notification-dropdown');
+
+// Toggle dropdown عند الضغط على الزر
+notifBtn.addEventListener('click', e => {
+    e.stopPropagation(); // باش الضغط على الزر ما يغلقش القائمة
+    notifDropdown.classList.toggle('show');
+});
+
+// إغلاق dropdown عند الضغط خارجها
+document.addEventListener('click', () => {
+    notifDropdown.classList.remove('show');
+});
+
+// منع إغلاق عند الضغط داخل dropdown
+notifDropdown.addEventListener('click', e => e.stopPropagation());
+document.querySelectorAll('.notification-item').forEach(item => {
+    item.addEventListener('click', function() {
+        const notifId = this.dataset.id;
+        if (!notifId) return;
+
+        fetch(`/notifications/${notifId}/read`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Accept': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                // حذف dot و تغيير background
+                this.classList.remove('unread');
+                this.classList.add('read');
+                const dot = this.querySelector('.unread-dot');
+                if(dot) dot.remove();
+
+                // تحديث badge
+                const badge = document.querySelector('.notification-badge');
+                if(badge) {
+                    let count = parseInt(badge.textContent) - 1;
+                    if(count > 0){
+                        badge.textContent = count;
+                        // optional: badge animation
+                        badge.classList.add('update');
+                        setTimeout(() => badge.classList.remove('update'), 300);
+                    } else {
+                        badge.remove();
+                    }
+                }
+            }
+        });
+    });
+});
+document.querySelector('.mark-all').addEventListener('click', function(e){
+    e.preventDefault();
+
+    fetch('/notifications/mark-all-read', { 
+        method: 'POST', 
+        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' } 
+    })
+    .then(() => {
+        // إزالة كل unread dots و تغيير class لكل notification
+        document.querySelectorAll('.notification-item.unread').forEach(item => {
+            item.classList.remove('unread');
+            item.classList.add('read');
+            const dot = item.querySelector('.unread-dot');
+            if(dot) dot.remove();
+        });
+
+        // إزالة badge
+        const badge = document.querySelector('.notification-badge');
+        if(badge) badge.remove();
+    });
+});
+
 
 </script>
 

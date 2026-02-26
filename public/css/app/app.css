@@ -398,7 +398,7 @@ body {
     text-transform: uppercase;
     letter-spacing: 1px;
     color: rgba(255,255,255,0.9);
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
     display: flex;
     align-items: center;
     gap: 8px;
@@ -406,7 +406,7 @@ body {
 }
 .sidebar-section:hover{
     cursor: pointer;
-    color: #ffffff;
+    color: red;
 }
 
 .sidebar-nav {
@@ -435,6 +435,418 @@ body {
         color: #ffffff;
         transform: translateX(4px);
 }
+/* Container الأساسي */
+/* Container خاصو يكون relative باش الـ badge يتحرك وسطو */
+.notification-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.notification-btn {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative; /* باش نضمنو الـ badge يتبع البوطونة */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.notification-btn:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+}
+
+/* الـ Badge دابا غيجي فوق الناقوس نيشان */
+.notification-badge {
+    position: absolute;
+    top: -5px;    /* طلعو شوية فوق الحافة */
+    right: -5px;  /* خرجو شوية لليمين */
+    background: #ff3b3b;
+    color: #fff;
+    border-radius: 50%;
+    min-width: 18px;  /* باش يبقى دائري واخا يكون رقم واحد */
+    height: 18px;
+    padding: 2px;
+    font-size: 11px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #fff; /* هاد الخط الأبيض كيعطي منظر احترافي كتر */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+.notification-btn:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+}
+.notification-dropdown {
+    width: 400px; /* كبرناه شوية باش يجي مريح */
+    background: #ffffff;
+    border-radius: 16px; /* زوايا دائرية كتر كتجي عصرية */
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12), 0 5px 15px rgba(0, 0, 0, 0.04);
+    border: 1px solid #edf2f7;
+    display: none;
+    position: absolute;
+    right: 0;
+    top: calc(100% + 12px); /* باش يبعد شوية على البوطونة */
+    z-index: 1000;
+    overflow: hidden; /* باش الـ Header و Footer ما يخرجوش على الزوايا */
+    animation: slideDown 0.3s ease-out; /* حركة دخول زوينة */
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.notification-dropdown.show { display: block; }
+
+/* Header */
+.notification-header {
+    padding: 18px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.notification-header h3 { 
+    margin: 0; 
+    font-size: 16px; 
+    font-weight: 700; 
+    color: #1e293b; 
+}
+
+.notification-header small {
+    color: #64748b;
+    font-size: 13px;
+    display: block;
+    margin-top: 2px;
+}
+
+.mark-all { 
+    color: #20b2aa; 
+    text-decoration: none; 
+    font-size: 13px; 
+    font-weight: 600;
+    padding: 6px 10px;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+
+.mark-all:hover { background: #f0fdfa; }
+
+/* Scrollable List */
+.notification-list {
+    max-height: 420px;
+    overflow-y: auto;
+}
+
+/* Scrollbar Customization */
+.notification-list::-webkit-scrollbar { width: 6px; }
+.notification-list::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+
+/* Item Layout */
+.notification-item {
+    display: flex;
+    padding: 16px 20px;
+    gap: 15px;
+    position: relative;
+    cursor: pointer;
+    border-bottom: 1px solid #f8fafc;
+    transition: all 0.2s ease;
+}
+
+.notification-item:last-child { border-bottom: none; }
+.notification-item:hover { background: #f8fafc; }
+
+/* Unread State */
+.notification-item.unread { background: #f4fafd; }
+.unread-dot {
+    width: 10px;
+    height: 10px;
+    background: #20b2aa;
+    border-radius: 50%;
+    position: absolute;
+    left: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 2px solid #fff;
+}
+
+/* Icon Box & Variants (بحال التصويرة) */
+.notif-icon-box {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+/* الألوان حسب النوع - تقدر تزيد هاد الـ classes في الـ Blade */
+.notif-icon-box.deploy { background: #eff6ff; color: #3b82f6; }
+.notif-icon-box.feedback { background: #f1f5f9; color: #475569; }
+.notif-icon-box.storage { background: #fff7ed; color: #f97316; }
+.notif-icon-box.payment { background: #f0fdf4; color: #22c55e; }
+
+/* Content Details */
+.notif-content { flex-grow: 1; }
+.notif-title { 
+    font-weight: 600; 
+    color: #334155; 
+    font-size: 15px; 
+    margin-bottom: 2px; 
+}
+.notif-msg { 
+    color: #64748b; 
+    font-size: 13.5px; 
+    margin: 0; 
+    line-height: 1.5; 
+}
+.notif-time { 
+    color: #94a3b8; 
+    font-size: 12px; 
+    margin-top: 6px; 
+    display: block; 
+}
+
+/* Footer */
+.notif-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px;
+    color: #20b2aa;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    background: #fff;
+    border-top: 1px solid #f1f5f9;
+    transition: background 0.2s;
+}
+
+.notif-footer:hover { background: #f8fafc; color: #3670ce; }
+
+/* Empty State */
+.empty-notif {
+    padding: 40px 20px;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 14px;
+}
+/* --- 1. الألوان الأساسية (Light & Dark) --- */
+:root {
+    --notif-bg: #ffffff;
+    --notif-header-bg: #ffffff;
+    --notif-border: #edf2f7;
+    --notif-text-title: #1e293b;
+    --notif-text-msg: #64748b;
+    --notif-hover: #f8fafc;
+    --notif-unread-bg: #f4fafd;
+    --notif-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+}
+
+body.dark {
+    --notif-bg: var(--bg-header); /* #1d1f28 */
+    --notif-header-bg: var(--bg-header);
+    --notif-border: #1e293b;
+    --notif-text-title: var(--text-main);
+    --notif-text-msg: var(--text-muted);
+    --notif-hover: rgba(255, 255, 255, 0.05);
+    --notif-unread-bg: rgba(56, 189, 248, 0.08);
+    --notif-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* --- 2. Button & Badge --- */
+.notification-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.notification-btn {
+    background: var(--notif-bg);
+    border: 1px solid var(--notif-border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--notif-text-title);
+    font-size: 16px;
+}
+
+.notification-btn:hover {
+    background: var(--notif-hover);
+    border-color: var(--primary);
+}
+
+.notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: var(--danger);
+    color: #fff;
+    border-radius: 50%;
+    min-width: 18px;
+    height: 18px;
+    padding: 2px;
+    font-size: 11px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--notif-bg); /* كيتبدل حسب المود */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+/* --- 3. Dropdown Container --- */
+.notification-dropdown {
+    width: 400px;
+    background: var(--notif-bg);
+    border-radius: 16px;
+    box-shadow: var(--notif-shadow);
+    border: 1px solid var(--notif-border);
+    display: none;
+    position: absolute;
+    right: 0;
+    top: calc(100% + 12px);
+    z-index: 1000;
+    overflow: hidden;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.notification-dropdown.show { display: block; }
+
+/* --- 4. Header & Footer --- */
+.notification-header {
+    padding: 18px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--notif-header-bg);
+    border-bottom: 1px solid var(--notif-border);
+}
+
+.notification-header h3 { 
+    margin: 0; 
+    font-size: 16px; 
+    font-weight: 700; 
+    color: var(--notif-text-title); 
+}
+
+.mark-all { 
+    color: var(--primary); 
+    text-decoration: none; 
+    font-size: 13px; 
+    font-weight: 600;
+    padding: 6px 10px;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+
+.mark-all:hover { background: var(--primary-soft); }
+
+.notif-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    background: var(--notif-header-bg);
+    border-top: 1px solid var(--notif-border);
+}
+
+/* --- 5. Notification Items --- */
+.notification-list {
+    max-height: 420px;
+    overflow-y: auto;
+}
+
+.notification-item {
+    display: flex;
+    padding: 16px 20px;
+    gap: 15px;
+    position: relative;
+    cursor: pointer;
+    border-bottom: 1px solid var(--notif-border);
+    transition: all 0.2s ease;
+}
+
+.notification-item:hover { background: var(--notif-hover); }
+.notification-item.unread { background: var(--notif-unread-bg); }
+
+.unread-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--primary);
+    border-radius: 50%;
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.notif-title { 
+    font-weight: 600; 
+    color: var(--notif-text-title); 
+    font-size: 15px; 
+}
+
+.notif-msg { 
+    color: var(--notif-text-msg); 
+    font-size: 13.5px; 
+    line-height: 1.4;
+}
+
+.notif-time { 
+    color: var(--text-muted); 
+    font-size: 12px; 
+    margin-top: 5px; 
+    display: block; 
+}
+
+/* Icons Variants */
+.notif-icon-box {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+/* Colors for variants (Light mode default, Dark mode adjustment) */
+.notif-icon-box.deploy   { background: #eff6ff; color: #3b82f6; }
+.notif-icon-box.payment  { background: #f0fdf4; color: #22c55e; }
+.notif-icon-box.storage  { background: #fff7ed; color: #f97316; }
+
+body.dark .notif-icon-box.deploy  { background: rgba(56, 189, 248, 0.1); }
+body.dark .notif-icon-box.payment { background: rgba(34, 197, 94, 0.1); }
+body.dark .notif-icon-box.storage { background: rgba(249, 115, 22, 0.1); }
+
 
 /* ===============================
    DROPDOWN DASHBOARD

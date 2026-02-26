@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use App\Models\Employee;
 use App\Models\UserDashboard;
 use App\Models\Panel;
+use App\Notifications\SystemNotification;
+
+
+
 class DashboardController extends Controller
 {
     // هاد function كتخزن جميع panels حسب type و departement
@@ -166,6 +170,18 @@ public function saveCustomLayout(Request $request)
             'name'        => $request->name,
             'description' => $request->description
         ]);
+        // جلب admins و superadmin ديال نفس client
+$admins = Employee::where('client_id', $user->client_id)
+                  ->whereIn('role', ['admin','superadmin'])
+                  ->get();
+
+$message = "User {$user->name} created a new dashboard: {$request->name}";
+$icon = "bx-layout";
+
+foreach ($admins as $admin) {
+    $admin->notify(new SystemNotification($message, $icon, $admin->client_id));
+}
+
 
         return response()->json([
             'message' => 'Dashboard enregistré !',
@@ -188,6 +204,16 @@ public function deleteDashboard($id)
         ->firstOrFail();
 
     $dashboard->delete();
+    $admins = Employee::where('client_id', Auth::user()->client_id)
+                  ->whereIn('role', ['admin','superadmin'])
+                  ->get();
+
+$message = "User " . Auth::user()->name . " deleted a dashboard";
+$icon = "bx-trash";
+
+foreach ($admins as $admin) {
+    $admin->notify(new SystemNotification($message, $icon, $admin->client_id));
+}
 
     return back()->with('success', 'Dashboard supprimé !');
 }

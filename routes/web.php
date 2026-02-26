@@ -6,7 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GrafanaProxyController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\SettingsController;
-
+use App\Http\Controllers\NotificationController;
 // DashboardController referenced by string in routes to avoid missing-type static error.
 
 
@@ -82,6 +82,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/settings/password', [SettingsController::class, 'updatePassword'])->name('settings.password');
     Route::delete('/settings/delete-account', [SettingsController::class, 'deleteAccount'])->name('settings.delete');
 });
+
+
+Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])
+    ->middleware('auth')
+    ->name('notifications.read');
 
 
 Route::get('/test-mitre', function () {

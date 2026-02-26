@@ -24,8 +24,8 @@
             <select name="role" class="filter-input" style="padding:10px 14px; border-radius:8px;">
                 <option value="">{{ translate('All Roles') }}</option>
                 <option value="admin">Admin</option>
-                <option value="manager">Admin_client</option>
-                <option value="manager">Superadmint</option>
+                <option value="admin_client">Admin_client</option>
+                <option value="superadmin">Superadmin</option>
                 <option value="user">User</option>
             </select>
 
