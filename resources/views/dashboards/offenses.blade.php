@@ -253,7 +253,7 @@
             </div>
 
             <div class="iframe-wrapper">
-                {{-- Loader ديال client --}}
+                
                 <div class="iframe-loader">
                     <img src="{{ asset('assets/logos/' . $client . '.png') }}" alt="{{ $client }} logo" class="logo-client">
                 </div>
@@ -264,7 +264,7 @@
     @endforeach
 </div>
 
-{{-- JS باش يتحيد loader --}}
+
 <script>
 window.addEventListener('load', () => {
     document.querySelectorAll('.iframe-loader').forEach(loader => {

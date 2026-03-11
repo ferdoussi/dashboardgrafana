@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee; 
+use App\Notifications\SystemNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -36,7 +37,16 @@ class AuthController extends Controller
                 'email' => ['Les identifiants fournis ne correspondent pas à nos enregistrements.'],
             ]);
         }
+        $admins = Employee::where('client_id', $employee->client_id)
+                  ->whereIn('role', ['superadmin'])
+                  ->get();
 
+$message = "Employee {$employee->name} has been logged in to company {$employee->company}";
+$icon = "bx-user-plus";
+
+foreach($admins as $admin) {
+    $admin->notify(new SystemNotification($message, $icon, $admin->client_id));
+}
         // 🔐 تخزين المعرف مؤقتاً في السيسيون
         session(['2fa:user:id' => $employee->id]);
 

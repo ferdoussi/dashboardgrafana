@@ -1,6 +1,8 @@
 /* ===============================
    SOC DASHBOARD – LIGHT STYLE
 ================================ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
 body.dark {
     --bg-main: #26282f;
     --bg-header: #1d1f28;
@@ -61,6 +63,7 @@ body.dark .line {
 
     --radius: 14px;
     --transition: 0.25s ease;
+    --font-heading: 'Inter', sans-serif;
 }
 
 /* RESET */
@@ -71,7 +74,7 @@ body.dark .line {
 }
 
 body {
-    font-family: 'Inter', 'Segoe UI', sans-serif;
+    font-family: var(--font-heading);
     background: var(--bg-main);
     color: var(--text-main);
     height: 100vh;
@@ -193,17 +196,17 @@ body {
     display: flex;
     align-items: center;
     gap: 12px;
-    width: 100%; /* باش ياخد العرض كامل يلا كان فـ sidebar */
+    width: 100%; 
     padding: 12px 15px;
     border: none;
     background: none;
-    color: #4b5563; /* لون رمادي */
+    color: #4b5563; 
     font-size: 15px;
     font-weight: 500;
     cursor: pointer;
     border-radius: 10px;
     transition: all 0.3s ease;
-    font-family: inherit; /* باش ياخد نفس خط الموقع */
+   font-family: var(--font-heading);
 }
 
 .logout-btn i {
@@ -212,22 +215,21 @@ body {
     transition: all 0.3s ease;
 }
 
-/* التأثير عند تمرير الماوس */
+
 .logout-btn:hover {
-    background-color: #fef2f2; /* خلفية حمراء خفيفة جداً */
-    color: #dc2626; /* لون أحمر دافئ */
+    background-color: #fef2f2; 
+    color: #dc2626; 
 }
 
 .logout-btn:hover i {
     color: #dc2626;
-    transform: translateX(-3px); /* حركة بسيطة للأيقونة لليسار */
+    transform: translateX(-3px); 
 }
 
-/* إزالة أي إطار مزعج عند الضغط */
 .logout-btn:focus {
     outline: none;
 }
-/* ستايل مشترك للرابط والبوطون */
+
 .settings, .logout-btn {
     display: flex;
     align-items: center;
@@ -237,24 +239,24 @@ body {
     text-decoration: none;
     background: transparent;
     border: none;
-    border-radius: var(--radius); /* مستعمل الراديوس ديالك */
+    border-radius: var(--radius); 
     font-size: 15px;
     font-weight: 500;
-    color: var(--text-main); /* كيتبدل حسب المود */
+    color: var(--text-main); 
     cursor: pointer;
-    transition: var(--transition); /* مستعمل الـ transition ديالك */
-    font-family: inherit;
+    transition: var(--transition); 
+    font-family: var(--font-heading);
 }
 
 .settings i, .logout-btn i {
     font-size: 20px;
-    color: var(--text-muted); /* لون خفيف فالبداية */
+    color: var(--text-muted); 
     transition: var(--transition);
 }
 
 /* --- Settings Hover --- */
 .settings:hover {
-    background: var(--primary-soft); /* اللون اللي معرفو نتا */
+    background: var(--primary-soft); 
     color: var(--primary);
 }
 
@@ -263,7 +265,7 @@ body {
     transform: rotate(30deg);
 }
 
-/* إيلا كان الرابط نشط (Active) */
+
 .settings.active {
     background: var(--primary-soft);
     color: var(--primary);
@@ -276,7 +278,7 @@ body {
 
 /* --- Logout Hover --- */
 .logout-btn:hover {
-    /* فاش كيكون الماوس فوق الخروج كيعطي اللون ديال Danger */
+    
     background: rgba(239, 68, 68, 0.1); 
     color: var(--danger);
 }
@@ -286,7 +288,6 @@ body {
     transform: translateX(-3px);
 }
 
-/* إزالة الـ outline فاش كيكليكي اليوزر */
 .logout-btn:focus {
     outline: none;
 }
@@ -355,7 +356,7 @@ body {
     margin-bottom: 25px;
     top: 15px;
     margin-top: 20px;
-    /* create a scroll here  */
+
     
 }
 .settings {
@@ -363,31 +364,31 @@ body {
     align-items: center;
     padding: 12px 15px;
     text-decoration: none;
-    color: #4b5563; /* لون رمادي احترافي */
+    color: #4b5563; 
     border-radius: 10px;
     transition: all 0.3s ease;
-    gap: 12px; /* مسافة بين الأيقونة والكتابة */
+    gap: 12px; 
     font-weight: 500;
 }
 
 .settings i {
-    font-size: 20px; /* كبر الأيقونة شوية */
+    font-size: 20px; 
     color: #6b7280;
     transition: transform 0.3s ease;
 }
 
-/* فاش كيدوز اليوزر الفار (Hover) */
+
 .settings:hover {
-    background-color: #f3f4f6; /* خلفية رمادية فاتحة */
-    color: #1479b8; /* اللون الأخضر اللي خدمنا بيه قبيلة */
+    background-color: #f3f4f6; 
+    color: #1479b8; 
 }
 
 .settings:hover i {
     color: #1479b8;
-    transform: rotate(45deg); /* الأيقونة كتدور شوية فاش كيدوز الفار */
+    transform: rotate(45deg); 
 }
 
-/* إيلا كانت هادي هي الصفحة اللي خدام فيها حاليا (Active) */
+
 .settings.active {
     background-color: #ecfdf5;
     color: #1479b8;
@@ -435,8 +436,7 @@ body {
         color: #ffffff;
         transform: translateX(4px);
 }
-/* Container الأساسي */
-/* Container خاصو يكون relative باش الـ badge يتحرك وسطو */
+
 .notification-wrapper {
     position: relative;
     display: inline-block;
@@ -449,7 +449,7 @@ body {
     padding: 8px 12px;
     cursor: pointer;
     transition: all 0.2s;
-    position: relative; /* باش نضمنو الـ badge يتبع البوطونة */
+    position: relative; 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -460,15 +460,15 @@ body {
     border-color: #cbd5e1;
 }
 
-/* الـ Badge دابا غيجي فوق الناقوس نيشان */
+
 .notification-badge {
     position: absolute;
-    top: -5px;    /* طلعو شوية فوق الحافة */
-    right: -5px;  /* خرجو شوية لليمين */
+    top: -5px;    
+    right: -5px;  
     background: #ff3b3b;
     color: #fff;
     border-radius: 50%;
-    min-width: 18px;  /* باش يبقى دائري واخا يكون رقم واحد */
+    min-width: 18px;  
     height: 18px;
     padding: 2px;
     font-size: 11px;
@@ -476,7 +476,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid #fff; /* هاد الخط الأبيض كيعطي منظر احترافي كتر */
+    border: 2px solid #fff; 
     box-shadow: 0 2px 4px rgba(0,0,0,0.15);
 }
 
@@ -485,18 +485,18 @@ body {
     border-color: #cbd5e1;
 }
 .notification-dropdown {
-    width: 400px; /* كبرناه شوية باش يجي مريح */
+    width: 400px; 
     background: #ffffff;
-    border-radius: 16px; /* زوايا دائرية كتر كتجي عصرية */
+    border-radius: 16px; 
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12), 0 5px 15px rgba(0, 0, 0, 0.04);
     border: 1px solid #edf2f7;
     display: none;
     position: absolute;
     right: 0;
-    top: calc(100% + 12px); /* باش يبعد شوية على البوطونة */
+    top: calc(100% + 12px); 
     z-index: 1000;
-    overflow: hidden; /* باش الـ Header و Footer ما يخرجوش على الزوايا */
-    animation: slideDown 0.3s ease-out; /* حركة دخول زوينة */
+    overflow: hidden; 
+    animation: slideDown 0.3s ease-out; 
 }
 
 @keyframes slideDown {
@@ -580,7 +580,7 @@ body {
     border: 2px solid #fff;
 }
 
-/* Icon Box & Variants (بحال التصويرة) */
+
 .notif-icon-box {
     width: 48px;
     height: 48px;
@@ -592,7 +592,7 @@ body {
     flex-shrink: 0;
 }
 
-/* الألوان حسب النوع - تقدر تزيد هاد الـ classes في الـ Blade */
+
 .notif-icon-box.deploy { background: #eff6ff; color: #3b82f6; }
 .notif-icon-box.feedback { background: #f1f5f9; color: #475569; }
 .notif-icon-box.storage { background: #fff7ed; color: #f97316; }
@@ -644,7 +644,7 @@ body {
     color: #94a3b8;
     font-size: 14px;
 }
-/* --- 1. الألوان الأساسية (Light & Dark) --- */
+
 :root {
     --notif-bg: #ffffff;
     --notif-header-bg: #ffffff;
@@ -657,7 +657,7 @@ body {
 }
 
 body.dark {
-    --notif-bg: var(--bg-header); /* #1d1f28 */
+    --notif-bg: var(--bg-header); 
     --notif-header-bg: var(--bg-header);
     --notif-border: #1e293b;
     --notif-text-title: var(--text-main);
@@ -708,7 +708,7 @@ body.dark {
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid var(--notif-bg); /* كيتبدل حسب المود */
+    border: 2px solid var(--notif-bg); 
     box-shadow: 0 2px 4px rgba(0,0,0,0.15);
 }
 
@@ -736,7 +736,7 @@ body.dark {
 .notification-dropdown.show { display: block; }
 
 /* --- 4. Header & Footer --- */
-.notification-header {
+.notification-header { 
     padding: 18px 20px;
     display: flex;
     justify-content: space-between;
@@ -871,10 +871,10 @@ body.dark .notif-icon-box.storage { background: rgba(249, 115, 22, 0.1); }
     padding-left: 10px;
 }
 
-/* ملي يتحل */
+
 .dropdown-menu-dashboard.open {
-    max-height: 60vh;   /* ياخد 60% من الشاشة */
-    overflow-y: auto;   /* يبان scroll */
+    max-height: 60vh;  
+    overflow-y: auto;   
 }
 
 /* Scroll styling */
@@ -913,8 +913,8 @@ body.dark .notif-icon-box.storage { background: rgba(249, 115, 22, 0.1); }
 }
 
 .submenu-list.open {
-    max-height: none;   /* بلا limit */
-    overflow: visible;  /* بلا scroll */
+    max-height: none;  
+    overflow: visible; 
 }
 /* ===============================
    CONTENT AREA
@@ -937,7 +937,7 @@ body.dark .notif-icon-box.storage { background: rgba(249, 115, 22, 0.1); }
    SIDEBAR TOGGLE BUTTON
 ================================ */
 
-/* حاوية الـ Switch */
+
 .switch-container {
     display: flex;
     align-items: center;
@@ -945,7 +945,7 @@ body.dark .notif-icon-box.storage { background: rgba(249, 115, 22, 0.1); }
     margin-top: 20px;
 }
 
-/* نخبيو checkbox */
+
 .sidebar-checkbox {
     display: none;
 }
@@ -954,7 +954,7 @@ body.dark .notif-icon-box.storage { background: rgba(249, 115, 22, 0.1); }
 .menu-icon {
     font-size: 28px;
     cursor: pointer;
-    color: #03a1f6; /* بدلها حسب اللون */
+    color: #03a1f6; 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -978,13 +978,11 @@ body.dark .notif-icon-box.storage { background: rgba(249, 115, 22, 0.1); }
    transform: translateX(-100%);
 }
 
-/* ===============================
-   RESPONSIVE
-================================ */
+
 .menu-toggle {
     display: none !important;
 }
-/* تنسيق الخط الفاصل في الـ Sidebar */
+
 .line {
    
     height: 1px;
@@ -994,7 +992,7 @@ body.dark .notif-icon-box.storage { background: rgba(249, 115, 22, 0.1); }
     width: 100%;
 }
 
-/* إضافة عنوان صغير اختياري تحت الخط باش ينظم الأقسام */
+
 .sidebar-label {
     font-size: 10px;
     text-transform: uppercase;
@@ -1015,10 +1013,10 @@ body.dark .notif-icon-box.storage { background: rgba(249, 115, 22, 0.1); }
     align-items: center;
     gap: 16px;
 }
-/* --- الستايل العادي (Light Mode) --- */
 
 
-/* --- الستايل الأساسي للـ Select --- */
+
+
 .form-select-lang {
     background-color: var(--bg-main);
     border: 1px solid #e2e8f0;
@@ -1029,7 +1027,7 @@ body.dark .notif-icon-box.storage { background: rgba(249, 115, 22, 0.1); }
     color: var(--text-main);
     cursor: pointer;
     appearance: none;
-    /* سهم SVG كيتغير لونه على حساب النص */
+  
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
     background-repeat: no-repeat;
     background-position: right 10px center;
@@ -1040,15 +1038,15 @@ body.dark .notif-icon-box.storage { background: rgba(249, 115, 22, 0.1); }
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
-/* --- فاش كيكون الـ Dark Mode مفعّل (body.dark) --- */
+
 body.dark .form-select-lang {
-    background-color: #334155; /* لون غامق كيتماشى مع الهيدر اللي عندك */
+    background-color: #334155; 
     border-color: #475569;
     color: #ffffff;
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
 }
 
-/* ستايل الـ options لداخل */
+
 .form-select-lang option {
     background-color: var(--bg-header);
     color: var(--text-main);
@@ -1104,30 +1102,30 @@ body.dark .form-select-lang:hover {
 
 
 @media (max-width: 768px) {
-    /* Sidebar يتحرك خارج الشاشة */
+    
     .sidebar {
         position: fixed;
         width: 100%;
-        max-height: 60vh; /* أو حسب ما بغيت */
-        top: 64px; /* تحت الهيدر */
+        max-height: 60vh; 
+        top: 64px; 
         left: 0;
         transform: translateX(-100%);
         transition: transform 0.3s ease;
         z-index: 998;
     }
 
-    /* ملي active يظهر */
+
     .sidebar.active {
         transform: translateX(0);
     }
 
-    /* Content area كامل العرض */
+    
     .content-area {
         margin-left: 0;
         padding: 20px;
     }
 
-    /* Header أصغر شوي */
+    
     .header {
         padding: 15px 20px;
         height: 60px;
@@ -1136,22 +1134,22 @@ body.dark .form-select-lang:hover {
     /* User dropdown fixed */
     .user-dropdown-content {
         position: fixed;
-        top: 60px; /* تحت الهيدر */
+        top: 60px; 
         left: 50%;
         transform: translateX(-50%);
         width: 90%;
         max-width: 300px;
     }
 
-    /* إزالة السهم في dropdown */
+    
     .user-dropdown-content::before {
         display: none;
     }
 
-    /* Menu toggle button: مخفي أو يظهر حسب اختيارك */
+    
     .menu-toggle {
-        display: flex; /* أو inline-flex حسب الحاجة */
-        /* display: flex; */ /* أو تقدر تفعّلها باش يظهر فـ mobile */
+        display: flex; 
+        
         background: none;
         border: none;
         font-size: 24px;
@@ -1163,7 +1161,7 @@ body.dark .form-select-lang:hover {
         z-index: 1001;
     }
 
-    /* Sidebar toggle button (إذا كاين) فوق المحتوى */
+    
     .sidebar-checkbox {
         top: 70px; 
         left: 10px;
@@ -1180,5 +1178,156 @@ body.dark .form-select-lang:hover {
     }
 
 }
+/* ===== Sidebar Section ===== */
+.link-title1{
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    font-family: var(--font-heading);
+    align-items: center;
+    gap: 8px;
+}
 
 
+
+/* Arrow animation */
+#arrow-icon {
+    transition: transform 0.3s ease;
+}
+
+/* Dashboard List */
+#dashboardList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: none;
+    padding-left: 20px; 
+}
+
+/* List items */
+#dashboardList li a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    color: #cbd5e1;
+    text-decoration: none;
+    font-size: 13px;
+    transition: all 0.2s ease;
+    font-size: 15px;
+}
+
+/* Hover */
+#dashboardList li a:hover {
+    color: #ffffff;
+     
+    padding-left: 10px;
+}
+
+/* Icons inside list */
+#dashboardList li a i {
+    font-size: 14px;
+    color: #fdfdfd;
+}
+
+/* Create New special */
+#dashboardList li:first-child a {
+    color: #22c55e;
+}
+
+#dashboardList li:first-child a i {
+    color: #22c55e;
+}
+
+/* Active link */
+#dashboardList li a.active {
+    color: #ffffff;
+    border-radius: 4px;
+}
+.submenu-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;                    
+    padding: 10px 12px;
+    color: rgba(255,255,255,0.85); 
+    cursor: pointer;
+    border-radius: var(--radius);
+    font-size: 14px;
+    font-weight: 500;
+    transition: var(--transition);
+    width: 100%;
+    
+}
+
+.submenu-header:hover {
+    color: #ffffff;
+}
+
+
+.submenu-header .arrow-icon {
+    margin-left: auto;
+    transition: transform 0.3s ease;
+    font-size: 16px;
+}
+
+
+.submenu-header a.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: inherit;
+    text-decoration: none;
+    flex: 1;
+    
+}
+
+.submenu-header i:first-child {
+    font-size: 20px;              
+    margin-right: 0;
+}
+
+.sidebar-section-label {
+    display: flex;
+    align-items: center; 
+    gap: 15px;           
+    margin: 30px 10px 15px 4px; 
+    
+    color: #6f7885;      
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap; 
+}
+
+
+.sidebar-section-label::after {
+    content: "";
+    flex: 1;             
+    height: 1px;
+    background-color: #e2e8f0; 
+}
+
+
+body.dark .sidebar-section-label::after {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.notif-actions{
+    margin-left: auto;
+}
+
+.delete-notif{
+    font-size:20px;
+    cursor:pointer;
+    color:#9ca3af;
+    transition:0.2s;
+}
+
+.delete-notif:hover{
+    color:#ef4444;
+    transform:scale(1.2);
+}

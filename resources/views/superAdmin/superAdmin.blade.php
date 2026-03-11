@@ -9,36 +9,54 @@
         <i class='bx bx-user-plus'></i>
         {{ translate('Add New User') }}
     </button>
-</div>
+</div> 
 
     <div class="card">
 
-        <form method="GET" style="display:flex; gap:12px; margin-bottom:20px;">
-            <input type="text" 
-                   name="search" 
-                   value="{{ request('search') }}" 
-                   class="filter-input"
-                   placeholder="{{ translate('Search users, email...') }}" 
-                   style="flex:1; padding:10px 14px; border-radius:8px;">
 
-            <select name="role" class="filter-input" style="padding:10px 14px; border-radius:8px;">
-                <option value="">{{ translate('All Roles') }}</option>
-                <option value="admin">Admin</option>
-                <option value="admin_client">Admin_client</option>
-                <option value="superadmin">Superadmin</option>
-                <option value="user">User</option>
-            </select>
 
-            <button type="submit" style="padding:10px 18px; border:none; border-radius:8px; background:#2563eb; color:white; font-weight:600; cursor:pointer;">
-                {{ translate('Filter') }}
-            </button>
-        </form>
+<form id="filterForm" method="GET" style="display:flex; gap:12px; margin-bottom:20px; align-items:center;">
+
+    <!-- Search input -->
+   <div style="position:relative; flex:1;">
+    <i class="bx bx-search" 
+        style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#9ca3af;"></i>
+
+   <input type="text"
+       id="userSearch"
+       placeholder="Search name, email, company..."
+       onkeyup="filterUsers()"
+       style="width:100%; padding:10px 14px 10px 36px; border-radius:8px; border:1px solid #d1d5db;"
+       class="userSearch"
+       >
+    
+
+</div>
+
+
+    <!-- Role select -->
+    <select id="roleFilter" onchange="filterUsers()" style="padding:10px 14px; border-radius:8px; border:1px solid #d1d5db;">
+        <option value="" {{ request('role') == '' ? 'selected' : '' }}>{{ translate('All Roles') }}</option>   
+        <option value="admin_client" {{ request('role') == 'admin_client' ? 'selected' : '' }}>Admin_client</option>
+
+        @auth
+            @if (auth()->user()->role === 'superadmin')
+                <option value="superadmin" {{ request('role') == 'superadmin' ? 'selected' : '' }}>Superadmin</option>
+                <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Admin</option>
+            @endif
+        @endauth
+
+        <option value="user" {{ request('role') == 'user' ? 'selected' : '' }}>User</option>
+    </select>
+
+</form>
+
 
         <div style="width:100%; overflow-x:auto;">
             <table class="table" style="width:100%; border-collapse:collapse;">
                 <thead>
-                    <tr>
-                        <th style="text-align:left;">{{ translate('User') }}</th>
+                    <tr > 
+                        <th style="text-align:left;">{{ translate('Name') }}</th>
                         <th > {{ translate('Company') }}</th>
                         <th>{{ translate('Role') }}</th>
                         <th>{{ translate('Joined') }}</th>
@@ -46,67 +64,76 @@
                     </tr>
                 </thead>
 
-                <tbody>
-                @forelse($employees as $employee)
-                    @php
-                        $roleColor = match($employee->role) {
-                            'admin' => 'danger',
-                            'Superadmin' => 'warning',
-                            default => 'primary',
-                        };
-                    @endphp
+               <tbody>
+                    @forelse($employees as $employee)
+                        @php
+                            $roleColor = match($employee->role) {
+                                'admin' => 'danger',
+                                'superadmin' => 'warning',
+                                default => 'primary',
+                            };
 
-                    <tr>
-                        <td>
-                            <div class="user-cell">
-                                <img src="https://ui-avatars.com/api/?name={{ urlencode($employee->name) }}&background=random" class="avatar">
-                                <div>
-                                    <span class="user-name">{{ $employee->name }}</span>
-                                    <span class="user-email">{{ $employee->email }}</span>
+                            $currentUserRole = auth()->user()->role;
+                        @endphp
+
+                   
+                        @if(!($currentUserRole === 'admin' && in_array($employee->role, ['admin', 'superadmin'])))
+                        <tr class="user-row" data-role="{{ $employee->role }}">
+                            <td>
+                                <div class="user-cell">
+                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($employee->name) }}&background=random" class="avatar">
+                                    <div>
+                                        <span class="user-name">{{ $employee->name }}</span>
+                                        <span class="user-email">{{ $employee->email }}</span>
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                        <td style="text-align:center; color:#6b7280;">
-                            {{ $employee->company ?? 'N/A' }}
-                        </td>
-                        <td style="text-align:center;">
-                            <span class="badge bg-{{ $roleColor }}">
-                                {{ ucfirst($employee->role) }}
-                            </span>
-                        </td>
+                            </td>
+                            <td  class="user-company" style="text-align:center; color:#6b7280;">
+                                {{ $employee->company ?? 'N/A' }}
+                            </td>
+                            <td style="text-align:center;">
+                                <span class="badge bg-{{ $roleColor }}">
+                                    {{ ucfirst($employee->role) }}
+                                </span>
+                            </td>
 
-                        <td style="text-align:center; color:#6b7280; font-size: 0.85rem;">
-                            {{ $employee->created_at->format('M d, Y') }}
-                        </td>
+                            <td style="text-align:center; color:#6b7280; font-size: 0.85rem;">
+                                {{ $employee->created_at->format('M d, Y') }}
+                            </td>
 
-                        <td class="actions" style="text-align:right;">
-                            <a href="{{ route('employees.show', $employee->id) }}" class="action-btn">
-                                <i class='bx bx-show'></i>
-                            </a>
-                            <a href="{{ route('employees.edit', $employee->id) }}" class="action-btn">
-                                <i class='bx bx-edit'></i>
-                            </a>
-                            <form method="POST"
-                                action="{{ route('employees.destroy', $employee->id) }}"
-                                onsubmit="return confirm('Are you sure you want to delete this employee?')"
-                                style="display:inline;">
-                                @csrf
-                                @method('DELETE')
+                            <td class="actions" style="text-align:right;">
+                                <a href="{{ route('employees.show', $employee->id) }}" class="action-btn">
+                                    <i class='bx bx-show'></i>
+                                </a>
 
-                                <button type="submit" class="action-btn delete-btn" title="Delete" >
-                                    <i class='bx bx-trash'></i>
-                                </button>
-                        </form>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="4" style="text-align:center; padding:40px; color:#9ca3af;">
-                            <i class='bx bx-search-alt' style="font-size: 2rem; display:block; margin-bottom:10px;"></i>
-                            {{ translate('No users found') }}
-                        </td>
-                    </tr>
-                @endforelse
+                               
+                                    <a href="{{ route('employees.edit', $employee->id) }}" class="action-btn">
+                                        <i class='bx bx-edit'></i>
+                                    </a>
+                                    @if (auth()->user()->role === 'superadmin')
+                                    <form method="POST"
+                                        action="{{ route('employees.destroy', $employee->id) }}"
+                                        onsubmit="return confirm('Are you sure you want to delete this employee?')"
+                                        style="display:inline;">
+                                        @csrf 
+                                        @method('DELETE')
+
+                                        <button type="submit" class="action-btn delete-btn" title="Delete">
+                                            <i class='bx bx-trash'></i>
+                                        </button>
+                                    </form>
+                                @endif
+                            </td>
+                        </tr>
+                        @endif
+                    @empty
+                        <tr>
+                            <td colspan="5" style="text-align:center; padding:40px; color:#9ca3af;">
+                                <i class='bx bx-search-alt' style="font-size: 2rem; display:block; margin-bottom:10px;"></i>
+                                {{ translate('No users found') }}
+                            </td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
@@ -150,14 +177,23 @@
                                         @foreach($clients as $client)
                                             <option value="{{ $client->id }}">{{ $client->name }}</option>
                                         @endforeach
-                                        <option value="new">{{ translate('Add New Company') }} +</option>
+                                         @auth
+                                @if (auth()->user()->role === 'superadmin')
+                                     <option value="new">{{ translate('Add New Company') }} +</option>
+                                @endif
+                            @endauth
+                                       
                                     </select>
                                 </div>
-
-                                <div class="form-group" id="newCompanyDiv" style="display:none;">
-                                    <label>{{ translate('New Company Name') }}</label>
-                                    <input type="text" name="new_company" placeholder="{{ translate('Enter company name') }}">
-                    </div>
+                                 @auth
+                                @if (auth()->user()->role === 'superadmin')
+                                     <div class="form-group" id="newCompanyDiv" style="display:none;">
+                                        <label>{{ translate('New Company Name') }}</label>
+                                        <input type="text" name="new_company" placeholder="{{ translate('Enter company name') }}">
+                                     </div>
+                                @endif
+                            @endauth
+                               
 
                         <!-- Email -->
                     <div class="form-group full">
@@ -177,8 +213,12 @@
                         <label>{{ translate('Role') }} <span class="required">*</span></label>
                         <select name="role" required>
                             <option value="">{{ translate('Select role...') }}</option>
-                            <option value="admin" {{ old('role')=='admin' ? 'selected' : '' }}>Admin</option>
-                            <option value="superadmin" {{ old('role')=='superadmin' ? 'selected' : '' }}>Superadmin</option>
+                            @auth
+                                @if (auth()->user()->role === 'superadmin')
+                                    <option value="admin" {{ old('role')=='admin' ? 'selected' : '' }}>Admin</option>
+                                    <option value="superadmin" {{ old('role')=='superadmin' ? 'selected' : '' }}>Superadmin</option>
+                                @endif
+                            @endauth
                             <option value="admin_client" {{ old('role')=='admin_client' ? 'selected' : '' }}>Admin Client</option>
                             <option value="user" {{ old('role')=='user' ? 'selected' : '' }}>User</option>
                         </select>
@@ -191,7 +231,14 @@
                             type="password"
                             name="password"
                             placeholder="{{ translate('Enter password') }}"
-                            required>
+                             minlength="8"
+                               pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+                               title="{{ translate('Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, one number, and one special character.') }}"
+                               required>
+                            <small id="passError" style="color: #417df4" >
+                                {{ translate('Password must be at least 8 characters.') }}
+                            </small>
+                            
                     </div>
 
                 </div>
@@ -226,6 +273,34 @@ function toggleNewCompanyField() {
     const newDiv = document.getElementById('newCompanyDiv');
     newDiv.style.display = (select.value === 'new') ? 'block' : 'none';
 }
+function filterUsers() {
+
+    const search = document.getElementById('userSearch').value.toLowerCase();
+    const role = document.getElementById('roleFilter').value;
+
+    const rows = document.querySelectorAll('.user-row');
+
+    rows.forEach(row => {
+
+        const name = row.querySelector('.user-name').innerText.toLowerCase();
+        const email = row.querySelector('.user-email').innerText.toLowerCase();
+        const company = row.querySelector('.user-company').innerText.toLowerCase();
+        const userRole = row.getAttribute('data-role');
+
+        const matchSearch =
+            name.includes(search) ||
+            email.includes(search) ||
+            company.includes(search);
+
+        const matchRole = role === '' || role === userRole;
+
+        row.style.display = (matchSearch && matchRole) ? '' : 'none';
+
+    });
+}
+
+
+
 </script>
 
 @endsection

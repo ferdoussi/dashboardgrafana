@@ -20,7 +20,7 @@
             'Sévérité Maximale', 'Journal des Événements', 'Analyse Temporelle', 'Total'
         ];
         $icons = ['bx-bar-chart-alt-2', 'bx-trending-up', 'bx-map', 'bx-bell', 'bx-book-content', 'bx-time-five', 'bx-lock-alt'];
-        $client = session('client', 'default'); // جلب اسم client من session
+        $client = session('client', 'default');
     @endphp
 
     @foreach($panels as $index => $panel)
@@ -31,7 +31,7 @@
             </div> --}}
 
             <div class="iframe-wrapper">
-                {{-- Loader ديال client logo --}}
+
                 <div class="iframe-loader">
                     <img src="{{ asset('assets/logos/' . $client . '.png') }}"
                          alt="{{ $client }} logo"
@@ -45,7 +45,7 @@
 </div>
 @endsection
 
-{{-- JS باش يتحيد loader --}}
+
 <script>
 window.addEventListener('load', () => {
     document.querySelectorAll('.iframe-loader').forEach(loader => {

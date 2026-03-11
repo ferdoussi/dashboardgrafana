@@ -277,3 +277,34 @@ body.dark .map-text {
 
 .dot-red { background: #ef4444; }
 .dot-orange { background: #f97316; }
+.chart-card{
+grid-column: span 2; 
+background:#fff;
+padding:25px;
+border-radius:14px;
+box-shadow:0 8px 20px rgba(0,0,0,0.06);
+margin-top:20px;
+min-height:320px;
+width:100%;
+}
+
+.chart-card canvas{
+width:100% !important;
+height:240px !important;
+}
+
+body.dark .chart-card{
+background:#020617;
+border:1px solid #1e293b;
+box-shadow:0 10px 30px rgba(0,0,0,0.6);
+}
+
+.chart-title{
+font-size:18px;
+font-weight:600;
+margin-bottom:20px;
+}
+
+body.dark .chart-title{
+color:#e5e7eb;
+}

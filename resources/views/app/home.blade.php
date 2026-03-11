@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Home')
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 @section('content')
 <link rel="stylesheet" href="{{ asset('css/home.css') }}">
 {{-- Check User Role --}}
@@ -22,23 +22,32 @@
         $totalAdmins = \App\Models\Employee::where('role', 'admin')->count();
         $totalClientAdmins = \App\Models\Employee::where('role', 'admin_client')->count();
         $totalsuperAdmins = \App\Models\Employee::where('role', 'superadmin')->count();
+        $totalClients = \App\Models\Employee::where('role','client')->count();
         $totalDashboards = \App\Models\UserDashboard::count();
         // تأكد من اسم الموديل الخاص بالـ Panels عندك
         $totalPanels = \App\Models\Panel::count(); 
-    @endphp
+        $companies = \App\Models\Employee::select('company')
+                ->selectRaw('COUNT(*) as total')
+                ->groupBy('company')
+                ->get();
+
+            $companyNames = $companies->pluck('company');
+            $companyTotals = $companies->pluck('total');
+        @endphp
 
     <div class="widgets-grid">
-        {{-- Total Users Card --}}
+        {{-- total super admin card --}}
         <div class="widget-card stats-card">
-            <div class="widget-icon bg-blue">
-                <i class='bx bx-user'></i>
+            <div class="widget-icon bg-purple">
+                <i class='bx bx-shield-quarter'></i>
             </div>
             <div class="stats-info">
-                <h4>{{ translate('Total Users') }}</h4>
-                <h2 class="stats-number">{{ $totalUsers }}</h2>
-                <p>{{ translate('Registered users') }}</p>
+                <h4>{{ translate('Total Super Admins') }}</h4>
+                <h2 class="stats-number">{{ $totalsuperAdmins }}</h2>
+                <p>{{ translate('Super administrators') }}</p>
             </div>
         </div>
+        
 
         {{-- Total Admins Card --}}
         <div class="widget-card stats-card">
@@ -62,15 +71,15 @@
                 <p>{{ translate('Client administrators') }}</p>
             </div>
         </div>
-        {{-- total super admin card --}}
+        {{-- Total Clients Card --}}
         <div class="widget-card stats-card">
-            <div class="widget-icon bg-purple">
-                <i class='bx bx-shield-quarter'></i>
+            <div class="widget-icon bg-blue">
+                <i class='bx bx-user'></i>
             </div>
             <div class="stats-info">
-                <h4>{{ translate('Total Super Admins') }}</h4>
-                <h2 class="stats-number">{{ $totalsuperAdmins }}</h2>
-                <p>{{ translate('Super administrators') }}</p>
+                <h4>{{ translate('Total Users') }}</h4>
+                <h2 class="stats-number">{{ $totalUsers }}</h2>
+                <p>{{ translate('Registered users') }}</p>
             </div>
         </div>
 
@@ -97,13 +106,18 @@
                 <p>{{ translate('Active monitoring panels') }}</p>
             </div>
         </div>
+        <div class="chart-card">
+                <h3 class="chart-title">{{ translate('Users per Company') }}</h3>
+                <canvas id="usersChart"></canvas>
+        </div>
+
     </div>
 
 @else
 
     {{-- ================= USER VIEW ================= --}}
     @auth
-        @if(auth()->user()->role === 'admin_client')
+        @if(auth()->user()->role === 'admin_client' )
             
       
     
@@ -113,7 +127,7 @@
             <p>{{ translate('Monitor your infrastructure in real-time') }}</p>
         </div>
         
-        {{-- زر الإنشاء يظهر فقط للمستخدم العادي --}}
+       
         <a href="{{ route('dashboard.create') }}" class="btn-create-dashboard">
             <i class='bx bx-plus'></i> <span>{{ translate('Create Dashboard') }}</span>
         </a>
@@ -185,16 +199,14 @@
                 <p>{{ translate('Saved searches') }}</p>
             </div>
         </a>
-
+ 
         {{-- Custom Dashboards (Dynamic) --}}
-      @php
-    $clientId = auth()->user()->client_id;
-
-    $customDashboards = \App\Models\UserDashboard::where(
-        'client_id',
-        $clientId
-    )->latest()->get();
-@endphp
+ @php
+        $clientId = auth()->user()->client_id;
+        $customDashboards = \App\Models\UserDashboard::where('client_id', $clientId)
+            ->latest()
+            ->get();
+    @endphp
 
 
         @foreach($customDashboards as $custom)
@@ -226,5 +238,37 @@
         </a>
 
     </div>
+@endif
+@if(auth()->check() && (auth()->user()->role === 'admin' || auth()->user()->role === 'superadmin'))
+
+<script>
+const ctx = document.getElementById('usersChart');
+
+new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: {!! json_encode($companyNames) !!},
+        datasets: [{
+            label: 'Users per Company',
+            data: {!! json_encode($companyTotals) !!},
+            backgroundColor: '#3b82f6',
+            borderRadius: 8,
+            barThickness: 30
+        }]
+    },
+    options: {
+        responsive:true,
+        maintainAspectRatio:false,
+        plugins:{
+            legend:{ display:false }
+        },
+        scales:{
+            y:{ beginAtZero:true },
+            x:{ grid:{ display:false } }
+        }
+    }
+});
+</script>
+
 @endif
 @endsection

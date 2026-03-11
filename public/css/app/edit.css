@@ -83,6 +83,7 @@
     border: 1px solid #dbe4f0;
     color: #374151;
     text-decoration: none;
+    cursor: pointer;
 }
 
 /* ===== DARK MODE (overlay only) ===== */
@@ -115,4 +116,142 @@ body.dark input::placeholder {
 body.dark .btn-secondary {
     color: #e5e7eb;
     border-color: #3a3d46;
+}
+/* ================================
+   MODAL CORE STYLES
+================================ */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(4px);
+    transition: all 0.3s ease;
+}
+
+.modal-content {
+    background: var(--bg-card, #ffffff);
+    width: 95%;
+    max-width: 512px;
+    border-radius: 12px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    overflow: hidden;
+    animation: modalPop 0.2s ease-out;
+}
+
+@keyframes modalPop {
+    from { opacity: 0; transform: scale(0.95) translateY(-10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Modal Body */
+.modal-body-tailwind {
+    padding: 24px;
+}
+
+.modal-flex-start {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+/* Icon Blue Circle */
+.icon-info-circle {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    background-color: #dbeafe; /* Blue-100 */
+    border-radius: 50%;
+}
+
+body.dark .icon-info-circle {
+    background-color: rgba(30, 58, 138, 0.4); /* Dark Blue */
+}
+
+.icon-info-circle svg {
+    width: 24px;
+    height: 24px;
+    color: #2563eb;
+}
+
+/* Modal Text Content */
+.modal-content-text h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-main, #111827);
+    margin: 0 0 8px 0 !important; /* Force override if needed */
+}
+
+.modal-content-text p {
+    font-size: 0.875rem;
+    color: var(--text-muted, #6b7280);
+    line-height: 1.4;
+    margin: 0;
+}
+
+/* Modal Footer */
+.modal-footer-tailwind {
+    background-color: rgba(0, 0, 0, 0.02);
+    padding: 12px 24px;
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 12px;
+    border-top: 1px solid var(--border-color, #e5e7eb);
+}
+
+body.dark .modal-footer-tailwind {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* Responsive adjust */
+@media (max-width: 640px) {
+    .modal-flex-start { flex-direction: column; align-items: center; text-align: center; }
+    .modal-footer-tailwind { flex-direction: column; }
+    .modal-footer-tailwind button { width: 100%; }
+}
+/* Dark Mode Fix for Modal Content */
+body.dark .modal-content {
+    background-color: var(--bg-card); /* #1f2937 */
+    border-color: var(--border-color); /* #374151 */
+}
+
+/* Fix Text Colors in Dark Mode */
+body.dark .modal-content-text h3 {
+    color: var(--text-main); /* #f9fafb */
+}
+
+body.dark .modal-content-text p {
+    color: var(--text-muted); /* #9ca3af */
+}
+
+/* Footer Background in Dark Mode */
+body.dark .modal-footer-tailwind {
+    background-color: rgba(0, 0, 0, 0.2); /* Lon ghameq chwiya 3la l-card */
+    border-top: 1px solid var(--border-color);
+}
+
+/* Cancel Button in Dark Mode */
+body.dark .modal-footer-tailwind .btn-secondary {
+    background-color: transparent;
+    border-color: var(--border-color);
+    color: var(--text-main);
+}
+
+body.dark .modal-footer-tailwind .btn-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Info Icon Circle in Dark Mode */
+body.dark .icon-info-circle {
+    background-color: rgba(37, 99, 235, 0.2); /* Lon azraq khfif bezaf */
+}
+
+body.dark .icon-info-circle svg {
+    color: #60a5fa; /* Azraq faté7 bach i-ban mzyan */
 }

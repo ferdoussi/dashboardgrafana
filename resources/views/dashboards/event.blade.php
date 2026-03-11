@@ -125,7 +125,7 @@
 
 @section('content')
 @php
-    $client = session('client', 'default'); // جلب اسم client
+    $client = session('client', 'default'); 
     $gridClasses = ['div1', 'div3', 'div4', 'div5', 'div6', 'div7', 'div8'];
 @endphp
 

@@ -31,7 +31,7 @@ class QradarController extends Controller
             $baseUrl = env('QRADAR_URL');
             $http = $this->getHttpClient();
             
-            // 1. إرسال الاستعلام
+            
             $query = "SELECT sourceip AS src_ip, 
                              GEO::LOOKUP(sourceip, 'latitude') AS src_lat, 
                              GEO::LOOKUP(sourceip, 'longitude') AS src_lon, 
@@ -62,7 +62,7 @@ class QradarController extends Controller
                 $tries++;
             }
 
-            // 3. التحقق ومعالجة البيانات (Cleaning)
+            
             if ($status === 'COMPLETED') {
                 $results = $http->get("{$baseUrl}/api/ariel/searches/{$searchId}/results");
                 $rawEvents = $results->json('events') ?? [];
@@ -70,14 +70,14 @@ class QradarController extends Controller
                 $cleanedEvents = [];
 
                 foreach ($rawEvents as $event) {
-                    // تحويل الـ String (JSON) اللي جاي من QRadar لأرقام حقيقية
+                    
                     $latData = json_decode($event['src_lat'], true);
                     $lonData = json_decode($event['src_lon'], true);
 
                     $latitude = $latData['location']['latitude'] ?? null;
                     $longitude = $lonData['location']['longitude'] ?? null;
 
-                    // مكنزيدو الـ event غير إلا كان فيه الإحداثيات ماشي null
+                    
                     if ($latitude !== null && $longitude !== null) {
                         $cleanedEvents[] = [
                             'src_ip'  => $event['src_ip'],
@@ -90,7 +90,7 @@ class QradarController extends Controller
                     }
                 }
 
-                // تخزين البيانات المنقاة في الكاش
+                
                 Cache::put('qradar_final_data', $cleanedEvents, 600);
 
                 return response()->json([

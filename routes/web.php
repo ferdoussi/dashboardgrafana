@@ -32,10 +32,11 @@ Route::middleware('auth')->group(function () {
 //     return view('grafana');
 // })->middleware('auth')->name('grafana');;
 
+// route for home page after login
 Route::get('/app', function () {
     return view('app.home');
 })->middleware('auth')->name('app.home');
-
+// route for create dashboard page
 Route::middleware('auth')->group(function () {
 
     Route::get('/dashboard/create', 'App\Http\Controllers\DashboardController@create')
@@ -49,7 +50,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/my-dashboard', 'App\Http\Controllers\DashboardController@myDashboard')
         ->name('dashboard.myDashboard');
-        // عرض داشبورد محدد باستخدام الـ ID
+       
     Route::get('/dashboard/view-custom/{id}', 'App\Http\Controllers\DashboardController@viewCustom')
         ->name('dashboard.viewCustom');
     Route::delete('/dashboard/delete/{id}', 'App\Http\Controllers\DashboardController@deleteDashboard')
@@ -58,7 +59,8 @@ Route::middleware('auth')->group(function () {
 });
 Route::middleware(['auth'])->group(function () {
     Route::get('/support', [App\Http\Controllers\SupportController::class, 'index'])->name('support.support'); 
-    Route::get('/all-users', [App\Http\Controllers\SupportController::class, 'allUser'])->name('clientFile.allUser'); 
+    // routes/web.php
+
     Route::get('/super-admin', [EmployeeController::class, 'index'])->name('superAdmin.superAdmin');
     Route::get('/employees/{id}', [EmployeeController::class, 'show'])->name('employees.show');
 
@@ -72,6 +74,14 @@ Route::middleware(['auth'])->group(function () {
     ->name('employees.store');
 
 
+});
+Route::middleware(['auth'])->group(function () {
+    Route::get('/all-users', [App\Http\Controllers\EmployeeManagementController::class, 'allUser'])->name('clientFile.allUser');
+    Route::get('/employee/{id}', [App\Http\Controllers\EmployeeManagementController::class, 'showClient'])->name('clientFile.employeeDetails');
+    Route::get('/employee/{employee}/edit', [App\Http\Controllers\EmployeeManagementController::class, 'editClient'])->name('clientFile.editEmployee');
+    Route::put('/employee/{employee}', [App\Http\Controllers\EmployeeManagementController::class, 'updateClient'])->name('clientFile.updateEmployee');
+   Route::delete('/employee/{employee}', [App\Http\Controllers\EmployeeManagementController::class, 'destroyClient'])->name('clientFile.deleteEmployee');
+   Route::post('/employee', [App\Http\Controllers\EmployeeManagementController::class, 'storeUser'])->name('clientFile.storeUser');
 });
 // routes/web.php
 
@@ -87,16 +97,20 @@ Route::middleware(['auth'])->group(function () {
 Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])
     ->middleware('auth')
     ->name('notifications.read');
+Route::delete('/notifications/{id}', [NotificationController::class, 'deleteNotification'])
+    ->middleware('auth')
+    ->name('notifications.delete');
+
 
 
 Route::get('/test-mitre', function () {
     $raw = App\Services\QradarService::getOffenses();
     $offenses = App\Services\QradarNormalizer::normalize($raw);
     
-    // هادي هي اللي كتصاوب المصفوفة بالـ 14 تكتيك
+    
     $matrix = App\Services\MitreMatrixBuilder::build($offenses);
 
-    // الترتيب العالمي للتكتيكات باش يبانو مصفوفين
+    
     $tacticsOrder = [
         'Reconnaissance', 'Resource Development', 'Initial Access', 
         'Execution', 'Persistence', 'Privilege Escalation', 
@@ -112,7 +126,7 @@ Route::get('/test-mitre', function () {
 Route::get('lang/{locale}', function ($locale) {
     if (in_array($locale, ['en', 'fr'])) {
         Session::put('locale', $locale);
-        Session::save(); // هادي ضرورية باش تحفظ الداتا قبل ما يخرج من الـ Route
+        Session::save(); 
     }
     return redirect()->back();
 })->name('lang.switch')->middleware('auth');

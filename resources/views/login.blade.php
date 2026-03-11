@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Se connecter</title>
+    <title>Login Page</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -179,7 +179,7 @@
             <form action="{{ route('login') }}" method="POST" class="formLogin">
                 @csrf
                 <img class="logoForm form-logo" src="{{ asset('logo.png') }}" alt="Logo">
-                <h1>Se Connecter</h1>
+                <h1>User Login</h1>
 
                 @if($errors->any())
                     <div class="error-message">
@@ -188,18 +188,18 @@
                 @endif
 
                 <div class="inputbox">
-                    <input type="email" name="email" placeholder="Adresse email" value="{{ old('email') }}" required>
+                    <input type="email" name="email" placeholder="Email" value="{{ old('email') }}" required>
                     <ion-icon name="mail-outline"></ion-icon>
                 </div>
 
                 <div class="inputbox">
-                    <input type="password" id="password" name="password" placeholder="Mot de passe" required>
+                    <input type="password" id="password" name="password" placeholder="Password" required>
                     <ion-icon name="lock-closed-outline"></ion-icon>
 
                 </div>
 
                 <button type="submit" class="btn-Login"> 
-                     Se Connecter
+                     Login
                 </button>
             </form>
         </div>

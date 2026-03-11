@@ -43,7 +43,7 @@ body.dark .table thead th {
 /* ====== Table Body ====== */
 .table tbody td {
     padding: 16px;
-    border-bottom: 1px solid #f1f4f8;
+    border-bottom: 1px solid #f1f4f8; 
     vertical-align: middle;
 }
 
@@ -167,11 +167,18 @@ body.dark .modal-header {
     cursor: pointer;
     color: #6b7280;
 }
+.close-btn:hover {
+    color: red;
+    font-size: 1.3rem;
+}
 
 body.dark .close-btn {
     color: #9ca3af;
 }
-
+body.dark .close-btn:hover {
+    color: red;
+    font-size: 1.3rem;
+}
 /* Body */
 .modal-body {
     padding: 22px;
@@ -286,6 +293,7 @@ body.dark .user-email { color: #9ca3af; }
     font-weight: 600;
 }
 
+
 /* Light Mode Badges */
 .bg-danger { background: #fee2e2 !important; color: #ef4444 !important; }
 .bg-warning { background: #fef3c7 !important; color: #d97706 !important; }
@@ -309,14 +317,39 @@ body.dark .bg-primary { background: rgba(37, 99, 235, 0.2) !important; color: #6
 body.dark .actions i:hover { color: #38bdf8; }
 
 /* ====== Filters ====== */
-.filter-input {
+
+.filter-input { 
     background: #fff;
     border: 1px solid #e2e8f0;
-    color: #1f2937;
+    color: #4e71a2;
 }
 
 body.dark .filter-input {
     background: #374151;
     border: 1px solid #4b5563;
     color: #fff;
+}
+
+body.dark #filterForm input,
+body.dark #filterForm select{
+    background: #1f2937;
+    color: #e5e7eb;
+    border: 1px solid #374151;
+}
+
+body.dark #filterForm input::placeholder{
+    color: #9ca3af;
+}
+
+/* focus */
+
+#filterForm input:focus,
+#filterForm select:focus{
+    outline: none;
+    border-color: #3b82f6;
+}
+
+body.dark #filterForm input:focus,
+body.dark #filterForm select:focus{
+    border-color: #38bdf8;
 }

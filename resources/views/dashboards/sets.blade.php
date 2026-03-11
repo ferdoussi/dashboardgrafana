@@ -41,7 +41,7 @@ document.querySelectorAll('.iframe-wrapper').forEach(wrapper => {
 
     iframe.addEventListener('load', () => {
         if(loader){
-            // كنزيدو واحد التأخير بسيط ديال 300ms باش نضمنوا الـ CSS والداتا ترسمات
+            
             setTimeout(() => {
                 loader.style.opacity = '0';
                 setTimeout(() => loader.remove(), 400);
@@ -49,7 +49,7 @@ document.querySelectorAll('.iframe-wrapper').forEach(wrapper => {
         }
     });
 
-    // Fallback في حالة تعطلت الداتا بزاف (10 ثواني)
+    
     setTimeout(() => {
         if(loader) {
             loader.style.opacity = '0';

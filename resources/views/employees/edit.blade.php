@@ -58,7 +58,7 @@
             </div>
 
             <div class="form-actions">
-                <button class="btn-primary" type="submit" onclick="return confirm('{{ translate('Are you sure you want to save changes?') }}')">{{ translate('Save Changes') }}</button>
+                <button class="btn-primary" type="submit" onclick='routeBack()'>{{ translate('Save Changes') }}</button>
 
                 <a href="{{ route('superAdmin.superAdmin') }}" class="btn-secondary">
                     {{ translate('Cancel') }}
@@ -71,6 +71,10 @@
 
 </div>
 <script>
-    
+    function routeBack() {
+        if (confirm("{{ translate('Are you sure you want to update this employee?') }}")) {
+            window.location.href = "{{ route('superAdmin.superAdmin') }}";
+        }
+    }
 </script>
 @endsection

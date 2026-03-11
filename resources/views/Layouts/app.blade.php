@@ -6,13 +6,14 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="icon" type="image/png" href="{{ asset('YOKAMOS.png') }}">
     <link rel="stylesheet" href="{{ asset('css/app/app.css') }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     {{-- <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}"> --}}
     @stack('styles')
   
 </head>
 <body>
 
-    <!-- HEADER - Fixed -->
+   
     <div class="header">
         <div class="logo-container">
              
@@ -33,7 +34,7 @@
       
 <div class="header-right">
 <div class="lang-container me-3">
-
+  {{-- Language Switcher --}}
     <div class="lang-container">
         <select class="form-select-lang" onchange="window.location.href=this.value;">
             <option value="{{ route('lang.switch', 'en') }}" {{ session('locale') == 'en' ? 'selected' : '' }}> EN</option>
@@ -46,16 +47,19 @@
     </button>
     <!-- Notifications -->
 @php
-// badge كتحسب غير unread
+
 $unreadCount = auth()->check() 
     ? auth()->user()->unreadNotifications->where('data.client_id', auth()->user()->client_id)->count()
     : 0;
 
-// جلب جميع notifications (read + unread) للـ dropdown
 $notifications = auth()->check()
     ? auth()->user()->notifications->where('data.client_id', auth()->user()->client_id)
     : collect();
 @endphp
+@auth
+    @if (auth()->user()->role === 'superadmin')
+        
+    
 <div class="notification-wrapper">
     <button class="notification-btn">
         <i class='bx bx-bell'></i>
@@ -81,10 +85,14 @@ $notifications = auth()->check()
                     </div>
                     <div class="notif-content">
                         <div class="notif-title">{{ $notif->data['title'] ?? 'Notification' }}</div>
-                        <p class="notif-msg">{{ $notif->data['message'] }}</p>
-                        <span class="notif-time">{{ $notif->created_at->diffForHumans() }}</span>
+                        <p class="notif-msg">{{ translate($notif->data['message'] ?? '') }}</p>
+                        <span class="notif-time">{{ translate($notif->created_at->diffForHumans()) }}</span>
                     </div>
-                    @if(!$notif->read_at)
+                    {{-- delete notification --}}
+                    <div class="notif-actions">
+                        <i class='bx bx-x delete-notif' data-id="{{ $notif->id }}"></i>
+                    </div>
+                    @if(!$notif->read_at) 
                         <span class="unread-dot"></span>
                     @endif
                 </div>
@@ -96,6 +104,8 @@ $notifications = auth()->check()
         <div  class="notif-footer">{{ translate('Notifications') }}</div>
     </div>
 </div>
+@endif
+@endauth
 
 
 
@@ -174,12 +184,67 @@ $notifications = auth()->check()
      <hr class="line"/>
      <a href="{{ route('app.home') }}" class="sidebar-link" >
       <div class="sidebar-section">
-        <h3><i class='bx bx-cog'></i> <span class="nav-text">{{ translate('Home Page') }}</span></h3>
+        <h3><i class="bx bx-home" ></i><span class="nav-text">{{ translate('Home Page') }}</span></h3>
     </div>
     </a> 
-    {{-- 1. User Section--}}
-   
-  @auth
+
+    @auth
+    @php
+        $user_dashboards = \App\Models\UserDashboard::where('client_id', auth()->user()->client_id)
+        ->orderBy('created_at', 'desc')
+        ->get();
+    @endphp
+
+    @if (auth()->user()->role === 'superadmin'|| auth()->user()->role === 'admin')
+        <div class="sidebar-section-custom" >
+            
+            <div class="link-title1" onclick="toggleDashboardList()">
+                <i class='bx bx-layout'></i>
+                <span >{{ translate('Dashboards') }}</span>
+                <i class='bx bx-chevron-down arrow-icon' id="arrow-icon"></i>
+            </div>
+                        
+            <ul id="dashboardList" >
+                @auth
+                    
+                
+                @if (auth()->user()->role === 'superadmin')
+
+                    <li >
+                        <a href="{{ route('dashboard.create') }}" 
+                        >
+                            <i class='bx bx-plus-circle'></i>
+                            <span>{{ translate('Create New') }}</span>
+                        </a>
+                    </li>
+                @endif
+                @endauth
+                @foreach($user_dashboards as $dash)
+                    <li style="display: flex; justify-content: space-between; align-items: center; padding-right: 15px;">
+                        <a href="{{ route('dashboard.viewCustom', $dash->id) }}" 
+                           >
+                            <i class='bx bx-radio-circle'></i>
+                            <span>{{ $dash->name }}</span>
+                        </a>
+                       @if(auth()->user()->role === 'superadmin')
+                        <form action="{{ route('dashboard.delete', $dash->id) }}" method="POST" onsubmit="return confirm('{{ translate('Are you sure you want to delete this dashboard?') }}');" style="margin-left: 10px;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" style="background: none; border: none; color: #ff4d4d; cursor: pointer; padding: 5px;">
+                                <i class='bx bx-trash' style="font-size: 1.1em;"></i>
+                            </button>
+                        </form>
+                    @endif
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+
+
+    @endif
+@endauth
+
+ @auth
     @if(auth()->user()->role === 'user' || auth()->user()->role === 'admin_client')
         <div class="sidebar-section">
             <h3 class="dropdown-toggle">
@@ -212,7 +277,7 @@ $userDashboards = \App\Models\UserDashboard::where('client_id', auth()->user()->
             <i class='bx bx-layout'></i> {{ $dash->name }}
         </a>
         
-        {{-- أيقونة المسح --}}
+        {{-- Delete form --}}
         @auth
     @if(auth()->user()->role === 'admin_client')
         <form action="{{ route('dashboard.delete', $dash->id) }}" method="POST" onsubmit="return confirm('{{ translate('Are you sure you want to delete this dashboard?') }}');" style="margin-left: 10px;">
@@ -231,10 +296,15 @@ $userDashboards = \App\Models\UserDashboard::where('client_id', auth()->user()->
         </div>
     @endif
 @endauth
+@if (auth()->user()->role === 'admin' || auth()->user()->role === 'superadmin' || auth()->user()->role === 'admin_client')
+    <div class="sidebar-section-label">{{ translate('User Management') }}</div>
+@endif
+ 
 
+   
 
-    {{-- 2. Admin Section --}}
-{{-- 2. Admin Section --}}
+    {{-- 2. Admin and Super Admin Section --}}
+
 @auth
     @if(auth()->user()->role === 'admin' || auth()->user()->role === 'superadmin')
         <div class="sidebar-section">
@@ -246,7 +316,9 @@ $userDashboards = \App\Models\UserDashboard::where('client_id', auth()->user()->
 
             <ul class="sidebar-nav dropdown-menu-dashboard">
                 @php
-                    $all_users = \App\Models\Employee::where('role', 'admin_client')->get();
+                    $all_users = \App\Models\Employee::where('role', 'admin_client')
+                                ->get()
+                                ->unique('company');
                 @endphp
 
                 @forelse($all_users as $u)
@@ -258,7 +330,7 @@ $userDashboards = \App\Models\UserDashboard::where('client_id', auth()->user()->
                         </div>
 
                         <ul class="submenu-list">
-                            {{-- القائمة الثابتة --}}
+                            
                             <li><a href="{{ route('dashboard.show', ['type' => 'event', 'user_id' => $u->id]) }}"><i class='bx bx-lock-alt'></i>{{ translate('Events') }}</a></li>
                             <li><a href="{{ route('dashboard.show', ['type' => 'offenses', 'user_id' => $u->id]) }}"><i class='bx bx-shield-alt'></i>{{ translate('Offenses') }}</a></li>
                             <li><a href="{{ route('dashboard.show', ['type' => 'rules', 'user_id' => $u->id]) }}"><i class='bx bx-calendar-event'></i>{{ translate('Rules') }}</a></li>
@@ -267,8 +339,8 @@ $userDashboards = \App\Models\UserDashboard::where('client_id', auth()->user()->
                             <li><a href="{{ route('dashboard.show', ['type' => 'offenses-map', 'user_id' => $u->id]) }}"><i class='bx bx-map'></i>{{ translate('Offenses Map') }}</a></li>
                             
                            
+                            {{-- Custom Dashboards --}}
                             
-                            {{-- جلب الـ Custom Dashboards ديال هاد المستخدم بالتحديد --}}
                             @php
                                 $u_dashboards = \App\Models\UserDashboard::where('user_id', $u->id)->get();
                             @endphp
@@ -278,6 +350,7 @@ $userDashboards = \App\Models\UserDashboard::where('client_id', auth()->user()->
                                     <a href="{{ route('dashboard.viewCustom', $cd->id) }}" title="Voir le dashboard">
                                         <i class='bx bx-layout' style="font-size: 10px;"></i> {{ $cd->name }}
                                     </a>
+                                    
                                 </li>
                             @endforeach
                         </ul>
@@ -293,9 +366,10 @@ $userDashboards = \App\Models\UserDashboard::where('client_id', auth()->user()->
              
     @endif
 @endauth
+{{-- All Users (Super Admin only) --}}
 @auth
-    @if (auth()->user()->role ==='superadmin')
-    <h3 class="link-title">
+    @if (auth()->user()->role ==='superadmin' || auth()->user()->role === 'admin')
+            <h3 class="link-title">
                 <a href="{{ route('superAdmin.superAdmin') }}" class="sidebar-link" >
                     <i class='bx bx-group'></i>
                     <span style="text">{{ translate('All Users') }}</span>
@@ -305,12 +379,9 @@ $userDashboards = \App\Models\UserDashboard::where('client_id', auth()->user()->
         
     @endif
 @endauth
-
-    
-   
-    
-    @auth
-        @if (auth()->user()->role === 'admin_client')
+{{-- Client Users --}}
+ @auth
+        @if (auth()->user()->role === 'admin_client' )
         
     <div class="sidebar-section">
         <a href="{{ route('clientFile.allUser') }}" class="sidebar-link" >
@@ -321,8 +392,19 @@ $userDashboards = \App\Models\UserDashboard::where('client_id', auth()->user()->
             
         @endif
     @endauth
+
+    <div class="sidebar-section-label">{{ translate('Utility Pages') }}</div>
+   
+    
+   {{-- Settings page link --}}
     @auth
-    @if(auth()->user()->role === 'user' || auth()->user()->role === 'admin_client')
+
+        <div class="sidebar-section">
+        <a href="{{ route('settings.index') }}" class="sidebar-link" >
+        <h3><i class='bx bx-cog'></i> <span class="nav-text">{{ translate('Settings') }}</span></h3>
+    </a>
+    </div>
+        @if(auth()->user()->role === 'user' || auth()->user()->role === 'admin_client')
          {{-- Home Page Link --}}
          <a href="{{ route('app.home') }}" class="sidebar-link" >
     <div class="sidebar-section">
@@ -332,15 +414,10 @@ $userDashboards = \App\Models\UserDashboard::where('client_id', auth()->user()->
     </div>
     @endif
     @endauth
-        <div class="sidebar-section">
-        <a href="{{ route('settings.index') }}" class="sidebar-link" >
-        <h3><i class='bx bx-help-circle'></i> <span class="nav-text">{{ translate('Settings') }}</span></h3>
-    </a>
-    </div>
 </div>
 
             
-            <!-- Vous pouvez ajouter d'autres sections ici -->
+           
         </div>
 
         <!-- CONTENU DYNAMIQUE - Scrollable -->
@@ -352,6 +429,17 @@ $userDashboards = \App\Models\UserDashboard::where('client_id', auth()->user()->
     </div>
 
     <script>
+         function toggleDashboardList() {
+                var list = document.getElementById("dashboardList");
+                var arrow = document.getElementById("arrow-icon");
+                if (list.style.display === "none") {
+                    list.style.display = "block";
+                    arrow.style.transform = "rotate(180deg)";
+                } else {
+                    list.style.display = "none";
+                    arrow.style.transform = "rotate(0deg)";
+                }
+            }
     // Toggle sidebar on mobile
     document.querySelector('.menu-toggle').addEventListener('click', function() {
         document.querySelector('.sidebar').classList.toggle('active');
@@ -368,13 +456,13 @@ $userDashboards = \App\Models\UserDashboard::where('client_id', auth()->user()->
             sidebar.classList.remove('active');
         }
     });
-    // زيد هاد الجزء ف الـ Script ديالك
+    
 document.querySelectorAll('.submenu-toggle').forEach(subToggle => {
     subToggle.addEventListener('click', function(e) {
-        e.stopPropagation(); // باش ما يتسدش المنيو الكبير
+        e.stopPropagation(); 
         const subMenu = this.nextElementSibling;
         
-        // تبديل العرض (Toggle display)
+        // change arrow direction
         if (subMenu.style.display === "block") {
             subMenu.style.display = "none";
             this.querySelector('.arrow-small').style.transform = "rotate(0deg)";
@@ -410,10 +498,10 @@ document.querySelectorAll('.submenu-toggle').forEach(subToggle => {
     // ---------------------------
     // DASHBOARD dropdown toggle
     // ---------------------------
-  // دير هاد الكود بلاصتو
+ 
 document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
     toggle.addEventListener('click', () => {
-        // كيجيب القائمة (ul) اللي جاية مورا العنوان (h3) مباشرة
+        
         const menu = toggle.nextElementSibling; 
         
         if (menu) {
@@ -424,7 +512,7 @@ document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
 });
 document.querySelectorAll('.submenu-toggle').forEach(subToggle => {
     subToggle.addEventListener('click', function(e) {
-        e.stopPropagation(); // باش ما يتسدش المنيو الكبير فاش تكليكي
+        e.stopPropagation(); // not to close the main dropdown
         const subMenu = this.nextElementSibling;
         subMenu.classList.toggle('open');
         this.classList.toggle('active');
@@ -477,18 +565,18 @@ darkToggle.addEventListener('click', () => {
 const notifBtn = document.querySelector('.notification-btn');
 const notifDropdown = document.querySelector('.notification-dropdown');
 
-// Toggle dropdown عند الضغط على الزر
+// Toggle notification dropdown
 notifBtn.addEventListener('click', e => {
-    e.stopPropagation(); // باش الضغط على الزر ما يغلقش القائمة
+    e.stopPropagation(); 
     notifDropdown.classList.toggle('show');
 });
 
-// إغلاق dropdown عند الضغط خارجها
+// xlose dropdown when clicking outside
 document.addEventListener('click', () => {
     notifDropdown.classList.remove('show');
 });
 
-// منع إغلاق عند الضغط داخل dropdown
+//close dropdown when clicking inside
 notifDropdown.addEventListener('click', e => e.stopPropagation());
 document.querySelectorAll('.notification-item').forEach(item => {
     item.addEventListener('click', function() {
@@ -505,13 +593,13 @@ document.querySelectorAll('.notification-item').forEach(item => {
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                // حذف dot و تغيير background
+                
                 this.classList.remove('unread');
                 this.classList.add('read');
                 const dot = this.querySelector('.unread-dot');
                 if(dot) dot.remove();
 
-                // تحديث badge
+                //update badge 
                 const badge = document.querySelector('.notification-badge');
                 if(badge) {
                     let count = parseInt(badge.textContent) - 1;
@@ -528,28 +616,55 @@ document.querySelectorAll('.notification-item').forEach(item => {
         });
     });
 });
-document.querySelector('.mark-all').addEventListener('click', function(e){
-    e.preventDefault();
+//delete notification
+document.querySelectorAll('.delete-notif').forEach(btn => {
+    btn.addEventListener('click', function(e){
+        e.stopPropagation();
+        const notifId = this.dataset.id;
+        const notifItem = this.closest('.notification-item');
 
-    fetch('/notifications/mark-all-read', { 
-        method: 'POST', 
-        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' } 
-    })
-    .then(() => {
-        // إزالة كل unread dots و تغيير class لكل notification
-        document.querySelectorAll('.notification-item.unread').forEach(item => {
-            item.classList.remove('unread');
-            item.classList.add('read');
-            const dot = item.querySelector('.unread-dot');
-            if(dot) dot.remove();
-        });
+        fetch(`/notifications/${notifId}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                'Accept': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+           
+            if(data.success){
+                notifItem.remove();
 
-        // إزالة badge
-        const badge = document.querySelector('.notification-badge');
-        if(badge) badge.remove();
+                const badge = document.querySelector('.notification-badge');
+                if(badge){
+                    let count = parseInt(badge.textContent) - 1;
+                    if(count > 0) badge.textContent = count;
+                    else badge.remove();
+                }
+            }
+        })
+        .catch(err => console.error("Fetch error:", err));
     });
 });
+document.addEventListener('DOMContentLoaded', function() {
+    const dropdownBtn = document.getElementById('dashboardDropdown');
+    const dashboardList = document.getElementById('dashboardList');
+    const arrow = dropdownBtn.querySelector('.arrow-icon');
 
+    if (dropdownBtn) {
+        dropdownBtn.addEventListener('click', function() {
+            // Toggle l'affichage de la liste
+            if (dashboardList.classList.contains('hidden')) {
+                dashboardList.classList.remove('hidden');
+                arrow.classList.add('rotate-arrow');
+            } else {
+                dashboardList.classList.add('hidden');
+                arrow.classList.remove('rotate-arrow');
+            }
+        });
+    }
+});
 
 </script>
 
