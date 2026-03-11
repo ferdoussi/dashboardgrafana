@@ -235,7 +235,7 @@
     body.dark .modal-box h4, body.dark .modal-box1 h4 { color: #e5e7eb; border-color: #1e293b; }
     body.dark .form-group label { color: #cbd5e1; }
     body.dark .form-control, body.dark .form-control1 { background: #1e293b; border-color: #334155; color: #e5e7eb; }
-    body.dark .panel-row { border-color: #1e293b; color: #e5e7eb; }
+    body.dark .panel-row { border-color: #1e293b; color: #e5e7eb;background-color: #020617; }
     body.dark .custom-scrollbar::-webkit-scrollbar-track { background: #020617; }
 </style>
 
