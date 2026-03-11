@@ -10,7 +10,7 @@
 </head>
 <body>
 
-@extends('layouts.app') {{-- جرب layouts.app هي الأولى، إلا ما خدمتش جرب layouts.master --}}
+@extends('layouts.app') 
 
 @section('content')
 <div class="parent">

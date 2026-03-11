@@ -4,7 +4,7 @@
 @section('content')
 <div class="dashboard-viewer-container">
     
-    {{-- Header بسيط فيه غير السمية ورجوع --}}
+   
     <div class="viewer-header">
         <div class="header-left">
             
@@ -18,16 +18,16 @@
         </div>
     </div>
 @php
-    $client = session('client', 'default'); // ولا أي قيمة default عندك
+    $client = session('client', 'default'); 
 @endphp
 
-    {{-- الشبكة --}}
+    
     <div class="grid-container">
         <div class="grid-stack"></div> 
     </div>
 </div>
 
-{{-- CSS --}}
+
 <style>
 
     /* Dark mode styles */
@@ -146,7 +146,7 @@ body.dark .iframe-wrapper {
         overflow: hidden !important;
     }
 
-    /* تحسين شكل الـ Iframe */
+  
    
     .iframe-wrapper {
     position: relative;
@@ -182,10 +182,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (!rawLayout || rawLayout.length === 0) return;
 
-    // تشغيل GridStack في وضع staticGrid (غير قابل للتحريك)
+
     const grid = GridStack.init({
         staticGrid: true, 
-        margin: 10, // خليناه 10 باش يجي الفراغ باين ونقي
+        margin: 10, 
         cellHeight: 100
     });
 

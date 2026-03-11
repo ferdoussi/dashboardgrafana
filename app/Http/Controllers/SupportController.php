@@ -10,9 +10,7 @@ class SupportController extends Controller
     public function index() {
         return view('support.support');
     }
-    public function allUser(){
-        return View('clientFile.allUser');
-    }
+   
  
 
 }

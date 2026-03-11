@@ -13,7 +13,7 @@
 
 @section('content')
 @php
-    $client = session('client', 'default'); // جلب client ديناميكياً
+    $client = session('client', 'default'); 
 @endphp
 
 <div class="grafana-grid">

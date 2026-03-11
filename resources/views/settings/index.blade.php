@@ -50,14 +50,6 @@
                         placeholder="Enter your company name" disabled>
                          <small style="color: #6b7280;">{{ translate('Company name cannot be changed') }}.</small>
                 </div>
-                <div class="form-group-modern">
-                <label>{{ translate('Role') }}</label>
-                <input type="text" 
-                       value="{{ auth()->user()->role }}" 
-                       class="input-modern input-disabled" 
-                       disabled>
-                <small style="color: #6b7280;">{{ translate('Role cannot be changed') }}.</small>
-            </div>
 
             <hr class="divider">
 
@@ -68,7 +60,7 @@
                     name="current_password" 
                     placeholder="{{ translate('Enter current password to confirm changes') }}" 
                     class="input-modern @error('current_password') is-invalid @enderror"
-                    required> {{-- زدنا required هنا باش ما يدوزش الفورم بلا بيه --}}
+                    required> 
                 @error('current_password') <span class="error-msg">{{ $message }}</span> @enderror
                 
             </div>

@@ -6,6 +6,7 @@ use App\Models\Client;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use App\Notifications\SystemNotification;
+use Illuminate\Support\Facades\Auth;
 
 class EmployeeController extends Controller
 {
@@ -27,10 +28,10 @@ class EmployeeController extends Controller
 
         $employees = $query->latest()->paginate(8);
         
-        // --- السطر اللي كان ناقصك هو هادا ---
+        
         $clients = Client::all(); 
 
-        // ضروري تزيد clients هنا باش الـ Blade يلقاها
+        
         return view('superAdmin.superAdmin', compact('employees', 'clients'));
     }
 
@@ -62,7 +63,10 @@ class EmployeeController extends Controller
                   ->whereIn('role', ['superadmin'])
                   ->get();
 
-$message = "Employee {$employee->name} has been updated";
+$currentUser = Auth::user(); 
+$currentUserRole = $currentUser->role;
+
+$message = "Employee {$employee->name} has been updated in company {$employee->company} by {$currentUser->name} ({$currentUserRole})";
 $icon = "bx-edit";
 
 foreach($admins as $admin) {
@@ -87,7 +91,6 @@ foreach($admins as $admin) {
     $admin->notify(new SystemNotification($message, $icon, $admin->client_id));
 }
 
-// بعد ذلك نحذف الموظف
 $employee->delete();
 
         return redirect()->route('superAdmin.superAdmin')->with('success', translate('Employee deleted successfully'));
@@ -111,14 +114,14 @@ $employee->delete();
             'email.regex' => 'The email must belong to fortress360 or qokpit3d.io domain.',
         ]);
 
-        // منطق تحديد الـ client_id
+        
         if ($request->filled('company_id') && $request->company_id !== 'new') {
-            // إذا اختار شركة موجودة
+            
             $clientId = $request->company_id;
             $client = Client::find($clientId);
             $companyName = $client->name;
         } else {
-            // إذا دخل شركة جديدة
+           
             $newClient = Client::firstOrCreate(
                 ['name' => trim($request->new_company)]
             );
@@ -126,7 +129,7 @@ $employee->delete();
             $companyName = $newClient->name;
         }
 
-        // الحفظ المباشر
+        
         $employee = new Employee();
         $employee->name = $request->name;
         $employee->email = $request->email;
@@ -136,12 +139,15 @@ $employee->delete();
         $employee->client_id = $clientId; 
         
         $employee->save();
-        // بعد ما دوز save
+      
 $admins = Employee::where('client_id', $employee->client_id)
                   ->whereIn('role', ['superadmin'])
                   ->get();
 
-$message = "Employee {$employee->name} has been added to company {$employee->company}";
+$currentUser = Auth::user();
+$currentUserRole = $currentUser->role;
+
+$message = "Employee {$employee->name} has been created in company {$employee->company} by {$currentUser->name} ({$currentUserRole})";
 $icon = "bx-user-plus";
 
 foreach($admins as $admin) {

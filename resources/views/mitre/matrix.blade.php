@@ -19,7 +19,7 @@
         --border-color: #1e293b;
     }
 
-    /* تطبيق الخلفية والنص بناء على الـ Mode */
+    
     body.dark .content-area, 
     body.dark {
         background-color: var(--bg-main) !important;
@@ -42,7 +42,7 @@
         display: flex;
         flex-direction: column;
         border: 1px solid var(--border-color);
-        background: var(--bg-header); /* كيتغير مع الـ Dark Mode */
+        background: var(--bg-header); 
     }
 
     .tactic-header {
@@ -51,7 +51,7 @@
         text-align: center;
         padding: 8px 4px;
         border-bottom: 1px solid var(--border-color);
-        color: #111827; /* اللون الأصلي للهيدر */
+        color: #111827;
     }
 
     /* Tactic colors (Light Mode) */
@@ -65,8 +65,8 @@
 
     /* Dark Mode Adjustment for Headers */
     body.dark .tactic-header {
-        color: #ffffff; /* نص أبيض فالهيدر */
-        filter: brightness(0.8) saturate(1.2); /* كينقص الجهد ديال اللون باش يجي زوين فـ Dark */
+        color: #ffffff; 
+        filter: brightness(0.8) saturate(1.2); 
     }
 
     /* ===============================
@@ -86,7 +86,7 @@
 
     /* Dark Mode Adjustment for Tech Box */
     body.dark .tech-box {
-        background: var(--bg-main); /* كياخد لون الخلفية الغامق */
+        background: var(--bg-main); 
         color: var(--text-main);
     }
 
@@ -163,7 +163,7 @@
         box.addEventListener('click', () => {
             const offenses = JSON.parse(box.getAttribute('data-offenses') || '[]');
             if (offenses.length === 0) return;
-            // ... (Rest of your modal logic)
+            
             const modal = new bootstrap.Modal(document.getElementById('offenseModal'));
             modal.show();
         });

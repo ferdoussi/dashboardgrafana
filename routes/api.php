@@ -5,8 +5,7 @@ use App\Http\Controllers\QradarController;
 
 
 
-// الرابط اللي غيستعملو Grafana
+// Here is where you can register API routes for your application. 
 Route::get('/qradar-live-events', [QradarController::class, 'liveEvents']);
 
-// الرابط اللي غتستعملو أنت في Postman باش "تفرصي" التحديث
 Route::get('/qradar-refresh', [QradarController::class, 'refreshData']);
