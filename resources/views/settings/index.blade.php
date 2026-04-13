@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="{{ asset('css/app/settings.css') }}">
 
 <div class="settings-wrapper">
-    <h2 class="settings-title">Account Settings</h2>
+    <h2 class="settings-title">{{ translate('Account Settings') }}</h2>
 
     <div class="settings-card">
         {{-- Success Message Alert --}}
@@ -79,7 +79,7 @@
                {{{ translate('Update Settings') }}}
             </button>
         </form>
-    </div>
+    </div> 
 
     {{-- Danger Zone --}}
     <div class="danger-card">
@@ -89,10 +89,10 @@
                 <h4>{{ translate('Delete Account') }}</h4>
                 <p>{{ translate('Your account and all your data will be permanently deleted.') }}</p>
             </div>
-            <form action="{{ route('settings.delete') }}" method="POST" onsubmit="return confirm('Are you sure you want to delete your account permanently?');">
+            <form action="{{ route('settings.delete') }}" method="POST" >
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="btn-danger-outline">{{ translate('Delete Account') }}</button>
+                <button type="button" onclick="confirmDeleteCount(this)" class="btn-danger-outline">{{ translate('Delete Account') }}</button>
             </form>
         </div>
     </div>
@@ -106,5 +106,53 @@
         }
         
     }, 5000);
+    function confirmDeleteCount(button) {
+    // Kan-cheddo l-form li 9rib l had l-bouton
+    const form = button.closest('.delete-form');
+    // Kan-cheufou wach dark mode m-activé f l-body
+    const isDark = document.body.classList.contains('dark');
+
+    Swal.fire({
+        html: `
+            <div class="swal-tailwind-container">
+                <div class="swal-tailwind-body">
+                    <div class="swal-tailwind-icon">
+                        <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+                        </svg>
+                    </div>
+                    <div class="swal-tailwind-content">
+                        <h3 id="swal-title">${'{{ translate("Delete Account") }}'}</h3>
+                        <p>${'{{ translate("Are you sure you want to delete your account permanently? This action cannot be undone.") }}'}</p>
+                    </div>
+                </div>
+            </div>
+        `,
+        // Stylat d-debaba o l-alwan
+        background: isDark ? '#1d1f28' : '#ffffff',
+        backdrop: `rgba(0, 0, 0, 0.3) blur(8px)`,
+        
+        // Buttons config
+        showCancelButton: true,
+        confirmButtonText: '{{ translate("Delete Account") }}',
+        cancelButtonText: '{{ translate("Cancel") }}',
+        reverseButtons: true,
+        buttonsStyling: false,
+        
+        // Classes dial Tailwind/Custom CSS
+        customClass: {
+            popup: 'swal-tailwind-popup',
+            actions: 'swal-tailwind-actions',
+            confirmButton: 'swal-tailwind-confirm',
+            cancelButton: 'swal-tailwind-cancel'
+        },
+        width: '32rem',
+    }).then((result) => {
+        // Ila user cliqua 3la Delete, kansifto l-form
+        if (result.isConfirmed) {
+            form.submit();
+        }
+    });
+}
 </script>
 @endsection

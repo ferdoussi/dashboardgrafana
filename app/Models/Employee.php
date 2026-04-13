@@ -22,6 +22,7 @@ class Employee extends Authenticatable
         'departement',
         'role',
         'company',
+        'status' ,// Zid hada hna
         'client_id' // <--- ضروري تزيد هادي هنا
     ];
     protected $hidden = [

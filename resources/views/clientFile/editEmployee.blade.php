@@ -31,7 +31,7 @@
                     <input type="password" name="password"
                            value="{{ old('password', $employee->password) }}">
                 </div>
-
+ 
                 <div class="form-group">
                     <label>{{ translate('Company') }}</label>
                     <input type="text" name="company" value="{{ old('company', $employee->company) }}">

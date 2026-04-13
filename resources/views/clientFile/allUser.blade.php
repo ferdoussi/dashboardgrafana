@@ -24,7 +24,7 @@
         <div id="step1" style="padding: 20px; text-align: center;">
             <div style="font-size: 50px; color: #f59e0b; margin-bottom: 15px;">⚠️</div>
             <p style="font-size: 16px; color: var(--text-main); font-weight: 500;">
-                {{ translate('Notice: You cannot add more than 10 users to this project.') }}
+                {{ translate('Notice: You cannot add more than 5 users to this project.') }}
             </p>
             <div class="form-actions" style="margin-top: 25px; justify-content: center;">
                 <button type="button" class="btn-primary" onclick="goToStep2()" style="width: 100%;">
@@ -54,9 +54,12 @@
                             <small style="color: #ef4444; font-weight: 600; display: block; margin-top: 5px;">
                                 {{ $message }}
                             </small>
-                        @else
-                            {{-- <small>{{ translate('Example: username@fortress360.com') }}</small> --}}
                         @enderror
+                        @error('email')
+        <small style="color: #ef4444; font-weight: 600; display: block; margin-top: 5px;">
+            <i class='bx bx-error-circle'></i> {{ $message }}
+        </small>
+    @enderror
                     </div>
 
                     <div class="form-group">
@@ -128,6 +131,7 @@
             <th>{{ translate('Email') }}</th>
             <th>{{ translate('Company') }}</th>
             <th>{{ translate('Role') }}</th>
+            <th>{{ translate('Status') }}</th>
             <th>{{ translate('Joined') }}</th>
             <th>{{ translate('Actions') }}</th>
         </tr>
@@ -156,6 +160,18 @@
                     {{ ucwords(str_replace('_', ' ', $employee->role)) }}
                 </span>
             </td>
+            <td style="text-align:center;">
+                                @php
+                                    // N-naddfou l-status bach may-kounoch machakil dyal l-espace
+                                    $cleanStatus = trim(strtolower($employee->status));
+                                @endphp
+
+                                @if($cleanStatus === 'active')
+                                    <span class="badge status-badge-active">active</span>
+                                @else
+                                    <span class="badge status-badge-inactive">inactive</span>
+                                @endif
+                            </td>
 
             <td>{{ $employee->created_at->format('M d, Y') }}</td>
 
@@ -169,7 +185,7 @@
 
                     <a href="{{ route('clientFile.editEmployee',$employee->id) }}"
                        class="action-btn">
-                        <i class='bx bx-edit'></i>
+                        <i class='bx bx-edit'></i> 
                     </a>
 
                     <button type="button" class="action-btn" onclick="openDeleteModal({{ $employee->id }})">
@@ -224,10 +240,12 @@
 
 <script>
 function openModal() {
-    // Check if there are validation errors to skip Step 1
+    // Check if there are validation errors (like email already exists)
     @if($errors->any())
+        // Ila kan chi error (Email unique walla Regex), n-douzo direct l Step 2
         goToStep2();
     @else
+        // Ila kanch chi error, n-bdaw b Step 1 (Notice)
         document.getElementById('step1').style.display = 'block';
         document.getElementById('step2').style.display = 'none';
         document.getElementById('modalTitle').innerText = "{{ translate('User Creation Limit') }}";

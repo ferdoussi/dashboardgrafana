@@ -149,6 +149,8 @@
 </div>
 @endsection
 
+
+
 <script>
 window.addEventListener('load', () => {
     document.querySelectorAll('.iframe-loader').forEach(loader => {

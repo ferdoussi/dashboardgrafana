@@ -48,6 +48,15 @@
 
         <option value="user" {{ request('role') == 'user' ? 'selected' : '' }}>User</option>
     </select>
+    {{-- select status --}}
+    @if(auth()->user()->role === 'superadmin')
+        <select id="statusFilter" onchange="filterUsers()" style="padding:10px; border-radius:8px; border:1px solid #ddd;">
+            <option value="">{{ translate('All Statuses') }}</option>
+            <option value="active">{{ translate('Active') }}</option>
+            <option value="inactive">{{ translate('Inactive') }}</option>
+        </select>
+    @endif
+
 
 </form>
 
@@ -59,8 +68,12 @@
                         <th style="text-align:left;">{{ translate('Name') }}</th>
                         <th > {{ translate('Company') }}</th>
                         <th>{{ translate('Role') }}</th>
+                        <th>{{ translate('Status') }}</th>
                         <th>{{ translate('Joined') }}</th>
                         <th style="text-align:right;">{{ translate('Actions') }}</th>
+                        @if (auth()->user()->role === 'superadmin')
+                            <th style="text-align:right;">{{ translate("validate") }}</th>
+                        @endif
                     </tr>
                 </thead>
 
@@ -94,7 +107,19 @@
                             <td style="text-align:center;">
                                 <span class="badge bg-{{ $roleColor }}">
                                     {{ ucfirst($employee->role) }}
-                                </span>
+                                </span> 
+                            </td>
+                          <td style="text-align:center;">
+                                @php
+                                    // N-naddfou l-status bach may-kounoch machakil dyal l-espace
+                                    $cleanStatus = trim(strtolower($employee->status));
+                                @endphp
+
+                                @if($cleanStatus === 'active')
+                                    <span class="badge status-badge-active">active</span>
+                                @else
+                                    <span class="badge status-badge-inactive">inactive</span>
+                                @endif
                             </td>
 
                             <td style="text-align:center; color:#6b7280; font-size: 0.85rem;">
@@ -111,19 +136,43 @@
                                         <i class='bx bx-edit'></i>
                                     </a>
                                     @if (auth()->user()->role === 'superadmin')
-                                    <form method="POST"
-                                        action="{{ route('employees.destroy', $employee->id) }}"
-                                        onsubmit="return confirm('Are you sure you want to delete this employee?')"
-                                        style="display:inline;">
-                                        @csrf 
-                                        @method('DELETE')
+                                        <form method="POST" action="{{ route('employees.destroy', $employee->id) }}" class="delete-form" style="display:inline;">
+                                            @csrf 
+                                            @method('DELETE')
 
-                                        <button type="submit" class="action-btn delete-btn" title="Delete">
-                                            <i class='bx bx-trash'></i>
-                                        </button>
-                                    </form>
+                                            <button type="button" onclick="confirmDeleteEmployee(this)" class="action-btn delete-btn" title="Delete">
+                                                <i class='bx bx-trash'></i>
+                                            </button>
+                                        </form>
+                                        {{-- valider users per status --}}
+                                           
+
                                 @endif
+                                
                             </td>
+                             @if (auth()->user()->role === 'superadmin')
+                            <td class="actions" style="text-align:right;">
+
+                                <form method="POST" action="{{ route('employees.toggleStatus', $employee->id) }}" style="display:inline;">
+                                    @csrf
+
+                                    <button type="submit"
+                                        class="action-btn {{ $employee->status === 'active' ? 'text-danger' : 'text-success' }}"
+                                        title="{{ $employee->status === 'active' ? 'Deactivate' : 'Activate' }}"
+                                        style="background:none;border:none;cursor:pointer;">
+
+                                        @if(trim(strtolower($employee->status)) === 'active')
+                                            <i class='bx bx-user-x' style="font-size:1.2rem;"></i>
+                                        @else
+                                            <i class='bx bx-user-check' style="font-size:1.2rem;"></i>
+                                        @endif
+
+                                    </button>
+
+                                </form>
+
+                            </td>
+                             @endif
                         </tr>
                         @endif
                     @empty
@@ -278,6 +327,9 @@ function filterUsers() {
     const search = document.getElementById('userSearch').value.toLowerCase();
     const role = document.getElementById('roleFilter').value;
 
+    const statusEl = document.getElementById('statusFilter');
+    const statusFilter = statusEl ? statusEl.value.toLowerCase().trim() : '';
+
     const rows = document.querySelectorAll('.user-row');
 
     rows.forEach(row => {
@@ -287,18 +339,62 @@ function filterUsers() {
         const company = row.querySelector('.user-company').innerText.toLowerCase();
         const userRole = row.getAttribute('data-role');
 
-        const matchSearch =
-            name.includes(search) ||
-            email.includes(search) ||
-            company.includes(search);
+        // status الصحيح
+        const statusBadge = row.querySelector('.status-badge-active, .status-badge-inactive');
+        const statusValue = statusBadge ? statusBadge.textContent.toLowerCase().trim() : '';
 
-        const matchRole = role === '' || role === userRole;
+        const matchSearch = name.includes(search) || email.includes(search) || company.includes(search);
+        const matchRole = (role === '') || (userRole === role);
+        const matchStatus = (statusFilter === '') || (statusValue === statusFilter);
 
-        row.style.display = (matchSearch && matchRole) ? '' : 'none';
+        if (matchSearch && matchRole && matchStatus) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
 
     });
 }
+function confirmDeleteEmployee(button) {
+    const form = button.closest('.delete-form');
+    const isDark = document.body.classList.contains('dark');
 
+    Swal.fire({
+        html: `
+            <div class="swal-tailwind-body">
+                <div class="swal-tailwind-icon-container">
+                    <div class="swal-tailwind-icon-bg">
+                        <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="swal-tailwind-content">
+                    <h3 id="swal-title">${'{{ translate("Delete User") }}'}</h3>
+                    <p>${'{{ translate("Are you sure you want to delete this user? All of the user data will be permanently removed. This action cannot be undone.") }}'}</p>
+                </div>
+            </div>
+        `,
+        background: isDark ? '#1d1f28' : '#ffffff',
+        backdrop: `rgba(0, 0, 0, 0.3) blur(4px)`,
+        showCancelButton: true,
+        confirmButtonText: '{{ translate("Delete") }}',
+        cancelButtonText: '{{ translate("Cancel") }}',
+        reverseButtons: true,
+        buttonsStyling: false,
+        customClass: {
+            popup: 'swal-tailwind-popup',
+            actions: 'swal-tailwind-actions',
+            confirmButton: 'swal-tailwind-confirm',
+            cancelButton: 'swal-tailwind-cancel'
+        },
+        width: '32rem',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            form.submit();
+        }
+    });
+}
 
 
 </script>
