@@ -268,6 +268,8 @@ new Chart(ctx, {
         }
     }
 });
+
+
 </script>
 
 @endif

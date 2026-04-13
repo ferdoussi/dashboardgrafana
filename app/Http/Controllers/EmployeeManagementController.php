@@ -6,6 +6,9 @@ use App\Models\Employee;
 use App\Notifications\SystemNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Mail\NewUserAlert; // Had l-classe li qaddina s-sa3a
+use Illuminate\Support\Facades\Mail;
+
 
 class EmployeeManagementController extends Controller
 {
@@ -120,14 +123,18 @@ foreach($admins as $admin) {
    public function storeUser(Request $request)
 {
     // Check limit dyal 10 users (Beddel had 2 b 10)
-    $userCount = Employee::count(); 
-    
-    if ($userCount >= 10) {
-        return redirect()->back()->withErrors(['limit' => 'Limit reached: You cannot add more than 10 users.']);
-    }
+   $clientId = Auth::user()->client_id;
+
+$userCount = Employee::where('client_id', $clientId)->count();
+
+if ($userCount >= 5) {
+    return redirect()->back()->withErrors([
+        'limit' => 'Limit reached: You cannot add more than 5 users for this client.'
+    ]);
+}
     $request->validate([
         'name' => 'required|string|max:255',
-        'email' => [
+    'email' => [
             'required',
             'email',
             'regex:/^.+@(fortress360|qokpit3d\.io)$/i',
@@ -140,7 +147,7 @@ foreach($admins as $admin) {
                 if ($exists) {
                     $fail('The username "' . $username . '" is already taken with another domain.');
                 }
-            },
+            }, 
         ],
         'role' => 'required|string',
                 'password' => [
@@ -149,7 +156,7 @@ foreach($admins as $admin) {
                 'min:8',             // Labodda men 8 dyal l-caractères
                 'regex:/[a-z]/',      // Khass darori 7arf sghir
                 'regex:/[A-Z]/',      // Khass darori 7arf kbir
-                'regex:/[0-8]/',      // Khass darori ra9m
+                'regex:/[0-9]/',      // Khass darori ra9m
                 'regex:/[@$!%*#?&]/', // Khass darori symbol (special character)
             ],
             
@@ -172,7 +179,9 @@ foreach($admins as $admin) {
         'password' => bcrypt($request->password),
     ]);
 
-    
+    // Trigger Event
+    event(new \App\Events\UserCreated($employee));
+
     $admins = Employee::where('role', 'superadmin')->get();
     
     $message = "Employee {$employee->name} created in {$employee->company} by {$auth->name} ({$auth->role})";
@@ -180,6 +189,7 @@ foreach($admins as $admin) {
 
     foreach($admins as $admin) {
         $admin->notify(new SystemNotification($message, $icon, $admin->client_id));
+        Mail::to($admin->email)->send(new NewUserAlert($employee));
     }
 
     return redirect()->route('clientFile.allUser')->with('success', 'Employee created successfully.');

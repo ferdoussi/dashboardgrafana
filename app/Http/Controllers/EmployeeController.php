@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Notifications\SystemNotification;
 use Illuminate\Support\Facades\Auth;
 
-class EmployeeController extends Controller
+class EmployeeController extends Controller 
 {
     public function index(Request $request)
     {
@@ -157,4 +157,30 @@ foreach($admins as $admin) {
 
         return redirect()->back()->with('success', "User Created and Linked to Client ID: $clientId");
     }
+
+public function toggleStatus(Employee $employee)
+{
+    // تبديل status
+    $employee->status = $employee->status === 'active' ? 'inactive' : 'active';
+    $employee->save();
+
+    $status = $employee->status === 'active' ? 'activated' : 'deactivated';
+
+    $admins = Employee::where('client_id', $employee->client_id)
+        ->whereIn('role', ['superadmin'])
+        ->get();
+
+    $currentUser = Auth::user();
+    $currentUserRole = $currentUser->role;
+
+    $message = "Employee {$employee->name} has been {$status} in company {$employee->company} by {$currentUser->name} ({$currentUserRole})";
+
+    $icon = $employee->status === 'active' ? "bx-check-circle" : "bx-x-circle";
+
+    foreach ($admins as $admin) {
+        $admin->notify(new SystemNotification($message, $icon, $admin->client_id));
+    }
+
+    return redirect()->back()->with('success', "Employee has been {$status}");
+}
 }

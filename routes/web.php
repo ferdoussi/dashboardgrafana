@@ -7,13 +7,15 @@ use App\Http\Controllers\GrafanaProxyController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\MailController;
+use App\Http\Controllers\PanelController;
+
+
+
+
+
+
 // DashboardController referenced by string in routes to avoid missing-type static error.
-
-
-
-
-
-
 Route::get('/', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/', [AuthController::class, 'login']);
 
@@ -72,6 +74,8 @@ Route::middleware(['auth'])->group(function () {
     ->name('employees.destroy');
     Route::post('/employees', [EmployeeController::class, 'store'])
     ->name('employees.store');
+  Route::post('/employees/{employee}/toggle-status', [EmployeeController::class, 'toggleStatus'])
+    ->name('employees.toggleStatus');
 
 
 });
@@ -130,3 +134,16 @@ Route::get('lang/{locale}', function ($locale) {
     }
     return redirect()->back();
 })->name('lang.switch')->middleware('auth');
+
+Route::get('/keep-session', function () {
+    session()->put('keep_alive', true);
+    return response()->json(['status' => 'ok']);
+})->middleware('auth');
+
+
+Route::get('/send-alert/{id}', [MailController::class, 'sendNewUserAlert'])
+    ->name('send.alert')
+    ;
+
+Route::get('/add-panel', [PanelController::class, 'viewCreateForm'])->name('panels.viewCreateForm');
+Route::post('/add-panel', [PanelController::class, 'createPanel'])->name('panels.createPanel');

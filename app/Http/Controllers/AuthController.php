@@ -21,44 +21,47 @@ class AuthController extends Controller
     }
 
     public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-            
+{
+    $credentials = $request->validate([
+        'email' => ['required', 'email'],
+        'password' => ['required'],
+    ]);
+
+    $employee = Employee::where('email', $credentials['email'])->first();
+
+    if (!$employee || !Hash::check($credentials['password'], $employee->password)) {
+        throw ValidationException::withMessages([
+            'email' => ['Les identifiants fournis ne correspondent pas à nos enregistrements.'],
         ]);
-
-        $employee = Employee::where('email', $credentials['email'])
-
-            ->first();
-
-        if (!$employee || !Hash::check($credentials['password'], $employee->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['Les identifiants fournis ne correspondent pas à nos enregistrements.'],
-            ]);
-        }
-        $admins = Employee::where('client_id', $employee->client_id)
-                  ->whereIn('role', ['superadmin'])
-                  ->get();
-
-$message = "Employee {$employee->name} has been logged in to company {$employee->company}";
-$icon = "bx-user-plus";
-
-foreach($admins as $admin) {
-    $admin->notify(new SystemNotification($message, $icon, $admin->client_id));
-}
-        // 🔐 تخزين المعرف مؤقتاً في السيسيون
-        session(['2fa:user:id' => $employee->id]);
-
-        // 🚩 التحقق من حالة google2fa_enabled في قاعدة البيانات
-        if ($employee->google2fa_enabled) {
-            // حالة أنس (True): يمشي يكتب الكود فقط
-            return redirect()->route('2fa.verify');
-        }
-
-        // حالة نزار ويوسف (False): يمشي يسكاني QR لأول مرة
-        return redirect()->route('2fa.setup');
     }
+
+    // --- L-Idafa l-jdida hna ---
+    if (trim(strtolower($employee->status)) !== 'active') {
+        throw ValidationException::withMessages([
+            'email' => ['Votre compte est inactif. Veuillez contacter l\'administrateur.'],
+        ]);
+    }
+    // ---------------------------
+
+    $admins = Employee::where('client_id', $employee->client_id)
+                      ->whereIn('role', ['superadmin'])
+                      ->get();
+
+    $message = "Employee {$employee->name} has been logged in to company {$employee->company}";
+    $icon = "bx-user-plus";
+
+    foreach($admins as $admin) {
+        $admin->notify(new SystemNotification($message, $icon, $admin->client_id));
+    }
+
+    session(['2fa:user:id' => $employee->id]);
+
+    if ($employee->google2fa_enabled) {
+        return redirect()->route('2fa.verify');
+    }
+
+    return redirect()->route('2fa.setup');
+}
 
     // --- أول مرة: إعداد 2FA ---
 public function show2faSetup()
